@@ -1,0 +1,149 @@
+<div class="page">
+  <div style="width:100vw; overflow:hidden">
+    <div class="searchbar">
+      <div class="row">
+        <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;"><div  class="searchbox"><input type="text" placeholder="Search Ads"><img src="assets/search.svg"></div></div>
+        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">Advertisements - My Company</div></div>
+      </div>
+    </div>
+  </div>
+    <div class="cont">
+        <div class="row">
+            <div class="col-lg-3 col-sm-12">
+
+                <div class="title1">
+                   YOUR CAMPAIGNES
+                </div>
+                <!-- Quarters with multiple reports  -->
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><div class="label"> 50% Off Happy Hour </div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="ivisUSA"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 3</p>   </div>
+                  </div>
+                </div> 
+                <!-- Quarters with multiple reports  -->
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><div class="label">Buy One Get One </div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="ivisUSA"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 3</p>   </div>
+                  </div>
+                </div> 
+                <!-- Quarters with multiple reports  -->
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;"  alt="ivisUSA"><div class="label">Free Appetizers </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"  alt="ivisUSA"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 3</p>   </div>
+                  </div>
+                </div> 
+                <!-- Quarters with multiple reports  -->
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;"  alt="ivisUSA"><div class="label"> Taco Teusday </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"  alt="ivisUSA"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub Offer 3</p>   </div>
+                  </div>
+                </div> 
+                 
+                <br>
+                <!-- generate report btn -->
+                <div style="text-align:center">
+                  <button class="generateBtn">
+                    GENERATE REPORT
+                  </button>
+                </div>
+            </div>
+            <!-- Left Column Ends -->
+
+            <!-- Right Column Starts -->
+            <div class="col-lg-9 col-sm-12">
+                <div class="title1">
+                    ALL ADVERTISEMENTS
+                </div>
+                <hr id="hr1">
+                <!-- write advertisements code here -->
+
+
+                <div class="grid-container">
+                  <div class="advertisementBox">
+                    <div class="adsContent">
+                      <div style="display: flex; justify-content: space-between;">
+                        <div>
+                          <div class="ad1" ><img src="assets/female.svg" alt="Female">Female / Age 20 - 30</div>
+                          <!-- <div class="ad1"><img src="assets/male.svg" alt="Male" >Male / Age 40 - 50</div> -->
+                          <div class="ad2">teusday, May 2, 2021 / 7:50p</div>
+                        </div>
+                        <img src="assets/background.jpg" class="adImg"  alt="ivisUSA">
+                      </div>
+                      <hr id="hr2">
+                      <div class="ad3">Free appetizer with entree purchase #234</div>
+                    </div>
+                  </div>
+                  <div class="advertisementBox">
+                    <div class="adsContent">
+                      <div style="display: flex; justify-content: space-between;">
+                        <div>
+                          <!-- <div class="ad1"><img src="assets/female.svg" alt="Female" >Female / Age 20 - 30</div> -->
+                          <div class="ad1"><img src="assets/male.svg" alt="Male" alt="ivisUSA">Male / Age 40 - 50</div>
+                          <div class="ad2">teusday, May 2, 2021 / 7:50p</div>
+                        </div>
+                        <img src="assets/background.jpg" class="adImg"  alt="ivisUSA">
+                      </div>
+                      <hr id="hr2">
+                      <div class="ad3">Free appetizer with entree purchase #234</div>
+                    </div>
+                  </div>
+                  <div class="advertisementBox">
+                    <div class="adsContent">
+                      <div style="display: flex; justify-content: space-between;">
+                        <div>
+                          <div class="ad1"><img src="assets/female.svg" alt="Female" >Female / Age 20 - 30</div>
+                          <!-- <div class="ad1"><img src="assets/male.svg" alt="Male" >Male / Age 40 - 50</div> -->
+                          <div class="ad2">teusday, May 2, 2021 / 7:50p</div>
+                        </div>
+                        <img src="assets/background.jpg" class="adImg">
+                      </div>
+                      <hr id="hr2">
+                      <div class="ad3">Free appetizer with entree purchase #234</div>
+                    </div>
+                  </div>
+                  <div class="advertisementBox">
+                    <div class="adsContent">
+                      <div style="display: flex; justify-content: space-between;">
+                        <div>
+                          <div class="ad1"><img src="assets/female.svg" alt="Female" >Female / Age 20 - 30</div>
+                          <!-- <div class="ad1"><img src="assets/male.svg" alt="Male" >Male / Age 40 - 50</div> -->
+                          <div class="ad2">teusday, May 2, 2021 / 7:50p</div>
+                        </div>
+                        <img src="assets/background.jpg" class="adImg">
+                      </div>
+                      <hr id="hr2">
+                      <div class="ad3">Free appetizer with entree purchase #234</div>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+          <!-- Column with Reports Ends -->
+          </div>
+          <!-- Row Ends -->
+      </div>
+</div>
+
+
+
+

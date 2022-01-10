@@ -1,0 +1,103 @@
+<app-loader *ngIf="showLoader"></app-loader>
+
+<div class="page">
+    <div style="width:100vw; overflow:hidden">
+      <div class="searchbar">
+        <div class="row">
+          <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;"><div  class="searchbox"><input type="text" placeholder="Search Location"[(ngModel)]="searchText"><img src="assets/search.svg"></div></div>
+          <div class="col-lg-9 col-sm-12" style="border: none; align-self: center; opacity:1; display: flex;">
+            <div class="pagination" (click)="pagination()">
+              <!-- grid display icons -->
+              <div (click)="cameraGridSingle()">
+                <img src="assets/1x1grid.svg" class="gridicon" *ngIf="this.gridClicked != 1" alt="grid1">
+                <img src="assets/1x1grid_selected.svg" class="gridicon" *ngIf="this.gridClicked == 1 " alt="grid1">
+              </div>
+              <div (click)="cameraGridDouble()">
+                <img src="assets/2x2grid.svg" class="gridicon" *ngIf="this.gridClicked !=2 " alt="grid2">
+                <img src="assets/2x2grid_selected.svg" class="gridicon" *ngIf="this.gridClicked == 2 " alt="grid2">
+              </div>
+              <div (click)="cameraGridMultiple()" class="grid3">
+                <img src="assets/3x3grid.svg" class="gridicon" *ngIf="this.gridClicked !=3 " alt="grid3">
+                <img src="assets/3x3grid_selected.svg" class="gridicon" *ngIf="this.gridClicked == 3 " alt="grid3">
+              </div>
+              <!-- pagination -->
+              <div style="display: flex; margin-left: 40px">
+                <img src="assets/arrow.svg" style="transform: rotate(180deg);" (click)="previousPage()" alt="prev">
+                <div  class="searchbox" style="margin-left: 5px; margin: 5px; padding: 10px">     
+                  <select name="my-dropdown" (change)="pagination()" [(ngModel)]="pagenumber" class="dropdown">
+                    <option *ngFor="let number of selectNumbers" [value]="number"  style="border: none;outline:none"><div style="padding: 15px; margin:15px; margin-right:15px">&nbsp;&nbsp;{{number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></option>
+                  </select>  
+                  <img src="assets/forward_arrow.svg" style="margin-left: -30px; transform:rotate(90deg); pointer-events:none; width: 30px" alt="drop">  
+                </div>                   
+                  <!-- <input type="text" maxLength="2" min="1" max="99" placeholder="{{pagenumber}}" style="width: 22px; text-align:center;" [(ngModel)]= "pagenumber"></div>           -->
+                <img src="assets/arrow.svg" (click)="nextPage()" alt="next">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="cont">
+          <div class="row">
+              <div class="col-lg-3 col-sm-12">
+                  <!-- <div class="title1">
+                     Gaurd
+                  </div> -->
+                  <!-- Quarters with multiple views  -->
+                  <div class="optionlabelparent" *ngFor="let site of sites?.siteList  | SearchPipe: searchText  ;let i = index;"  #optionlabelparent >
+                    <div [className]="site.siteid == currentsite  ? 'optionlabel active' : 'optionlabel'" Style="position:relative;" #optionlabel (click)="getCameras($event, site, i)" >
+                        <img src="assets/eye.svg" style="width: 20px;" alt="site"><div class="label"> {{site.sitename}} </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
+                    </div>
+                    <div class="panel" *ngIf="opened == currentsite  || site.siteid == currentsite" #panel>
+                      <!-- <div class="panel" *ngIf="cameras" #panel> -->
+                      <span>
+                        <div class="accordionElements" *ngFor="let camera of cameras" (click)="cameraIdClicked(camera)"> <span [className]="camera.cameraStatus == 'Connected'  ? 'dot' : 'dot-red'"></span><p style="margin: 0 0 0 20px"></p>  {{camera.cameraId }} </div>
+                      </span>
+                    </div>
+                  </div>  
+
+
+
+              </div>
+              <!-- Left Column Ends -->
+  
+              <!-- Right Column Starts -->
+              <div class="col-lg-9 col-sm-12 grids" >
+                  <div class="title1"  *ngIf="!viewPanelData">{{sites?.siteList[0].sitename}}</div>
+                  <div class="title1" *ngIf="viewPanelData">{{viewPanelData.sitename}}</div>
+                  <hr id="hr1">
+                  <!-- write view code here -->
+
+
+                  <div class="grid-container" #grids>
+
+                    <div class="camerabox" #camerabox *ngFor="let camera of paginatedCameraList">
+                      <div class="title" #title>{{camera.cameraId}}</div>
+                      <div class="status" #status style="color: #104B86" *ngIf="camera.cameraStaus != 'connected'"><img src="assets/eye-blue.svg" alt="connected">&nbsp;&nbsp;Connected</div>
+                      <div class="status" #status style="color: #e4324f" *ngIf="camera.cameraStaus == 'connected'"><img src="assets/eye-red.svg" alt="disconnected">&nbsp;&nbsp;Not Connected</div>
+                      <div class="cameraview">
+                        <app-vjs-player [options]="{ autoplay: true, fluid: true, sources: [{ src: camera.streamingUrl + '/playlist.m3u8' , type: 'application/x-mpegURL' }]}">
+                        </app-vjs-player>
+                           
+                        <!-- <app-videos [options]="{ autoplay: true, sources: [{ src: 'https://testvs.iviscloud.net/hls/'+customer.cameraId+'/playlist.m3u8' , type: 'application/x-mpegURL' }]}">
+                        </app-videos> -->
+                      </div>
+                    </div>             
+
+                  </div>
+
+                       
+                  <div *ngIf="!paginatedCameraList" class="placeholderForEmpty">
+                    Loading
+                   </div>
+                   <div *ngIf="cameras?.length == 0" class="placeholderForEmpty">
+                     Sorry You dont have camera feeds at this location
+                   </div>
+              </div>
+            <!-- Column with views Ends -->
+            </div>
+            <!-- Row Ends -->
+        </div>
+  </div>
+  
+  

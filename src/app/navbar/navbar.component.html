@@ -1,0 +1,22 @@
+
+<div class="topnav" id="myTopnav" #myTopnav (click)="clicked()">
+    <img src="assets/IVISsecurity_logo.png" style="height: 30px; margin:10px" alt="ivisSecurity">
+  <!-- <a style="padding: 0;" [routerLink]="['login']" *ngIf="isloggedin"><div class="button">Login</div></a> -->
+  <a style="padding: 0;" [routerLink]="['login']" (click)="logout()"><div class="button">Logout</div></a>
+  <a><div (click)="routeTo('support')">Profile</div></a>
+  <!-- <a><div (click)="routeTo('support')">Support</div></a> -->
+  <a><div (click)="routeTo('advertisement')">Advertisements</div></a>
+  <a><div (click)="routeTo('research')">Research</div></a>
+  <a><div (click)="routeTo('trends')">Trends</div></a>
+  <a><div (click)="routeTo('insight')">Insight</div></a>
+  <a><div (click)="routeTo('gaurd')">Gaurd</div></a>
+  <a class="icon" (click)="burgerIcon()">
+    <img src="assets/menu.svg" style="width: 20px;" alt="Menu">
+  </a>
+
+
+</div>
+
+
+
+

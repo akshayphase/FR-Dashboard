@@ -1,0 +1,132 @@
+<app-loader *ngIf="showLoader"></app-loader>
+
+<div class="page">
+  <div style="width:100vw; overflow:hidden">
+    <div class="searchbar">
+      <div class="row">
+        <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;"><div  class="searchbox"><input type="text" placeholder="Search Month"><img src="assets/search.svg"></div></div>
+        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">Insight - My company</div></div>
+      </div>
+    </div>
+  </div>
+    <div class="cont">
+        <div class="row">
+            <div class="col-lg-3 col-sm-12">
+
+                <div class="title1">
+                   INSIGHT REPORTS
+                </div>
+                <!-- Accordion for Location -->
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><div class="label"> Location 1</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub-location 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub-location 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub-location 3</p>   </div>
+                  </div>
+                </div> 
+
+
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><div class="label"> Location 2</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub-location 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub-location 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Sub-location 3</p>   </div>
+                  </div>
+                </div> 
+                
+                <!-- <div class="optionlabel" style="display: flex; position:relative" >
+                    <img src="assets/eye.svg" style="width: 20px;"> Start Date  <br> 
+                    <form class="datePickerBtn" >
+                      <input type="date" id="startDate" (input)="startDateValue()" #startDate>
+                    </form>
+                </div>
+                <div class="optionlabel" style="display: flex; position:relative"  data-toggle="collapse"  data-target="#ad">
+                  <img src="assets/eye.svg" style="width: 20px;"> End Date  <br> 
+                  <form class="datePickerBtn">
+                    <input type="date" id="endDate" (input)="endDateValue()" #ad >
+                  </form>
+                </div> -->
+                
+                <!-- Start Date -->
+                <div class="optionlabel" style="display: flex; position:relative; margin:10px 12%; padding-bottom:10px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666;" >
+                  <div (click)="start.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
+                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"> Start Date  <span *ngIf="startDate != 'null'">{{": "+startDate}}</span> <div class="sqr"></div><br> 
+                  </div>
+                  <form class="dateinputform" >
+                    <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onStartDateSelect($event)" >
+                  </form>
+                </div> 
+                <!-- End Date -->
+                <div class="optionlabel" style="display: flex; position:relative; margin:10px 12%; padding-bottom:10px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666;" >
+                  <div (click)="end.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
+                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"> End Date  <span *ngIf="endDate != 'null'">{{": "+endDate}}</span> <div class="sqr"></div><br> 
+                  </div>
+                  <form class="dateinputform" >
+                    <input type="text" ngbDatepicker #end="ngbDatepicker" class="dateinput" (dateSelect)="onEndDateSelect($event)" >
+                  </form>
+                </div> 
+                <!-- Generate Button -->
+                <div style="text-align:center">
+                  <button class="generateBtn" (click)="generateReport()">
+                    GENERATE REPORT
+                  </button>
+                </div>
+
+            </div>
+
+
+          
+            <!-- Left Column Ends -->
+
+            <!-- Right Column Starts -->
+
+            <div class="col-lg-9 col-sm-12">
+                <div class="title1">
+                    October 1, 2021 to October 31, 2021
+                </div>
+                <hr id="hr1">
+                <!-- Data Tables starts here -->
+                <div *ngIf="this.reports != null">
+                  <div class="dataTable" *ngFor="let report of reports" >
+                    <div class="tableBox">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col" style="float: left;"><p>{{report.name}}</p></th>
+                                <!-- <th scope="col" ><p>Main Dining</p></th>
+                                <th scope="col"><p>Bar</p></th> -->
+                                <th scope="col"><p>Total</p></th>
+                              </tr>
+                            </thead>
+                            <tbody *ngFor="let data of report.data">
+                              <tr class="tableElements">
+                                <th scope="row"><p><img class="icon" [src]="data.icon" onerror="this.src='assets/eye.svg';">{{data.type}}</p></th>
+                                <!-- <td><p>Mark</p></td>
+                                <td><p>Otto</p></td> -->
+                                <td class="lastColumn"><p>{{data.total}}</p></td>
+                              </tr>                             
+                            </tbody>
+                          </table>
+                    </div>
+                <!-- Data Table Ends -->
+
+                </div>
+                <!-- Placeholder For Reports -->
+              </div>
+              <div *ngIf="this.reports == null">
+                <div class="placeholderForReports">
+                  Please Select Start Date and End Date to generate reports<br>&#8592;
+              </div>
+            </div>
+          <!-- Column with Reports Ends -->
+          </div>
+          <!-- Row Ends -->
+      </div>
+</div>
+

@@ -1,0 +1,84 @@
+<div class="page">
+  <div style="width:100vw; overflow:hidden">
+    <div class="searchbar">
+      <div class="row">
+        <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;"><div  class="searchbox"><input type="text" placeholder="Search Month"><img src="assets/search.svg"></div></div>
+        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">Trends - My Company</div></div>
+      </div>
+    </div>
+  </div>
+    <div class="cont">
+        <div class="row">
+            <div class="col-lg-3 col-sm-12">
+
+                <div class="title1">
+                   QUATERLY TRENDS
+                </div>
+                <!-- Quarters with multiple reports  -->
+                <div class="optionlabelparent" *ngFor="let data of datas,  ;let i = index;">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event, i)" [className]="data.item == currentItem ? 'optionlabel active': 'optionlabel'">
+                      <img src="assets/eye.svg" style="width: 20px;"><div class="label"> {{data.item}} </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
+                  </div>
+                  <div class="panel" *ngIf="data.item == currentItem">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{data.info}}</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q3 2021 Report 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q3 2021 Report 3</p>   </div>
+                  </div>
+                </div>
+
+   
+
+<!-- 
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;"><div class="label"> Q2 2021 </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q2 2021 Report 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q2 2021 Report 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q2 2021 Report 3</p>   </div>
+                  </div>
+                </div> 
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                      <img src="assets/eye.svg" style="width: 20px;"><div class="label"> Q1 2021 </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
+                  </div>
+                  <div class="panel" hide="!item.isActive">
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q1 2021 Report 1</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q1 2021 Report 2</p>   </div>
+                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q1 2021 Report 3</p>   </div>
+                  </div>
+                </div>  -->
+                <!-- Quarters without multiple types of reports -->
+                <div class="optionlabelparent">
+                  <div class="optionlabel" Style="position:relative;">                  
+                    <img src="assets/eye.svg" style="width: 20px;"> Q4 2020  <br> 
+                  </div>
+                </div>
+                <br>
+                <!-- generate report btn -->
+                <div style="text-align:center">
+                  <button class="generateBtn">
+                    GENERATE REPORT
+                  </button>
+                </div>
+            </div>
+            <!-- Left Column Ends -->
+
+            <!-- Right Column Starts -->
+            <div class="col-lg-9 col-sm-12">
+                <div class="title1">
+                    q3 2021
+                </div>
+                <hr id="hr1">
+                <!-- write report code here -->
+            </div>
+          <!-- Column with Reports Ends -->
+          </div>
+          <!-- Row Ends -->
+      </div>
+</div>
+
+
+
+

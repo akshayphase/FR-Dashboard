@@ -1,0 +1,96 @@
+.chatpopup{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    z-index: 99;
+}
+
+.popupWindow{
+    position:fixed;
+    right:25px;
+    bottom: 125px;
+    width: 300px;
+    max-height: 250px;
+    border: 2px solid #b7b7b7;
+    border-radius: 10px;
+    background-color: #fff;
+    z-index: 99;
+}
+.popupInner{
+    /* border: 2px solid #7f7f7f; */
+    margin: 20px;
+    max-height: 230px;
+    border-radius: 10px;
+    z-index: inherit;
+}
+.popupInner span{
+    font-family: PS,sans-serif;
+    text-transform: uppercase;
+    color: #104B86;
+    letter-spacing :2px;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 15px;
+   
+}
+.inputbox input , textarea{
+    outline: none;
+    border:none;
+    width: -webkit-fill-available;
+}
+.inputbox{
+    font-family: sans-serif;
+    padding: 15px;
+    border: 2px solid #b7b7b7;
+    border-radius: 8px;
+    margin:10px 10px;
+}
+.question{
+    font-family: PS,sans-serif;
+    color: #010101;
+    font-size: 10px;
+}
+.input{
+    font-size: 10px;
+    color:#7f7f7f;
+}
+button{
+    border: 14px solid #104B86;
+    border-radius: 30px;
+    background:#104B86;
+    color: #fff;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing :2px;
+    font-family:PS,sans-serif;
+
+    -webkit-box-shadow: 2px 2px 0px 0px rgba(185,185,185,0.96);
+    -moz-box-shadow: 2px 2px 0px 0px rgba(185,185,185,0.96);
+    box-shadow: 2px 2px 0px 0px rgba(185,185,185,0.96);
+}
+.popupInner button{
+    width: 120px;
+}
+.submittesMessage{
+    font-family: PS,sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #104B86;
+    font-weight: bold;
+    line-height: 2;
+    text-transform: uppercase;
+}
+
+.selectone button{
+    width: fill-available;
+    margin: 0 15px 12px 15px;
+}
+.seletoneheader {
+    display: block;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+textarea{
+    height: 76px;
+    max-height: 76px;
+}

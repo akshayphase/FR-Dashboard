@@ -1,0 +1,78 @@
+.page {
+  align-items: center;
+  /* background: linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url("../../assets/background.jpg ") !important;
+  background-size:cover;
+  background-repeat: repeat-y; */
+  /* min-height: 100vh; */
+}
+.title {
+  color: #104b86;
+  padding: 8px;
+  padding-bottom: 3px;
+  font-size: 25px;
+  font-weight: 600;
+  font-family: SG, sans-serif;
+}
+.loginbox {
+  width: 300px;
+  height: 235px;
+  position: absolute;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  margin: -118px 0 0 -150px;
+  border: 2px solid #104b86;
+  border-radius: 30px;
+  background: #fff;
+  color: #7f7f7f;
+  text-align: center;
+  text-align: -webkit-center;
+  -webkit-box-shadow: 2px 2px 0px 0px rgba(16, 75, 134, 0.96);
+  -moz-box-shadow: 2px 2px 0px 0px rgba(16, 75, 134, 0.96);
+  box-shadow: 2px 2px 0px 0px rgba(16, 75, 134, 0.96);
+}
+.inputblock {
+  display: block;
+}
+.inputblock span {
+  font-size: 12px;
+  font-family: TP, sans-serif;
+  color: #104b86;
+}
+input {
+  width: fit-content;
+  border: none;
+  position: relative;
+  display: block;
+  outline: none;
+  height: 30px;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 5px;
+  color: #7f7f7f !important;
+  -webkit-box-shadow: 2px 2px 0px 0px rgba(16, 75, 134, 0.96);
+  -moz-box-shadow: 2px 2px 0px 0px rgba(16, 75, 134, 0.96);
+  box-shadow: 2px 2px 0px 0px rgba(16, 75, 134, 0.96);
+}
+.signinBtn {
+  cursor: pointer;
+  font-family: TP, sans-serif;
+  width: 80px;
+  color: #fff;
+  background-color: #104b86;
+  font-size: 15px;
+  padding: 5px;
+  margin-top: 15px;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 0px 0px rgba(184, 184, 184, 0.96);
+  -moz-box-shadow: 2px 2px 0px 0px rgba(184, 184, 184, 0.96);
+  box-shadow: 2px 2px 0px 0px rgba(184, 184, 184, 0.96);
+}
+.forgotPassBtn {
+  cursor: pointer;
+  font-size: 10px;
+  margin-top: 5px;
+  color: #104b86;
+  font-family: TP, sans-serif;
+}

@@ -1,0 +1,11 @@
+<div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 
+'alert-danger': message.type === 'error', 'alert-warning': message.type === 'warning', 
+'alert-info': message.type === 'info' }"
+    >
+<div class="alertbox">
+    <div class="msg">{{message.text}}</div>
+    <!-- <span (click)="closeMessage()" style="float:right;cursor: pointer;">
+        <i class="fa fa-times" style="font-size:14px"></i></span> -->
+        <button class="button" (click)="closeMessage()"> Close</button>
+</div>
+</div>

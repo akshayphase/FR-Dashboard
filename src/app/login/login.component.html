@@ -1,0 +1,22 @@
+<div class="page">
+    <app-alert></app-alert>
+
+    <div class="loginbox">
+        <div class="title">Client Login</div>
+        <div class="loginform">
+
+            <div class="inputblock">
+                <span>Username : </span>
+                <input type="text" [(ngModel)]="username">
+            </div>
+            <div class="inputblock">
+                <span>Password : </span>
+                <input type="password"  [(ngModel)]="password">
+            </div>
+            <div class="signinBtn" (click)="login()">Login</div>
+            <div class="forgotPassBtn" (click)="forgotPass()">Forgot Username or Password?</div>
+        </div>
+
+    </div>
+
+</div>
