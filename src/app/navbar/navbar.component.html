@@ -1,21 +1,57 @@
 
-<div class="topnav" id="myTopnav" #myTopnav (click)="clicked()">
-    <img src="assets/IVISsecurity_logo.png" style="height: 30px; margin:10px" alt="ivisSecurity">
+<div class="topnav" id="myTopnav" #myTopnav >
+  <a class="mylogo" [routerLink]="['/guard']"> 
+  <img src="assets/IVISsecurity_logo.png" style="height: 32px; " alt="ivisSecurity">
+</a>
+<!-- <img src="assets/IVISsecurity_logo.png" style="height: 32px; margin:10px" alt="ivisSecurity"> -->
+  
   <!-- <a style="padding: 0;" [routerLink]="['login']" *ngIf="isloggedin"><div class="button">Login</div></a> -->
-  <a style="padding: 0;" [routerLink]="['login']" (click)="logout()"><div class="button">Logout</div></a>
-  <a><div (click)="routeTo('support')">Profile</div></a>
-  <!-- <a><div (click)="routeTo('support')">Support</div></a> -->
-  <a><div (click)="routeTo('advertisement')">Advertisements</div></a>
-  <a><div (click)="routeTo('research')">Research</div></a>
-  <a><div (click)="routeTo('trends')">Trends</div></a>
-  <a><div (click)="routeTo('insight')">Insight</div></a>
-  <a><div (click)="routeTo('gaurd')">Gaurd</div></a>
-  <a class="icon" (click)="burgerIcon()">
+  <a style="padding: 0;" (click)="logout1()"><div class="button">Log out</div></a>
+  <!-- <a><div (click)="routeTo('support')">Profile</div></a> -->
+  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/services']">Services</div></a>
+  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/support']">Support</div></a>
+  <a *ngIf="advertisements"><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
+  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/research']">Research</div></a>
+  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
+  <a *ngIf="b_intelli" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
+  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Guard</div></a>
+  <a class="icon" (click)="openmenu()">
     <img src="assets/menu.svg" style="width: 20px;" alt="Menu">
   </a>
 
-
 </div>
+
+
+
+  <div class="sidenav"#sidenav>
+    <!-- <img src="assets/IVISsecurity_logo.png" style="height: 32px; margin:10px" alt="ivisSecurity"> -->
+    <div class="profile">
+      <div class="close" (click)="closemenu()"></div>
+      <img [src]="data?.image" onerror="this.src='assets/female.svg'" style="width: 70px;height:70px; border-radius:50%; padding:2px; background: #fff">
+      <div class="details" style="overflow:hidden;">
+        <p style="font-size: 16px; text-transform: uppercase;text-overflow:ellipsis; overflow-wrap: anywhere;">{{data?.FirstName + ' ' + data?.LastName}}</p>
+        <p style="font-size: 14px;" *ngIf="data?.contact"> {{'+91 '+ data?.contact}}</p>
+        <p style="font-size: 14px;">{{data?.email ? data?.email : 'Email to be updated'}}</p>
+      </div>
+    </div>
+    <div class="menus" (click)="closemenu()">
+      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Guard</div></a>
+      <a *ngIf="b_intelli" ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
+      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
+      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/research']">Research</div></a>
+      <a *ngIf="advertisements"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
+      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/support']">Support</div></a>
+      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/services']">Services</div></a>
+      <!-- <a href="http://smstaging.iviscloud.net:8090/usveclient/" target="_blank" style="text-decoration: none; color: #2a2a2a;"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu();">Safety Ecort</div></a> -->
+      <a style="text-decoration: none; color: #2a2a2a;"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu();toQRmodal()">Safety Ecort</div></a>
+      <a class="sidenavelements" style="padding: 0;"><div class="button" (click)="logout()">Log out</div></a>
+    </div>
+    <!-- <a><div (click)="routeTo('support')">Profile</div></a> -->
+  </div>
+  <div class="backdrop" (click)="closemenu()"></div>
+
+  <app-loader *ngIf="showLoader"></app-loader>
+
 
 
 

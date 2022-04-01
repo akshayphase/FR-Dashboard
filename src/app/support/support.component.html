@@ -1,19 +1,25 @@
+<app-loader *ngIf="showLoader"></app-loader>
+
+
 <div class="page">
     <div style="width:100vw; overflow:hidden">
       <div class="searchbar">
         <div class="row">
           <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;"><div  class="searchbox"><input type="text" placeholder="Search Support"><img src="assets/search.svg"></div></div>
-          <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">Support - My Company</div></div>
+          <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">Support - My Company
+            <img src="assets/ivis-sec.svg" class="qr" (click)="toQRmodal()" id="qrcode">
+            <div class="tooltiptext">Do you need Safety Escort?</div>
+          </div></div>
         </div>
       </div>
     </div>
       <div class="cont">
           <div class="row">
-              <div class="col-lg-3 col-sm-12">
+              <div class="col-lg-3 col-sm-12 btnvisible" id="topple" #topple>
   
-                  <div class="title1">
+                  <!-- <div class="title1">
                      SUPPORT
-                  </div>
+                  </div> -->
                   <!-- Quarters with multiple reports  -->
                   <div class="optionlabelparent"  (click)="openfaq()">
                     <div class="optionlabel" Style="position:relative;">
@@ -46,10 +52,12 @@
                 <div *ngIf="faq">
                 <div class="title1">
                     frequently asked questions
+                    <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
+
                 </div>
                 <hr id="hr1">
                 
-                <div>
+                <div class="tables">
                   <div class="optionlabel2" Style="position:relative;" (click)="toggleAccordian($event)">
                       <span>Guard</span><div class="accordionArrowBig"><img src="assets/forward_arrow.svg" alt="expand"></div>
                   </div>
@@ -95,6 +103,8 @@
                 <div *ngIf="contactUs">
                   <div class="title1">
                     Contact Us
+                    <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
+                    <!-- <button (click)="showOptions()" class="visibilitybtn"></button> -->
                   </div>
                   <hr id="hr1">
                   <div class="optionlabel2" Style="position:relative;" (click)="toggleAccordian($event)">
@@ -109,7 +119,7 @@
                       Please explain the issue:
                     </div>
                     <div style=" font-size:15px">
-                      <textarea placeholder="Your message here" style="border:none;outline:none; color:#7f7f7f; width:-webkit-fill-available; min-height: 150px; max-height:1000px"></textarea>              
+                      <textarea placeholder="Your message here" style="border:none;outline:none; color:#7f7f7f; width:-webkit-fill-available; min-height: 150px; max-height:1000px" (keyup)="bodyContent($event)"></textarea>              
                     </div>
                   </div>
 
@@ -126,6 +136,13 @@
             </div>
             <!-- Row Ends -->
         </div>
+  </div>
+
+
+
+  <div id="modal">
+    <div class="close" (click)="closemodal()"></div>
+    <div id="modalcontent"></div>
   </div>
   
   

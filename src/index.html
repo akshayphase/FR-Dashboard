@@ -2,13 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>IVISSecurity</title>
+  <title>IVIS Security</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.svg">
 </head>
 <!-- <body oncontextmenu="return false;" onkeydown="return false;" onmousedown="return false;"> -->
-<body  oncontextmenu="return false;">
+<body>
   <app-root></app-root>
 </body>
+<script language='javascript'>
+  function imageRefresh(img, timeout) {
+      setTimeout(function() {
+          var d = new Date;
+          var http = img.src;
+          if (http.indexOf("&d=") != -1) {
+              http = http.split("&d=")[0];
+          }
+          img.src = http + '&d=' + d.getTime();
+          // console.warn(d.getTime())
+      }, timeout);
+  }
+</script>
 </html>

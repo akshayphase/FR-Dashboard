@@ -9,6 +9,7 @@
 
 
 .alert{
+    transform: scale(1.35);
     position: fixed;
     top: 50%;
     left: 50%;
@@ -16,7 +17,7 @@
     margin-left: -125px;
     margin-top: -75px;
     background: #fff;
-    z-index: 9999;
+    z-index: 99;
     text-align: center;
     border: 1px solid #104b86;
     border-radius: 15px;
@@ -45,5 +46,40 @@ button{
     font-family: TP,sans-serif;
     font-size: 15px;
     color: #7f7f7f;
-    margin-bottom: 25px;
+    margin-bottom: 13px;
 }
+.closebtn{
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: #104B86;
+    color:white;
+    float: right;
+    text-align: center;
+    margin-right: -8px;
+    margin-top: -8px;
+    -webkit-box-shadow: 1px 1px 0px 0px rgba(187,187,187,0.96);
+    -moz-box-shadow: 1px 1px 0px 0px rgba(187,187,187,0.96);
+    box-shadow: 1px 1px 0px 0px rgba(187,187,187,0.96);
+}
+.closetext{
+    display: none;
+    opacity: 0;
+}
+/* .closebtn:hover .closetext{
+    transition: opacity 0.8s ease-in-out, display 0.8s ease-in-out;
+    opacity: 1;
+    display: contents;
+}
+.closebtn:hover span{
+    margin-right: 8px;
+}
+.closebtn:hover{
+    -webkit-transition: width 0.8s ease-in-out;
+    -moz-transition: width 0.8s ease-in-out;
+    -o-transition: width 0.8s ease-in-out;
+    transition: width 0.8s ease-in-out;
+    width:80px;
+    text-align: right;
+} */
+

@@ -15,11 +15,10 @@
 }
 button{
     /* width: 100%; */
-    border: 20px solid #104B86;
     border-radius: 30px;
     background:#104B86;
     color: #fff;
-    font-size: 10px;
+    font-size: 12px;
     width: -webkit-fill-available;
     -webkit-box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
     -moz-box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
@@ -165,3 +164,7 @@ p{margin: 0;}
     transition:ease-in-out 0.3s;
     display:none;
 }
+
+
+
+

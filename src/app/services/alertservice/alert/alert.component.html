@@ -3,9 +3,10 @@
 'alert-info': message.type === 'info' }"
     >
 <div class="alertbox">
+    <div class="closebtn" (click)="closeMessage()"><span><span class="closetext">Close </span> X</span></div><br>
     <div class="msg">{{message.text}}</div>
-    <!-- <span (click)="closeMessage()" style="float:right;cursor: pointer;">
-        <i class="fa fa-times" style="font-size:14px"></i></span> -->
-        <button class="button" (click)="closeMessage()"> Close</button>
+
+        <!-- <button class="button" (click)="closeMessage()"> Close</button> -->
+        
 </div>
 </div>

@@ -23,6 +23,6 @@ export class SearchPipe implements PipeTransform {
     if (!items) return [];
     if (!searchText) return items;
     return items.filter((item) => JSON.stringify(item).toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
-   }
+    }
   }
 

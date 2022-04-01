@@ -1,42 +1,40 @@
-
-
-
-button{
+button {
     /* width: 100%; */
-    border: 20px solid #104B86;
     border-radius: 30px;
-    background:#104B86;
+    background: #104B86;
     color: #fff;
-    font-size: 10px;
+    font-size: 12px;
     width: -webkit-fill-available;
-    -webkit-box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
-    -moz-box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
-    box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
+    -webkit-box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+    -moz-box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+    box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
 }
-p{margin: 0;}
 
-
-  
+p {
+    margin: 0;
+}
 
 /* grid display for camera streams styling  */
 
-.pagination{
+.pagination {
     display: flex;
-    align-items: center ;
-    margin-left: 55px;
+    align-items: center;
+    margin-left: 40px;
 }
-.pagination img{
+
+.pagination img {
     width: 20px;
     fill: #ffffff
 }
-.gridicon:focus{
+
+.gridicon:focus {
     fill: red;
 }
-.gridicon{
-    margin:0 15px; 
-    width: 26px !important;
-}
 
+.gridicon {
+    margin: 0 15px;
+    width: 25px !important;
+}
 
 .grid-container {
     display: grid;
@@ -44,73 +42,83 @@ p{margin: 0;}
     justify-content: space-between;
     text-align: center;
     place-items: center;
-    grid-gap: 1px;
+    grid-gap: 15px;
     margin-left: 10px;
     margin-top: 25px;
-    grid-template-columns:  repeat(3, 1fr);
-    max-width: 100%;
-    
-  }
- 
-.camerabox{
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 98%;
+}
+
+/* .grid-container::-webkit-scrollbar {
+    display: none;
+} */
+
+.camerabox {
     display: block;
-    width: 85%;
+    width: 98%;
     height: auto;
     background: #ffffff;
-    border-radius: 10px;
+    border-radius: 6px;
     border: 1px solid #666666;
-    padding: 5%;
+    padding: 4%;
+    padding-top: 3%;
     text-align: left;
-    margin: 5%;
 }
-.camerabox .title{
+
+.camerabox .title {
     font-family: PS, sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     align-self: left;
     letter-spacing: 1px;
     margin-bottom: 2px;
 }
-.camerabox .status{
-    font-family: PS,sans-serif;
+
+.camerabox .status {
+    font-family: PS, sans-serif;
     text-transform: uppercase;
-    color:#104B86;
+    color: #104B86;
     letter-spacing: 1px;
     font-size: 10px;
     font-weight: 600;
-    margin: 0.5% 0 20px 0;
+    margin: 0.5% 0 8px 0;
 }
-.status img{
-    height: 10px ;
+
+.status img {
+    height: 10px;
 }
-.camerabox .cameraview img{
+
+.camerabox .cameraview img {
     width: 100%;
     border-radius: 10px;
 }
-.cameraview{
-    border-radius: 8px;
+
+.cameraview {
+    border-radius: 2px;
     overflow: hidden;
 }
 
-@media screen and (max-width:766px){
-    .grid3{
+@media screen and (max-width:766px) {
+    .grid3 {
         display: none;
     }
+    .col-lg-9{margin-bottom: 8px;}
 }
-@media screen and (min-width:1800px){
-    .camerabox .title{
+
+@media screen and (min-width:1800px) {
+    .camerabox .title {
         font-size: 1.2vw;
     }
-    .camerabox .status{
+    .camerabox .status {
         font-size: 0.6vw;
     }
 }
 
-.placeholderForEmpty{
+.placeholderForEmpty {
     letter-spacing: 5px;
     margin: 25px;
     font-size: 20px;
     color: #fff;
-    font-family: PS,sans-serif;
+    font-family: PS, sans-serif;
     text-transform: uppercase;
     max-width: 100%;
     max-height: 100%;
@@ -119,42 +127,45 @@ p{margin: 0;}
     text-align: center;
 }
 
+
 /* for dropdown */
-.dropdown{
+
+.dropdown {
     background-color: transparent;
     border: none;
     outline: none;
     text-decoration: none;
     color: #7f7f7f;
-    font-family: PS,sans-serif;
+    font-family: PS, sans-serif;
     /* letter-spacing: 15px; */
-    font-size: 10px;
+    font-size: 16px;
     margin: 0 15px;
 }
-.dropdown .select-items{
+
+.dropdown .select-items {
     background-color: red;
 }
+
 select > option {
-    background: white; /* Or an hexadecimal value */
+    background: white;
+    /* Or an hexadecimal value */
     border: transparent;
     outline: none;
     width: 120%;
+    font-size: 12px;
     border-radius: 5px;
 }
 
-
-  select {
-      width: 40px;
-      height: 30px;
+select {
+    width: 40px;
+    height: 15px;
     line-height: 1;
     border: 0;
     border-radius: 5px;
     background: url("../../assets/down-arrow.svg") no-repeat right #ddd;
     -webkit-appearance: none;
-
     background-position-x: 20px;
 }
-
 
  :host ::ng-deep .video-js.videoContainer video {
     display: block;
@@ -166,5 +177,62 @@ select > option {
     z-index: 1;
     width: auto;
     height: auto;
+}
+
+.placeholderforcam {
+    width: 100%;
+    max-height: 100%;
+    padding: 34%;
+    position: relative;
+    text-align: center;
+    background: rgba(28, 74, 130);
+    border: 1px solid #7f7f7f;
+}
+
+.placeholderforcam .placeholdercard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    font-family: TP, sans-serif;
+    color: #fff;
+    font-size: 17px;
+    text-shadow: 1px 1px #7f7f7f;
+    letter-spacing: 2px;
+}
+
+.placeholdercard span {
+    margin: auto;
+    /* text-transform: capitalize; */
+}
+
+@media screen and (max-width: 500px) {
+    .placeholderforcam .placeholdercard {
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+}
+
+.fade {
+    opacity: 0.5;
+}
+.hide {
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+ }
+
+ .tooltiptext{
+     position: fixed;
+    right: 94px;
+    width: 180px;
+ }
+ .qr:hover +.tooltiptext {
+    height: 25px;
+    display: block;
+    top: 78px !important;
+    right: 94px !important;
+    margin-left: -60px;
+    opacity: 1 ;
   }
-  

@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.css";
+/* @import "~bootstrap/dist/css/bootstrap.css"; */
 @import '~video.js/dist/video-js.css';
 
 
@@ -38,11 +38,11 @@
   background: #00000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #6493c2; 
-  border-radius: 4px; 
+  background: rgb(100,147,194,0.5);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #104b86; 
+  background: rgb(16,75,134,0.8);
 }
 
 
@@ -50,25 +50,50 @@
 /* common css */
 
 body{
-  background: linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url("./assets/background.jpg") ;
-  background-size:contain;
-  background-repeat: repeat-y;
-  background-size: 100vw;
+  background: linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url("./assets/background.jpg") no-repeat;
+  background-size:cover;
   min-height: 100vh;
+  overflow-x: hidden;
 }
-::selection { background: transparent; } ::-moz-selection { background: transparent; }
+::selection { background: #e1e1e1; } ::-moz-selection { background: #e1e1e1; }
+input, textarea {caret-color: #e1e1e1;}
+.page{font-family:sans-serif;}
+/*New design changes */
+@media screen and (min-width:992px){
+.col-lg-3{width: 20% !important;}
+.col-lg-9{width: 79% !important;}
+.searchbox{margin: 6px 2.4% 6px 34px !important; padding: 5px !important;}
 
-.page{
-  font-family:sans-serif;
-  /* overflow: hidden; */
 }
+.searchbox{margin: 5px 5% !important;}
+.optionlabelparent{margin: 6px 5% !important;}
+.generateBtn{margin: 6px 4% !important;}
+/* new design changes end here */
+
 .cont{
   padding-top: 15px;
 }
+
+@media screen and (min-width:992px) {
+  .grid-container, .tables{
+    max-height: -webkit-calc(100vh - (208px));
+    /* max-height: -webkit-calc(100vh - (225px)); */
+    overflow-y: scroll;
+  }
+  .col-lg-3{
+    direction: rtl;
+    max-height: -webkit-calc(100vh - (133px));
+    overflow-y: scroll;
+  }
+  .optionlabelparent{direction: ltr;}
+  .optionlabel{direction: ltr;}
+  .searchbox{direction: ltr;}
+  .title1{direction: ltr;}
+  .searchbar > .row > .col-lg-3{margin-left: 5px;}
+}
 .cont .row{
   margin: 0;
-}   
-
+}
 .lastColumn{
   border-right: #000000
 }
@@ -80,33 +105,39 @@ body{
   opacity: 1;
 }
 .title1{
+  width: -webkit-fill-available;
   letter-spacing: 5px;
-  margin: 15px 0 15px 55px;
+  margin: 8px 0 0px 55px;
+  /* margin: 15px 0 10px 55px; */
   font-size: 16px;
   color: #fff;
   font-family: PS,sans-serif;
   text-transform: uppercase;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 #hr1{
   color:#ffffff;
   border: 0.5px solid #ffffff;
   opacity: 1;
   width: 100%;
-  margin-left: -40px;
+  margin-left: -25px;
 }
 .optionlabelparent{
   background: #fff;
-  margin: 12px 12% ; 
-  border-radius: 8px;
+  margin: 6px 12% ;
+  border-radius: 6px;
   border-bottom: 2px solid #666666;
   overflow: hidden;
 }
 .optionlabel{
+  cursor: pointer;
   background:#fff;
   padding: 14px;
   border-radius: 5px;
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1px;
   align-items: center;
   display: flex;
@@ -117,7 +148,8 @@ body{
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 75%;
+  /* max-width: 75%; */
+  width: -webkit-calc(100% - (40px));
   font-family: TP,sans-serif;
 }
 .optionlabel img{
@@ -129,7 +161,6 @@ body{
   padding: 12px;
   border: 1px solid #666666;
   border-radius: 15px;
-  /* margin: 10px 25px 10px 25px; */
   margin:0;
   font-size: 13px;
   font-family: PS,sans-serif ;
@@ -141,8 +172,9 @@ body{
 .generateBtn{
   font-family: PS,sans-serif;
   letter-spacing: 4px;
-  font-size: 10px;
+  font-size: 12px;
   margin: 10px 12%;
+  border: 17px solid #104B86;
 }
 
 
@@ -150,6 +182,65 @@ body{
   @media screen and (max-width: 991px) {
     .col-lg-3{
       border-right: 1px solid #00000000;
+    }
+    .btnvisible{
+      display: none;
+      animation: hidedisplay 1s ease !important;
+      transition: display 1.2s !important;
+    }
+    .visibilitybtn{display: block !important;}
+    .show{
+      animation: showdisplayfromleft 1s ease !important;
+      transition: display 1.2s linear !important;
+      display:block;
+    }
+  }
+   .visibilitybtn{
+    display: none;
+    margin-left: auto;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    right:19px;
+    box-shadow: none !important;
+    border: 0.2px solid #fff !important;
+    transform: rotate(0deg)
+  }
+  .rotate{
+    animation: rotate 1s ease !important;
+    transform: rotate(180deg)
+  }
+  @keyframes rotate {0%{transform: rotate(0deg);}100%{transform: rotate(180deg);}}
+  @keyframes showdisplayfromleft {
+    0% {transform: translateX(-101%);}
+    100% {transform: translateX(0);}
+  }
+  @keyframes showdisplayfrombottom {
+    0% {transform: translateY(101%);}
+    100% {transform: translateY(0);}
+  }
+  /*animation for navbar*/
+  @keyframes slideIn {
+    0% {transform: translateX(101%);}
+    100% {transform: translateX(0);}
+  }
+  @keyframes slideOut {
+    0% {transform: translateX(0);}
+    100% {transform: translateX(101%);}
+  }
+
+  .topTitle{
+    margin: 0 0 0 50px !important;
+  }
+  @media screen and (max-width:991px) {
+    .title1{
+      margin: 15px 0 15px 15px;
+    }
+    .topTitle{
+        text-align: center !important;
+        justify-content: center;
+        padding-bottom: 15px;
+        margin: 0 !important;
     }
   }
 
@@ -183,22 +274,22 @@ p{
       background-color: transparent;
       margin-top: 0px;
 }
-.dot {
+.accordionElements .dot, .accordionElements .dot-red {
   height: 6px;
   width: 6px;
-  background-color: #104b86;
   border-radius: 50%;
-  display: inline-block;
-  margin-left: 10px;
+  display: flex;
+  margin-left: 10px !important;
+  margin: 2px;
 }
-.dot-red{
-  height: 6px;
-  width: 6px;
-  background-color: #861010;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 10px;
+.dot img{
+  display: none;
 }
+.dot{background-color: #104b86;}
+.dot-red{background-color: #861010;}
+/* .dot{
+  background: url(assets/dot.svg) repeat 0 0;
+} */
 
 /* accordion css starts here */
 .accordion {
@@ -216,8 +307,8 @@ p{
   display:flex;
   background:#fff;
   color: #7f7f7f;
-  padding: 9px 12px 9px 0px;
-  font-size: 9px;
+  padding: 10px 12px 10px 0px;
+  font-size: 10px;
   font-family: TP,sans-serif ;
   align-items: center;
   margin:0 0 0 5%;
@@ -240,7 +331,7 @@ p{
   font-size:15px;
 }
 .accordionArrow img{
-  margin: 0;  
+  margin: 0;
 }
 .accordionElements:last-child {
   border-bottom: none;
@@ -253,28 +344,29 @@ p{
 .searchbar{
   background-color: rgba(16, 75, 134, 0.8);
   color: #fff;
+  padding-left: 5px;
 }
 .searchbox{
   background:#fff;
   padding: 15px;
   border: 1px solid #666666;
-  border-radius: 9px;
-  margin: 12px 12%;
-  font-size: 12px;
+  border-radius: 6px;
+  margin: 6px 12%;
+  font-size: 14px;
   font-family: verdana,sans-serif ;
   letter-spacing: 1px;
   align-items: center;
   outline:none;
   display: flex;
 }
-@media screen and (max-width: 1200px) {
-.searchbox{
-      margin: 12px 10px 12px 10px;
-  }
-  /* .optionlabelparent{
-    margin: 10px 2px;
-  } */
+.searchbox input{
+  width: -webkit-calc(100% - (36px)) !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 16px;
 }
+
 input[type="text"]{
   border: none;
   width: -webkit-fill-available;
@@ -292,17 +384,145 @@ textarea:focus, input:focus{
   outline: none;
 }
 .searchbox img{
-  width: 20px;
+  width: 16px;
 }
-.topTitle{
-  margin: 0 0 0 55px !important;
-}
-@media screen and (max-width:991px) {
-  .topTitle{
-      text-align: center;
-      padding-bottom: 15px;
-      margin: 0 !important;
-  }
-}
+
 /* Searchbar CSS ends here */
+
+.placeholderForEmpty {
+  letter-spacing: 5px;
+  margin: 25px;
+  font-size: 20px;
+  color: #fff;
+  font-family: PS, sans-serif;
+  text-transform: uppercase;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 15vh;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+#modal{
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 100vw;
+  /* background-color: #00000000; */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+#modalcontent{
+  margin: 10%;
+  background: rgb(155,155,155,0.3);
+  /* background: linear-gradient(90deg, rgba(210, 65, 37, 1) 18%, rgba(10, 73, 129, 1) 66%); */
+  min-height: 30vh;
+  width: 90vw;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  transition: all 1.2s;
+  animation: showdisplayfromleft 1.2s forwards;
+}
+.close {
+  position: absolute;
+  right: 32px;
+  top: 40px;
+  width: 32px;
+  height: 32px;
+  z-index: 9;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #7c7c7c;
+}
+.close:before { transform: rotate(45deg);}
+.close:after {transform: rotate(-45deg);}
+
+.qr{
+  height: 35px; 
+  margin: auto;
+  margin-right: 45px;
+  border-radius: 2px;
+}
+.qr{
+  animation: blink 2s linear infinite;
+  }
+  @keyframes blink{
+  0%{opacity: 0.3;}
+  25%{opacity: .5;}
+  50%{opacity: 1;}
+  75%{opacity: 0.5;}
+  100%{opacity: 0.3;}
+}
+@media screen and (max-width: 1305px) {
+  .qr{display: none;}
+}
+/* 
+.qr{
+    animation: blink 1s infinite linear;
+    transition: background-color 1s;
+}
+
+@keyframes blink{
+    0% { background-color: #fff;}
+    50% { background-color: #145417;}
+    100% { background-color: #543214;}
+} */
+
+.qrimg{
+  width: 100%;
+  padding: 75px;
+}
+.qrtxt{
+  position :absolute;font-size:25px;font-weight:600;color:#fff; margin-top:15px; text-align: center;
+}
+@media screen and (max-width:992px) {
+  .qrtxt{font-size:20px; margin: 5px;}
+}
+/* tooltip */
+.tooltiptext {
+  letter-spacing: 0;
+  font-size: 10px;
+  display: none;
+  background-color: #fff;
+  color: #555;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+  position: absolute;
+  z-index: 1;
+  /* top: -5px;
+  right: 105%; */
+}
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #fff;
+}
+.qr:hover +.tooltiptext {
+  display: block;
+  width: 180px;
+  bottom: 4px;
+  right: 80px;
+  margin-left: -60px;
+  opacity: 1 ;
+}
 

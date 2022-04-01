@@ -1,64 +1,82 @@
+<app-loader *ngIf="showLoader"></app-loader>
+
 <div class="page">
-  <div style="width:100vw; overflow:hidden">
-    <div class="searchbar">
-      <div class="row">
-        <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;"><div  class="searchbox"><input type="text" placeholder="Search Month"><img src="assets/search.svg"></div></div>
-        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">Trends - My Company</div></div>
-      </div>
+    <div style="width:100vw; overflow:hidden">
+        <div class="searchbar">
+            <div class="row">
+                <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;">
+                    <div class="searchbox"><input type="text" placeholder="Search Month"><img src="assets/search.svg"></div>
+                </div>
+                
+                <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1;">
+                    <div class="title1 topTitle" style="margin:0 0 0 25px;" ><span *ngIf="trenddata"> Trends - {{trenddata[0]?.sitename ? trenddata[0]?.sitename: 'Loading...'}}</span>
+                        <img src="assets/ivis-sec.svg" class="qr" (click)="toQRmodal()" id="qrcode">
+                        <div class="tooltiptext">Do you need Safety Escort?</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-    <div class="cont">
+    <div class="cont" style="display: none;">
         <div class="row">
-            <div class="col-lg-3 col-sm-12">
+            <div class="col-lg-3 col-sm-12 btnvisible" id="topple" #topple>
 
-                <div class="title1">
-                   QUATERLY TRENDS
+                <!-- Dropdowns  -->
+                <div class="optionlabelparent" >
+                    <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)" >
+                        <!--  [className]="data.item == currentItem ? 'optionlabel active': 'optionlabel'" -->
+                        <img src="assets/eye.svg" style="width: 20px;">
+                        <div class="label"> {{selectedanalyticname ? selectedanalyticname : 'Analytic Name'}} </div>
+                        <div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
+                    </div>
+                    <div class="panel" *ngIf="trenddata">
+                        <div class="accordionElements" *ngFor="let name of annames"> <span class="dot"></span>
+                            <p style="margin: 0 0 0 20px" (click)="selectAnalytic($event, 'name')">{{name}}</p>
+                        </div>
+                    </div>
                 </div>
-                <!-- Quarters with multiple reports  -->
-                <div class="optionlabelparent" *ngFor="let data of datas,  ;let i = index;">
-                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event, i)" [className]="data.item == currentItem ? 'optionlabel active': 'optionlabel'">
-                      <img src="assets/eye.svg" style="width: 20px;"><div class="label"> {{data.item}} </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
-                  </div>
-                  <div class="panel" *ngIf="data.item == currentItem">
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{data.info}}</p>   </div>
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q3 2021 Report 2</p>   </div>
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q3 2021 Report 3</p>   </div>
-                  </div>
-                </div>
 
-   
-
-<!-- 
-                <div class="optionlabelparent">
-                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
-                      <img src="assets/eye.svg" style="width: 20px;"><div class="label"> Q2 2021 </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
-                  </div>
-                  <div class="panel" hide="!item.isActive">
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q2 2021 Report 1</p>   </div>
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q2 2021 Report 2</p>   </div>
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q2 2021 Report 3</p>   </div>
-                  </div>
+                <div class="optionlabelparent" >
+                    <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
+                        <!--  [className]="data.item == currentItem ? 'optionlabel active': 'optionlabel'" -->
+                        <img src="assets/eye.svg" style="width: 20px;">
+                        <div class="label"> {{selectedanalytictype ? selectedanalytictype : 'Analytic Type'}} </div>
+                        <div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
+                    </div>
+                    <div class="panel" *ngIf="trenddata" #close>
+                        <div class="accordionElements" *ngFor="let type of antypes" > <span class="dot"></span>
+                            <p style="margin: 0 0 0 20px" (click)="selectAnalytic($event, 'type')">{{type}}</p>
+                        </div>
+                    </div>
                 </div> 
-                <div class="optionlabelparent">
-                  <div class="optionlabel" Style="position:relative;" (click)="toggleAccordian($event)">
-                      <img src="assets/eye.svg" style="width: 20px;"><div class="label"> Q1 2021 </div><div class="accordionArrow"><img src="assets/forward_arrow.svg"></div>
-                  </div>
-                  <div class="panel" hide="!item.isActive">
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q1 2021 Report 1</p>   </div>
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q1 2021 Report 2</p>   </div>
-                    <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Q1 2021 Report 3</p>   </div>
-                  </div>
-                </div>  -->
-                <!-- Quarters without multiple types of reports -->
-                <div class="optionlabelparent">
-                  <div class="optionlabel" Style="position:relative;">                  
-                    <img src="assets/eye.svg" style="width: 20px;"> Q4 2020  <br> 
-                  </div>
-                </div>
+                
+                        <!-- Start Date -->
+                        <div class="optionlabel" style="display: flex; position:relative; margin:6px 5%; padding-bottom:15px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666; border-radius:8px" >
+                            <div (click)="start.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
+                              <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: -webkit-calc(100% - (50px))">
+                                 Start Date :   {{startDate ? startDate : ''}}</span><img src="assets/calender.svg" class="calendericon"><br>
+                            </div>
+                            <form class="dateinputform" >
+                              <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'start')" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate">
+                            </form>
+                          </div>
+                          <!-- End Date -->
+                          <div class="optionlabel" style="display: flex; position:relative; margin:6px 5%; padding-bottom:15px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666; border-radius:8px" >
+                            <div (click)="end.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;" >
+                              <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: -webkit-calc(100% - (50px))">
+                                End Date :   {{endDate ? endDate : ''}}</span><img src="assets/calender.svg" class="calendericon"><br>
+                           </div>
+                            <form class="dateinputform" >
+                              <input type="text" ngbDatepicker #end="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'end')" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate">
+                            </form>
+                          </div>
+
                 <br>
+
                 <!-- generate report btn -->
                 <div style="text-align:center">
-                  <button class="generateBtn">
+                    <button class="generateBtn" (click)="getTrendsDataonclick()">
                     GENERATE REPORT
                   </button>
                 </div>
@@ -66,19 +84,60 @@
             <!-- Left Column Ends -->
 
             <!-- Right Column Starts -->
-            <div class="col-lg-9 col-sm-12">
+            <div class="col-lg-9 col-sm-12" >
                 <div class="title1">
-                    q3 2021
+                    <div>q3 2021</div>  
+                    <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
                 </div>
                 <hr id="hr1">
                 <!-- write report code here -->
+
+
+
+                <div class="chartcont" style="display: none;">
+                    <div class="linechart" >
+                        <canvas id="chart" baseChart  
+                        [datasets]="lineChartData" 
+                        [labels]="lineChartLabels" 
+                        [options]="lineChartOptions" 
+                        [colors]="lineChartColors" 
+                        [legend]="lineChartLegend" 
+                        [chartType]="lineChartType" 
+                        [plugins]="lineChartPlugins">
+                      </canvas>
+                    </div>
+    
+    
+                    <div class="linechart">
+                        <canvas baseChart
+                          [datasets]="barChartData"
+                          [labels]="barChartLabels"
+                          [options]="barChartOptions"
+                          [plugins]="barChartPlugins"
+                          [legend]="barChartLegend"
+                          [chartType]="barChartType">
+                        </canvas>
+                    </div>
+                </div>
+              
+
+
+
+
+
+
             </div>
-          <!-- Column with Reports Ends -->
-          </div>
-          <!-- Row Ends -->
+            <!-- Column with Reports Ends -->
+        </div>
+        <!-- Row Ends -->
+    </div>
+    <div class="placeholderForEmpty">
+        Coming Soon...
       </div>
 </div>
 
 
-
-
+<div id="modal">
+    <div class="close" (click)="closemodal()"></div>
+    <div id="modalcontent"></div>
+  </div>

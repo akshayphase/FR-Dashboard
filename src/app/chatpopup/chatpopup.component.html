@@ -1,50 +1,72 @@
-<div class="chatpopup">
+<div class="chat">
+    <div class="chatpopup">
+        <!-- <p>I work</p> -->
+        <!-- <p><img src="assets/chatbox.svg" style="width: 50px;" (click)="showPopUp()"></p> -->
+        <p>
+            <img src="assets/chaticon.png" style="width: 80px" (click)="showPopUp()" />
+        </p>
+    </div>
 
-<!-- <p>I work</p> -->
-<!-- <p><img src="assets/chatbox.svg" style="width: 50px;" (click)="showPopUp()"></p> -->
-<p><img src="assets/venkat/chaticon.png" style="width: 80px;" (click)="showPopUp()"></p>
+    <div class="popupWindow" *ngIf="visibility">
+        <!-- Mode of enquery is Troubleshoot -->
+        <app-loader *ngIf="showLoader"></app-loader>
+        <div class="popupInner" *ngIf="selected && !submitted && troubleshoot">
+            <span>Troubleshooting</span>
+            <div style="display: block; position: relative;">
+                <div class="inputbox">
+                    <div class="question" (click)="inputclicked($event)">Issue with {{ currentpage }}</div>
+                    <img src="assets/forward_arrow.svg" style="width: 25px;" class="downarrow">
+                </div>
+                <div class="selectionbox" *ngIf="visible">
+                    <div class="inputbox1" (click)="issueclicked($event, 'Insight')">Issue with Insight</div>
+                    <div class="inputbox1" (click)="issueclicked($event, 'Trends')">Issue with Trends</div>
+                    <div class="inputbox1" (click)="issueclicked($event, 'Support')">Issue with Support</div>
+                    <div class="inputbox1" (click)="issueclicked($event, 'Advertisements')">Issue with Advertisements</div>
+                </div>
+                <div class="inputbox">
+                    <input type="text" placeholder="Please Explain Issue" class="input"  [(ngModel)]="body" />
+                </div>
+                <div style="text-align: center">
+                    <button (click)="submit('troubleshooting')">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode of enquery is Feedback -->
+        <div class="popupInner" *ngIf="selected && !submitted && feedback">
+            <span>Feedback</span>
+            <div style="display: block">
+                <div class="inputbox">
+                    <textarea type="text" placeholder="Please Enter Your Feedback Here" class="input" [(ngModel)]="body"></textarea>
+                </div>
+                <div style="text-align: center">
+                    <button (click)="submit('feedback')">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Select mode of enquery -->
+        <div class="popupInner" *ngIf="!submitted && !selected">
+            <div class="seletoneheader">
+                <div>Hi, Need Help?</div>
+                <div>We're here for you.</div>
+            </div>
+            <div style="display: block" class="selectone">
+                <div style="text-align: center; margin: 20px 0">
+                    <button (click)="toTroubleshoot()">Troubleshooting</button>
+                </div>
+                <div style="text-align: center; margin: 20px 0">
+                    <button (click)="toFeedback()">Submit Request</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="popupInner" *ngIf="submitted">
+            <div class="submittedMessage">
+                Request submitted successfully.
+                <!-- Thanks for letting us know! <br />
+                We'll be in touch within 24 hours with asistance. -->
+            </div>
+        </div>
+    </div>
 </div>
-
-<div class="popupWindow" *ngIf="visibility">
-
-    <!-- Mode of enquery is Troubleshoot -->
-    <app-loader *ngIf="showLoader"></app-loader>
-    <div class="popupInner"  *ngIf="selected && !submitted  && troubleshoot">
-        <span>Troubleshoot</span>
-        <div style="display:block">
-            <div class="inputbox"><div class="question"> Issue with {{currentpage}}</div></div>
-            <div class="inputbox"><input type="text" placeholder="Please Explain Issue" class="input"></div>
-            <div style="text-align: center;"><button (click)="submit()">Submit</button></div>
-        </div>
-    </div>
-
-      <!-- Mode of enquery is Feedback -->
-      <div class="popupInner"  *ngIf="selected && !submitted && feedback">
-          <span>Feedback</span>
-          <div style="display:block">
-              <div class="inputbox"><textarea type="text" placeholder="Please Enter Your Feedback Here" class="input"></textarea></div>
-              <div style="text-align: center;"><button (click)="submit()">Submit</button></div>
-          </div>
-      </div>
-
-    <!-- Select mode of enquery -->
-    <div class="popupInner"  *ngIf="!submitted && !selected">
-       <div class="seletoneheader">
-        <div>Hi, Need Help?</div>
-        <div>We're here for you.</div>
-       </div>
-        <div style="display:block;  " class="selectone">
-            <div style="text-align: center; margin:20px 0"><button (click)="toTroubleshoot()">Troubleshoot Please</button></div>
-            <div style="text-align: center; margin:20px 0"><button (click)="toFeedback()">I have a Feedback</button></div>
-        </div>
-    </div>
-
-
-    <div class="popupInner" *ngIf="submitted">
-        <div class="submittesMessage"> 
-            Thanks for letting us know! <br>
-            We'll be in touch within 24 hours with asistance.
-        </div>
-    </div>
-</div>
-

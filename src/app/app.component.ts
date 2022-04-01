@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NavigationStart, Router, RoutesRecognized } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ export class AppComponent {
   title = 'IVIS_security';
 
   showHead: boolean = false;
-  currentpage = "Home";
+  currentpage:any;
   constructor(private router:Router) {
     router.events.subscribe((event)=>{
       if ( event instanceof RoutesRecognized ) {
@@ -45,3 +45,5 @@ export class AppComponent {
     });
   }
 }
+
+

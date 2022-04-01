@@ -1,5 +1,5 @@
 
-<app-navbar *ngIf="currentpage != 'Login'"></app-navbar>
+<app-navbar *ngIf="currentpage != 'Login' && currentpage != 'Error' "></app-navbar>
 <app-alert></app-alert>
 <app-chatpopup *ngIf="currentpage != 'Login'"></app-chatpopup>
 <router-outlet></router-outlet>

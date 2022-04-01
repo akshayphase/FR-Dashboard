@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
+
 
 @Component({
   selector: 'app-research',
@@ -7,25 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResearchComponent implements OnInit {
 
-  constructor() { }
+  constructor(private apiservice : ApiService) { }
 
   ngOnInit(): void {
   }
 
-  toggleAccordian(event:any, index=0) {
-    var element = event.target;
-    element.classList.toggle("active");
-    // if(this.data[index].isActive) {
-    //   this.data[index].isActive = false;
-    // } else {
-    //   this.data[index].isActive = true;
-    // }      
-    var panel = element.nextElementSibling;
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    }
-  }
+
+  
+  toggleAccordian(event:any, index=0) {return this.apiservice.toggle(event)}
+  showOptions(){return this.apiservice.showOptions()}
+  showOptions1(){return this.apiservice.showOptions1()}
+  closemodal(){return this.apiservice.closemodal();}
+  toQRmodal(){return this.apiservice.toQR()}
+
 
 }

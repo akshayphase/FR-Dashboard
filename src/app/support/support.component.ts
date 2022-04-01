@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from '../services/alertservice/alert-service.service';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-support',
@@ -15,7 +17,7 @@ export class SupportComponent implements OnInit {
   faq=true;
   contactUs = false;
 
-  constructor() { }
+  constructor(private apiservice:ApiService, private alertService:AlertService) { }
 
   ngOnInit(): void {
   }
@@ -23,13 +25,16 @@ export class SupportComponent implements OnInit {
   openfaq(){
     this.faq=true;
     this.contactUs = false;
+    this.closemodal();
   }
   openContactUs(){
       this.faq=false;
       this.contactUs = true;
+      this.closemodal();
+
   }
 
-  submitIssue(){
+  submitIssue1(){
     // console.log("issue submitted")
   }
 
@@ -80,5 +85,26 @@ export class SupportComponent implements OnInit {
     }
   }
 
+  message:string;
+  bodyContent(e:any){
+    this.message = (e.target.value)
+  }
+  showLoader = false;
+  submitIssue(){
+    this.showLoader = true;
+    let body = this.message;
+    let subject = "Support Request"
+    this.apiservice.sendEmail(body, subject).subscribe((res:any)=>{
+      this.showLoader = false;
+      this.alertService.success("Request Sent Successfully")
+    },(error)=>{
+      this.showLoader=false;
+      this.alertService.warning("Something went wrong. Please try again later.")
+    })
+  }
 
+  showOptions(){return this.apiservice.showOptions()}
+  showOptions1(){return this.apiservice.showOptions1()}
+  closemodal(){return this.apiservice.closemodal();}
+  toQRmodal(){return this.apiservice.toQR()}
 }

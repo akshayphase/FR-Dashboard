@@ -1,14 +1,28 @@
-.chatpopup{
-    position:fixed;
-    right:25px;
-    bottom:25px;
+.bottomright{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.chat{
+    position: relative;
+    float: right;
+    bottom: 45px;
+    right: 25px;
     z-index: 99;
 }
-
-.popupWindow{
+.chatpopup{
     position:fixed;
-    right:25px;
-    bottom: 125px;
+    right:45px;
+    bottom:25px;
+    z-index: 99;
+    transform: scale(1.2);
+}
+@media screen and(max-width: 992px) {.chatpopup{transform: scale(1);} }
+.popupWindow{
+    transform: scale(1.2);
+    position:fixed;
+    right:75px;
+    bottom: 160px;
     width: 300px;
     max-height: 250px;
     border: 2px solid #b7b7b7;
@@ -59,7 +73,7 @@ button{
     border-radius: 30px;
     background:#104B86;
     color: #fff;
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing :2px;
     font-family:PS,sans-serif;
@@ -71,7 +85,7 @@ button{
 .popupInner button{
     width: 120px;
 }
-.submittesMessage{
+.submittedMessage{
     font-family: PS,sans-serif;
     font-size: 10px;
     letter-spacing: 2px;
@@ -93,4 +107,29 @@ button{
 textarea{
     height: 76px;
     max-height: 76px;
+}
+
+.selectionbox{
+    position: absolute;
+    width: 100%;
+}
+.inputbox1{
+    background: white;
+    font-family: sans-serif;
+    padding: 3px 15px;
+    border: 0.5px solid #b7b7b7;
+    border-radius: 3px;
+    margin:-10px 10px 10px 10px; 
+    font-family: PS,sans-serif;
+    color: #010101;
+    font-size: 10px;
+    transition: border-radius 1s ease-in-out;
+}
+.downarrow{
+    pointer-events: none;
+    width: 25px;
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    transform: rotate(90deg);
 }

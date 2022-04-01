@@ -1,21 +1,158 @@
 /* for page */
 
-button{
+button {
     /* width: 100%; */
-    border: 20px solid #104B86;
     border-radius: 30px;
-    background:#104B86;
+    background: #104B86;
     color: #fff;
-    font-size: 10px;
+    font-size: 12px;
     width: -webkit-fill-available;
-    -webkit-box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
-    -moz-box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
-    box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.96);
+    -webkit-box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+    -moz-box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+    box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
 }
-p{margin: 0;}
 
+p {
+    margin: 0;
+}
 
+.linechart {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 5px;
+    border: 2px solid #7f7f7f;
+    width: 50%;
+}
+.topTitle{
+    text-align: center !important;
+}
+.chartcont{
+    display: flex;
+}
 
+@media  screen and (max-width:991px) {
+    .chartcont{display: grid;} 
+    .linechart{width: 100%; padding: 2px; margin-bottom: 20px;}
+}
 
-
+/* datepicker CSS */
+.sqr {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 20px;
+    border: none;
+    outline: 2px solid #7f7f7f;
+    border-radius: 1px;
+  }
+  .calendericon {
+    height: 25px;
+    position: absolute;
+    right: 5px;
+  }
+  [type="date"]::-webkit-calendar-picker-indicator {
+    height: 40px;
+    width: 900px;
+    background-color: #00000000 !important;
+    z-index: 99;
+  }
   
+  /* CSS for Datepicker */
+  .dateinputform {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    pointer-events: all;
+    outline: none;
+    border: none;
+    background-color: #00000000;
+    width: 100%;
+  }
+  .dateinput {
+    pointer-events: none;
+    visibility: none;
+    border: #00000000;
+    outline: none;
+    background-color: #00000000;
+    color: #00000000;
+    display: none;
+    width: 100%;
+  }
+  :host ::ng-deep .ngb-dp-months {
+    background: rgb(180, 180, 230);
+    font-family: PS, sans-serif;
+    color: #ffffff !important;
+    font-size: 12px;
+  }
+  :host ::ng-deep .ngb-dp-month {
+    background: #104b86;
+    pointer-events: all;
+  }
+  :host ::ng-deep .the-ngb-dp-class {
+    background: rgb(248, 209, 209);
+    pointer-events: all;
+  }
+  ::ng-deep div.ngb-dp-arrow > button {
+    color: #ffffff;
+    z-index: 99;
+    pointer-events: all;
+  }
+  :host ::ng-deep .ngb-dp {
+    font-family: PS, sans-serif;
+  }
+  :host ::ng-deep ngb-datepicker {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ffffff;
+    font-family: PS, sans-serif;
+    font-size: 12px;
+    -webkit-box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+    -moz-box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+    box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+  }
+  :host::ng-deep .ngb-dp-header {
+    color: #ffffff !important;
+    background: #104b86;
+  }
+  :host ::ng-deep .ngb-dp-day > .btn-light {
+    border: red;
+    background-color: #ffffff !important;
+    color: #7f7f7f !important;
+    margin: auto;
+  }
+  :host
+    ::ng-deep
+    ngb-datepicker-navigation-select.ngb-dp-navigation-select
+    > .custom-select {
+    border-radius: 10px !important;
+    background-color: #00000000;
+    color: #ffffff !important;
+    border: none;
+    text-align: center;
+  }
+  :host
+    ::ng-deep
+    ngb-datepicker-navigation-select.ngb-dp-navigation-select
+    > .custom-select
+    > option {
+    background-color: rgba(16, 75, 134, 0.6);
+    border-radius: 15px;
+    outline: none;
+  }
+  
+  :host ::ng-deep .ngb-dp-day {width: 100%;}
+  :host ::ng-deep .ngb-dp-weekday {width: 100%;}
+  :host ::ng-deep [ngbDatepickerDayView] {width: 100%;}
+  :host ::ng-deep ngb-datepicker {width: 100%;}
+  :host ::ng-deep .ngb-dp-month {width: 100%;}
+  
+  /**/
+  
+  :host ::ng-deep #months > .ngb-dp-months {display: none;}
+  :host ::ng-deep #months > .ngb-dp-header {padding: 4px; }
+  #searchinput:active > :host ::ng-deep #months {display: visible;}
+  .padd{padding: 2.5px !important; height: 49px !important;}
+  #months{position: inherit;top: 0;}
+  :host ::ng-deep #monthpicker > ngb-datepicker {width: 100%; top:33px }
+  
+  /* datepicker CSS ends */
