@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, ViewEncapsulation } from '@angular/core';
 import { NavigationStart, Router, RoutesRecognized } from '@angular/router';
 
 @Component({
@@ -21,21 +21,15 @@ export class AppComponent {
     });
   }
 
-  
-  // @HostListener('window:popstate', ['$event'])
-  // onPopState(event: any) {
-  //   console.log(event);
-  // }
-
-
   ngOnInit() {
     this.login1();
+    // console.log(navigator.onLine);
   }
 
   login1(){
     this.router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
-        if (event['url'] == '/login') {
+        if (event['url'] == '/login' || event['url'] == '/error') {
           this.showHead = false;
         } else {
           // console.log("NU")
@@ -43,7 +37,33 @@ export class AppComponent {
         }
       }
     });
+
   }
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

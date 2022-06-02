@@ -33,8 +33,11 @@ export class GaurdComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    document.body.style.backgroundImage= "linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url('../../assets/background.jpg'))";
-    if(this.apiService.sessionstatus() == false){this.storageService.deleteStoredEncrData('savedcams')}
+    // document.body.style.backgroundImage= "linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url('../../assets/background.jpg'))";
+    document.body.style.backgroundImage= "linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%), url('../../assets/background.jpg'))";
+    if(this.apiService.sessionstatus() == false){
+      this.storageService.deleteStoredEncrData('savedcams')
+    }
     this.getSitename();
   }
   @ViewChildren("vjs") vjs: QueryList<any>;
@@ -52,7 +55,6 @@ export class GaurdComponent implements OnInit {
              app_vjs_player.style.display = "none";
              snapshotimg.style.display = "block";
              var width = (snapshotimg.offsetWidth );
-             console.log(width*0.687)
              snapshotimg.style.height = (width* 0.687)+"px";
            }
          }); 
@@ -88,6 +90,10 @@ export class GaurdComponent implements OnInit {
         this.storageService.storeEncrData('selectedsite', res);
         this.storageService.storeEncrData('siteidfromgaurdpage', res.siteList[0]);
         this.sites = res;
+        var sitelist = this.sites.siteList
+        const sortAlphaNum = (a:any, b:any) => a.sitename.localeCompare(b.sitename, 'en', { numeric: true })
+        sitelist = this.sites.siteList.sort(sortAlphaNum)
+        this.sites.siteList = sitelist;
         this.removeDuplicateSites();
         if(this.sites.siteList.length>0){   
           var x  = this.storageService.getEncrData('savedcams');
@@ -96,7 +102,7 @@ export class GaurdComponent implements OnInit {
       }
     },(error)=>{
       this.showLoader =false;
-      console.log(error.status)
+      // console.log(error, 'sitelist')
       if(error){
         if(error.ok== false){
           this.apiService.onHTTPerror(error);
@@ -117,9 +123,10 @@ export class GaurdComponent implements OnInit {
   }
   firstAPiHitforCamdata(){ 
     this.apiService.getCameras(this.sites.siteList[0].siteid).subscribe((res:any)=>{
+
       if(res.Status == "Failed"){
         if(res.Message == "Invalid accessToken"){this.apiService.refresh(); setTimeout(()=>{this.savecams()},1000)}
-        if(res.Message == "Sorry no cameras found. Try again later."){this.cameras = []}
+        if(res.Message == "Sorry no cameras found. Try again later."){this.cameras = [], this.showLoader = false; this.savecams();}
       }
       if(res.Status == "Success"){
         this.currentsite = this.sites.siteList[0].siteid;
@@ -137,6 +144,7 @@ export class GaurdComponent implements OnInit {
     },(error)=>{
       if(error){
         if(error.ok== false){
+          // console.log(error, 'camlist')
           this.apiService.onHTTPerror(error);
         }
       }
@@ -150,16 +158,18 @@ export class GaurdComponent implements OnInit {
     this.sites.siteList.forEach((el:any) => {
       if(el.siteid != this.currentsite){   
         this.apiService.getCameras(el.siteid).subscribe((res:any)=>{
-          if(res.Status == "Success"){
-            const sortAlphaNum = (a:any, b:any) => a.cameraId.localeCompare(b.cameraId, 'en', { numeric: true })
-            var sortedcamdata = res.CameraList.sort(sortAlphaNum)
-            var d ={siteid : el.siteid, data : sortedcamdata}
-            this.savedcams.push(d);
+          if(res.Status == "Success" || res.Message == "Sorry no cameras found. Try again later."){
+            if(res.Message == "Sorry no cameras found. Try again later."){this.savedcams.push({siteid : el.siteid, data : []});}
+            else{  
+              const sortAlphaNum = (a:any, b:any) => a.cameraId.localeCompare(b.cameraId, 'en', { numeric: true })
+              var sortedcamdata = res.CameraList.sort(sortAlphaNum)
+              var d ={siteid : el.siteid, data : sortedcamdata}
+              this.savedcams.push(d);
+            }
             this.storageService.storeEncrData('savedcams', this.savedcams)
           }
           if(res.Status == "Failed"){
             if(res.Message == "Invalid accessToken"){this.apiService.refresh(); setTimeout(()=>{this.savecams()},1000)}
-            if(res.Message == "Sorry no cameras found. Try again later."){this.cameras = []}
           }
           },(error)=>{
           if(error.ok== false){
@@ -176,6 +186,7 @@ export class GaurdComponent implements OnInit {
   showcams=true;
   currentsite:any; // to save currentsite
   getCameras(event:any, site:any, index:any){
+    this.storageService.storeEncrData('siteidfromgaurdpage', site);
     if(site.siteid != this.currentsite){ this.apiService.getServices(site.siteid); }
       this.pagenumber = 1;
       this.adjustGrid();
@@ -203,7 +214,7 @@ export class GaurdComponent implements OnInit {
           this.cameras = null;
           this.paginatedCameraList = null;
           this.changeDetection.detectChanges();
-          this.loadCameraList(event, siteid, index);
+          this.loadCameraList(event, site, index);
         }
       }else{
         var x = event.target.nextElementSibling.style.maxHeight
@@ -216,7 +227,9 @@ export class GaurdComponent implements OnInit {
     this.pagination();
     this.changeDetection.detectChanges();
   }
-  loadCameraList(event:any, siteid:any, index:any){
+  loadCameraList(event:any, site:any, index:any){
+    this.storageService.storeEncrData('siteidfromgaurdpage', site);
+    var siteid = site.siteid;
     this.currentsite = siteid;
     this.apiService.getCameras(siteid).subscribe((res:any)=>{
       if(res.Status == "Failed"){
@@ -231,6 +244,7 @@ export class GaurdComponent implements OnInit {
         if(this.cameras.length>0){this.toggleAccordian(event, index);}
       }
     },(error)=>{
+      // console.log(error, 'camlist')
       if(error.ok== false){
         // this.alertService.warning('Session Expired');
         this.apiService.onHTTPerror(error);
@@ -331,6 +345,9 @@ export class GaurdComponent implements OnInit {
     var a = z+(gc*gc);
     const slicedArray = cameras.slice(z,a);
     this.paginatedCameraList = slicedArray;
+    if(this.cameras.length == 1){
+      this.gridClicked = 1
+    }
   }
 
   // on search events hide dislay irrelevent
@@ -368,5 +385,19 @@ export class GaurdComponent implements OnInit {
   showOptions1(){return this.apiService.showOptions1()}
   closemodal(){return this.apiService.closemodal();}
   toQRmodal(){return this.apiService.toQR()}
+
+  refresh1(e:any, timeout:any) {
+    var img = e.target;
+        // console.log(img)
+      setTimeout(function() {
+          var d = new Date;
+          var http = img.src;
+          if (http.indexOf("&d=") != -1) {
+              http = http.split("&d=")[0];
+          }
+          img.src = http + '&d=' + d.getTime();
+          // console.warn(d.getTime())
+      }, timeout);
+  }
 
 }

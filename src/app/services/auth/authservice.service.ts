@@ -11,8 +11,8 @@ export class AuthService {
 
   data: any;
   isLoggedin = new BehaviorSubject<Boolean>(false);
-  baseurl='http://smstaging.iviscloud.net:8090/';
-  baseurl1="http://usmgmt.iviscloud.net:777/";
+  baseurl1='http://smstaging.iviscloud.net:8090/';
+  baseurl="http://usmgmt.iviscloud.net:777/";
   refreshtokenurl = `${this.baseurl}businessInterface/login/refreshtoken`;
  
   constructor( 
@@ -21,17 +21,18 @@ export class AuthService {
 
 
   loginWithKeycloak(username: any, password: any) {
-    let loginurl  = "http://smstaging.iviscloud.net:8080/auth/realms/IVISUSA/protocol/openid-connect/token";
-    let logina    = `${this.baseurl}businessInterface/login/user`;
-    let url       = `${this.baseurl}keycloakApp/login`;
-    let signinurl = `${this.baseurl}businessInterface/login/login`;
+    // let loginurl  = "http://smstaging.iviscloud.net:8080/auth/realms/IVISUSA/protocol/openid-connect/token";
+    // let logina    = `${this.baseurl}businessInterface/login/user`;
+    // let url       = `${this.baseurl}keycloakApp/login`;
+    // let signinurl = `${this.baseurl}businessInterface/login/login`;
     let finalurl  = `${this.baseurl}businessInterface/login/login_2_0`;
-    let data ={
+    let payload ={
       userName: username,
       password: password,
       calling_System_Detail: "portal"
     }
-    return this.http.post(finalurl,data)
+    // console.log("login: ",finalurl,payload);
+    return this.http.post(finalurl,payload)
   }
   logout() {
     let url        = `${this.baseurl}keycloakApp/logout`;

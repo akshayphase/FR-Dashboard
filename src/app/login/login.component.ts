@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from '../services/alertservice/alert-service.service';
 import { ApiService } from '../services/api.service';
@@ -17,18 +17,35 @@ export class LoginComponent implements OnInit {
   username = null;
   password= null;
   forgotPassVisible = false;
+
+  showsessionerror=false;
  
   constructor(
     private authservice:AuthService,
     private alertService: AlertService, 
     private apiService: ApiService,
     private router: Router,
-    private storageService:StorageService
+    private storageService:StorageService,
+    private cdr: ChangeDetectorRef
     ) { }
 
   ngOnInit(): void {
-
-    this.loadsites();
+  
+  }
+  ngAfterViewInit(){
+    if(this.apiService.sessionstatus() == false){
+      localStorage.clear();
+    }
+    if(this.apiService.error != ''){
+      // this.errormsg = this.apiService.error;
+      this.cdr.detectChanges();
+      this.showsessionerror=true;
+    }
+    
+    // var x = this.storageService.getEncrData('user')
+    // if(x){
+    //   this.loadsites(); 
+    // } 
   }
 
   loadsites(){
@@ -78,6 +95,9 @@ export class LoginComponent implements OnInit {
     if(this.username != null && this.password != null){
       this.showLoader = true;
       this.authservice.loginWithKeycloak(x,y).subscribe((res:any)=>{
+        this.apiService.error='';
+        this.showsessionerror = false;
+        // console.log(res)
         if(res.Status == "Failed"){
           this.showLoader = false;
           this.errormsg = res.Message;

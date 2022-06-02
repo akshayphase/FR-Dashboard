@@ -7,7 +7,8 @@
           <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;">
             <div class="searchbox">
               <img *ngIf="searchText" src="assets/x.svg" (click)="searchText = ''; firstLocalHitforCamdata()" style="position: absolute;">
-              <input type="text"  (keyup)="onInput($event)" placeholder="Search {{sites?.siteList?.length ? sites?.siteList?.length : ''}} Locations" [(ngModel)]="searchText" #searchinput>
+              <!-- <input type="text"  (keyup)="onInput($event)" placeholder="Select {{sites?.siteList?.length ? sites?.siteList?.length : ''}} Locations" [(ngModel)]="searchText" #searchinput> -->
+              <input type="text"  (keyup)="onInput($event)" placeholder="Select Locations or Cameras" [(ngModel)]="searchText" #searchinput>
               <!-- {{'Search from '+sites?.siteList?.length+' Locations'}} -->
               <img src="assets/search.svg"> 
             </div>
@@ -34,11 +35,11 @@
               <!-- pagination -->
               <div style="display: flex; margin-left: 40px">
                 <img src="assets/arrow.svg" style="transform: rotate(180deg);" (click)="previousPage()" alt="prev" [className]="pagenumber == 1 ? 'fade': '' ">
-                <div  class="searchbox" style=" margin: 0px 10px !important; padding: 0px !important;">     
+                <div  class="searchbox" style=" margin: 0px 10px !important; padding: 4px !important;">     
                   <select name="my-dropdown" (change)="pagination()" [(ngModel)]="pagenumber" class="dropdown">
                     <option *ngFor="let number of selectNumbers" [value]="number"  style="border: none;outline:none"><div style="padding: 15px; margin:15px; margin-right:15px">&nbsp;&nbsp;{{number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></option>
                   </select>  
-                  <img src="assets/forward_arrow.svg" style="margin-left: -30px; transform:rotate(90deg); pointer-events:none; width: 30px" alt="drop">  
+                  <img src="assets/forward_arrow.svg" style="margin-left: -30px; transform:rotate(90deg); pointer-events:none; width: 25px" alt="drop">  
                 </div>                   
                 <img src="assets/arrow.svg" (click)="nextPage()" alt="next" [className]="pagenumber == selectNumbers?.length ? 'fade': '' ">
               </div>
@@ -62,7 +63,7 @@
                     <div class="panel" *ngIf="site.siteid == currentsite" #panel>
                       <span>
                         <div class="accordionElements" *ngFor="let camera of cameras" (click)="cameraIdClicked(camera)">
-                           <span [className]="camera.cameraStatus == 'Connected'  ? 'dot' : 'dot-red'"></span><p style="margin: 0 0 0 20px"></p>  {{camera.cameraId}}
+                           <span [className]="camera.cameraStatus == 'Connected'  ? 'dot' : 'dot-red'"></span><p style="margin: 0 0 0 20px"></p>  <span class="wrap">{{camera.cameraId}} - {{camera.displayName.substring(0,8)}}</span>
                         </div>
                       </span>
                     </div>
@@ -82,12 +83,14 @@
 
                   <div class="grid-container" #grids  [className]="showcams ? 'grid-container': 'grid-container hide' ">
                     <div class="camerabox" #camerabox *ngFor="let camera of paginatedCameraList ">
-                      <div class="title" #title>{{camera.cameraId}}</div>
-                      <div class="status" #status style="color: #104B86" *ngIf="camera.cameraStatus == 'Connected'"><img src="assets/eye-blue.svg" alt="connected">&nbsp;&nbsp;Connected</div>
-                      <div class="status" #status style="color: #e4324f" *ngIf="camera.cameraStatus != 'Connected'"><img src="assets/eye-red.svg" alt="disconnected">&nbsp;&nbsp;Not Connected</div>
+                      <div style="display: flex !important; justify-content: space-between;">
+                        <div class="title" #title>{{camera.displayName.substring(0,8)}}</div>
+                        <div class="status" #status style="color: #104B86" *ngIf="camera.cameraStatus == 'Connected'"><img src="assets/eye-blue.svg" alt="connected">&nbsp;&nbsp;Connected</div>
+                        <div class="status" #status style="color: #e4324f" *ngIf="camera.cameraStatus != 'Connected'"><img src="assets/eye-red.svg" alt="disconnected">&nbsp;&nbsp;Not Connected</div>
+                      </div>
                       <div class="cameraview" >
                         <app-vjs-player #vjs [options]="{ autoplay: true, controls: false, fluid: true, sources: [{ src: camera.streamingUrl + '/playlist.m3u8' , type: 'application/x-mpegURL' }]}"  *ngIf="camera.cameraStatus == 'Connected'"></app-vjs-player>   
-                        <img onload='imageRefresh(this, 1000);' [src]="camera.snapShotUrl" alt="No video" style="display: none; border-radius: 1px;width: 100%;" *ngIf="camera.cameraStatus == 'Connected'">
+                        <img (load)='refresh1($event, 1000);' [src]="camera.snapShotUrl" alt="No video" style="display: none; border-radius: 1px;width: 100%;" *ngIf="camera.cameraStatus == 'Connected'">
                         <div class="placeholderforcam" *ngIf="camera.cameraStatus != 'Connected'">
                           <div class="placeholdercard">
                             <span>We are working to retrieve this camera view. Thank you for your patience.</span>
@@ -124,3 +127,6 @@
     <div class="close" (click)="closemodal()"></div>
     <div id="modalcontent"></div>
   </div>
+
+
+  

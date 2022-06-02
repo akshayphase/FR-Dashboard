@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -9,9 +9,12 @@ import { StorageService } from './auth/storage.service';
 })
 export class ApiService {
   error$ = new BehaviorSubject<any>('');
-  baseurl='http://smstaging.iviscloud.net:8090/';
-  baseurl1="http://usmgmt.iviscloud.net:777/";
   siteservices$ = new BehaviorSubject<any>('');
+  tokenExpired$=new BehaviorSubject<boolean>(false);
+
+  baseurl1='http://smstaging.iviscloud.net:8090/';
+  baseurl="http://usmgmt.iviscloud.net:777/";
+
   sitelisturl = `${this.baseurl}businessInterface/sites/sitesList_2_0`;
   camlisturl = `${this.baseurl}businessInterface/Cameras/CameraStreamList_1_0`;
   refreshtokenurl = `${this.baseurl}businessInterface/login/refreshtoken`;
@@ -30,6 +33,8 @@ export class ApiService {
       accessToken : a.access_token,
       calling_System_Detail: "portal",
     }
+        // console.log("sitelist: ",this.sitelisturl,payload);
+
     return this.http.post(this.sitelisturl,payload)
   }
   getCameras(siteid: any){
@@ -40,8 +45,11 @@ export class ApiService {
       SiteId: siteid,
       calling_System_Detail: "portal",
     }
+    // console.log("camlist: ",this.camlisturl,payload);
+
     return this.http.post(this.camlisturl,payload);
   }
+  error= '';
   refresh(){
     var a = this.storageService.getEncrData('user');
     let payload={
@@ -50,45 +58,157 @@ export class ApiService {
       refreshToken:a.refresh_token
     }
     this.http.post(this.refreshtokenurl,payload).subscribe((res:any)=>{
-      if(res.Status== 'Failed'){this.onHTTPerror({status:404})}
+      // console.log("refresh: ",this.refreshtokenurl,payload,res);
+      if(res.Status== 'Failed'){
+        this.onHTTPerror({status:"Session Expired"}); 
+        this.router.navigateByUrl("/login");
+        this.error = ("Session Expired. Please login again")
+      }
       if(res.Status == "Success"){
         this.storageService.storeEncrData('user', res);
       }
     },(error)=>{
+      this.tokenExpired$.next(true);
       this.onHTTPerror(error);
     })
   }
 
+
+
   getServices(siteid:any){
     var Request_type = "Services";
     let servicesurl1=`${this.baseurl}businessInterface/Client/clientServices_1_0?accountId=${siteid}&Request_type=${Request_type}&calling_user_details=IVISUSA`;
-    let servicesurl2=`${this.baseurl}businessInterface/Client/clientServices_1_0?accountId=1003&Request_type=${Request_type}&calling_user_details=IVISUSA`;
+    // console.log("services: ",servicesurl1);
     this.http.get(servicesurl1).subscribe((res:any)=>{
       this.siteservices$.next(res);
       if(res.Status !="Failed"){
         if(res.background != null){
-          document.body.style.backgroundImage= `linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url(${res.background})`
+          // document.body.style.backgroundImage= `linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url(${res.background})`
+          document.body.style.backgroundImage= `linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%),url(${res.background})`;
+
         }else{
-          document.body.style.backgroundImage= `linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url(assets/background.jpg)) no repeat`;
+          document.body.style.backgroundImage= `linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%), url(assets/background.jpg)) no repeat`;
         }
       }
     },(error:any)=>{console.log(error);})
   }
+
+  
+  getHelpDeskCategories(){
+    let url = `${this.baseurl}businessInterface/helpdesk/categoryList_1_0`;
+    var a = this.storageService.getEncrData('user');
+    let payload={
+      userName: a.UserName,
+      accessToken : a.access_token,
+      calling_System_Detail: "portal"
+    }
+    return this.http.post(url,payload);
+  }
+  addHelpDeskRequest(payload:any ){
+    let url = `${this.baseurl}businessInterface/helpdesk/addServiceRequest_1_0`;
+    var a = this.storageService.getEncrData('user');
+    var username= a.UserName;
+    let body = new FormData(); 
+    if(payload.time == null){payload.time == 'not mentioned'}
+    body.append('siteId', payload.siteid);
+    body.append('serviceName', payload.servicename);
+    body.append('subServiceName', payload.subsevice);
+    body.append('userName', username);
+    body.append('calling_System_Detail', 'portal');
+    body.append('description', payload.message);
+    body.append('priority', 'High');
+    body.append('preferredTimeToCall', payload.time);
+    body.append('Attachements', '');
+    body.append('accessToken', a.access_token);
+    // body.forEach((value,key) => {
+    //     console.log(key+" "+value)
+    // });
+    return this.http.post(url, body);
+  }
+  getHelpDeskRequests(){
+    let url = `${this.baseurl}businessInterface/helpdesk/getServiceReq_1_0`;
+    var a = this.storageService.getEncrData('user');
+    var b = this.storageService.getEncrData('siteidfromgaurdpage');
+    var payload = {
+      userName: a.UserName,
+      accessToken : a.access_token,
+      calling_System_Detail:"portal",
+      siteId: b.siteid  
+    }
+    return this.http.post(url, payload);
+  }
+  deleteHelpDeskRequests(serviceid:any){
+    let url = `${this.baseurl}businessInterface/helpdesk/deleteServiceRequest_1_0`;
+    var a = this.storageService.getEncrData('user');
+    var b = this.storageService.getEncrData('siteidfromgaurdpage');
+    var payload = {
+      userName: a.UserName,
+      accessToken : a.access_token,
+      calling_System_Detail:"portal",
+      siteId: b.siteid,
+      serviceId:serviceid 
+      }
+    return this.http.post(url, payload);
+  }
+  getNonWorkingDays(siteid:any,year:any){
+    let url = `${this.baseurl}businessInterface/Client/notWorkingDays_1_0?siteId=${siteid}&calling_System_Detail=IVISUSA&year=${year}`;
+    return this.http.get(url);
+  }
+  getServices1(siteid:any){
+    var Request_type = "Services";
+    let servicesurl1=`${this.baseurl}businessInterface/Client/clientServices_1_0?accountId=${siteid}&Request_type=${Request_type}&calling_user_details=IVISUSA`;
+    return this.http.get(servicesurl1)
+  }
   createuser(user:any){
     let url = "http://localhost:8080/CreateUser"
+    console.log("services: ",url,user);
+
     return this.http.post(url, user);
   }
 
-
   getBiAnalyticsReport(siteid:any, startDate:any, endDate:any){
     let biAnalyticsReport = this.baseurl+'businessInterface/insights/biAnalyticsReport_1_0?';
-    const api = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_user_details=IVISUSA`
-    return this.http.get(api)
+    const url = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_user_details=IVISUSA`;
+    const newurl = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_user_details=IVISUSA`;
+    const newurl1 = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_System_Detail=IVISUSA`
+    // console.log("bireport: ",url);
+    return this.http.get(newurl1);
+  }
+
+  getBiAnalyticsResearch(siteid:any, startDate:any){
+    // console.log(siteid,startDate)
+    let biAnalyticsReport = this.baseurl+'businessInterface/insights/getAnalyticsListforSite_1_0?';
+    const newurl1 = `${biAnalyticsReport}SiteId=${siteid}&calling_System_Detail=IVISUSA&date=${startDate}%22`
+    const newurl="http://usmgmt.iviscloud.net:777/businessInterface/insights/getAnalyticsListforSite_1_0?SiteId=1002&calling_System_Detail=IVISUSA&date=2022/03/01%22";
+    // console.log("bireport: ",newurl);
+    return this.http.get(newurl1);
+  }
+
+  getBiAnalyticsReport1(siteid:any, startDate:any, endDate:any){
+    let url = 'http://smstaging.iviscloud.net:8090/bireportsApi/getReports';
+    var payload = {
+      "id":1,
+      "startdate":"2022-03-01",
+      "enddate":"2022-03-03"
+  }
+    // const api = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_user_details=IVISUSA`
+    // console.log("bireport: ",url,payload);
+
+    return this.http.post(url, payload)
   }
   getBiTrends(type:any, date:any){
     let biTrends = this.baseurl + "biDataReport/BiData?accountId=1001&analyticTypeId=";
     let url =`${biTrends}${type}&cameraDate=${date}`
+    console.log(url);
     return this.http.get(url)
+  }
+  getBiTrends1(siteid:any, date:any, typeid:any){
+    let url1 = this.baseurl + "businessInterface/insights/analyticTrends_1_0?SiteId=1002&date=2022/03/01&calling_System_Detail=IVISUSA&analyticTypeId=8";
+    let url =  `${this.baseurl}businessInterface/insights/analyticTrends_1_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
+    return this.http.get(url)
+  }
+  getTrendsFields(siteid:any){
+    let url = this.baseurl +"bireports/getServices"
   }
   sessionstatus(){
     var hours = 24; // 0.01 is 35secs
@@ -104,7 +224,6 @@ export class ApiService {
     }
     return true;
   }
-
   sendEmail(body:any, subject:string){
     let localurl= "http://10.0.2.191:8080/emailService";
     let url =`${this.baseurl}keycloakApp/emailService`;
@@ -212,5 +331,7 @@ export class ApiService {
     }
     return (splitStr.join(' '))
   }
+
+
 
 }

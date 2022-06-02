@@ -22,9 +22,9 @@
     transform: scale(1.2);
     position:fixed;
     right:75px;
-    bottom: 160px;
-    width: 300px;
-    max-height: 250px;
+    bottom: 130px;
+    width: 190px;
+    max-height: 335px;
     border: 2px solid #b7b7b7;
     border-radius: 10px;
     background-color: #fff;
@@ -32,8 +32,9 @@
 }
 .popupInner{
     /* border: 2px solid #7f7f7f; */
-    margin: 20px;
-    max-height: 230px;
+    margin: 15px 8px;
+    /* margin: 5px; */
+    max-height: 335px;
     border-radius: 10px;
     z-index: inherit;
 }
@@ -45,7 +46,6 @@
     font-weight: bold;
     font-size: 10px;
     padding: 15px;
-   
 }
 .inputbox input , textarea{
     outline: none;
@@ -54,20 +54,37 @@
 }
 .inputbox{
     font-family: sans-serif;
-    padding: 15px;
+    /* border: 2px solid #b7b7b7; */
+    /* padding: 10px;
+    border-radius: 5px;
+    margin:8px 10px; */
+    padding: 7px;
+    border-radius: 5px;
+    margin: 7px 3px;
+
+}
+.border{
     border: 2px solid #b7b7b7;
-    border-radius: 8px;
-    margin:10px 10px;
+}
+.greybtn{
+    background-color: #EFEFEF;
 }
 .question{
     font-family: PS,sans-serif;
-    color: #010101;
+    /* color: #010101; */
+    color: #104B86 ;
     font-size: 10px;
+    max-width: 90%;
 }
 .input{
     font-size: 10px;
     color:#7f7f7f;
 }
+input{
+    font-size: 10px;
+    color:#7f7f7f;
+}
+
 button{
     border: 14px solid #104B86;
     border-radius: 30px;
@@ -101,35 +118,183 @@ button{
 }
 .seletoneheader {
     display: block;
-    font-size: 18px;
+    font-size: 14px;
     letter-spacing: 1px;
+    padding-left: 16px;
 }
 textarea{
     height: 76px;
-    max-height: 76px;
+    max-height: 42px;
 }
 
 .selectionbox{
     position: absolute;
-    width: 100%;
+    /* width: 100%; */
+    z-index: 1;
+    /* margin-top: 11px; */
 }
 .inputbox1{
-    background: white;
+    background: #EFEFEF;
     font-family: sans-serif;
-    padding: 3px 15px;
-    border: 0.5px solid #b7b7b7;
+    padding: 6px 10px;
+    border: 0.5px solid #e7e7e7;
     border-radius: 3px;
-    margin:-10px 10px 10px 10px; 
+    margin:-11px 12px 10px 3px; 
+    /* margin: 0px 12px 0px 3px; */
     font-family: PS,sans-serif;
-    color: #010101;
+    color: #104B86;
     font-size: 10px;
     transition: border-radius 1s ease-in-out;
+    width: 164px;
+}
+
+.inputbox, .inputbox1, .question{
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .downarrow{
     pointer-events: none;
     width: 25px;
     position: absolute;
-    top: 12px;
-    right: 20px;
+    top: 6px;
+    right: 8px;
     transform: rotate(90deg);
 }
+button{
+    border: 8px solid #104B86;
+}
+
+.closebtn{
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
+    border-radius: 12px;
+    background-color: #104B86;
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    color:white;
+    float: right;
+    text-align: center;
+    margin-right: -8px;
+    margin-top: -8px;
+    -webkit-box-shadow: 1px 1px 0px 0px rgba(187,187,187,0.96);
+    -moz-box-shadow: 1px 1px 0px 0px rgba(187,187,187,0.96);
+    box-shadow: 1px 1px 0px 0px rgba(187,187,187,0.96);
+    cursor: pointer;
+}
+
+.timer{
+    text-align: -webkit-center;
+    margin-bottom: 5px;
+    position: relative;
+}
+.setclock{
+    color: #104B86;
+    font-size: 10px;
+    font-family: TP,sans-serif;
+    border: 1px solid #104B86;
+    border-radius: 5px;
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    /* background: url(https://mywildalberta.ca/images/GFX-MWA-Parks-Reservations.png) no-repeat;
+    background: url(/assets/calender.svg) no-repeat; */
+    background: none;
+}
+[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    height: 10px;
+    width: 120px;
+    background-color: #00000000 !important;
+  }
+  [type="datetime-local"]{
+    width: 120px;
+    content: "" !important;
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+    outline: none;
+    border: none;
+  }
+  #date{
+      width: 120px;
+      margin: auto;
+  }
+  .priorityradios{
+      text-align: center;
+      font-family: PS,sans-serif;
+      color: #104B86;
+      font-size: 10px;
+      place-content: space-evenly;
+  }
+  .priorityradios input{
+      height: 12px;
+  }
+
+  .priorityradios label{
+    margin-left: 5px;
+   }
+
+
+/*
+input[type="datetime"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+input[type="datetime"]::before {
+    content: attr(placeholder);
+    position: absolute;
+    color: #00000000;
+  }
+input[type="datetime"]:focus::before,
+input[type="datetime"]:valid::before {
+  content: "" !important;
+}
+input[type="datetime"] {
+    color: #00000000;
+  }
+  
+  input[type="datetime"]:focus,
+  input[type="datetime"]:valid {
+    color: #00000000;
+    caret-color: #00000000 !important;
+  }
+  ::selection { background: #00000000; } ::-moz-selection { background: #00000000; }
+  input::selection {  background: #00000000 !important; }
+
+#date{
+    position: absolute;
+    top: 3px;
+    right: 62px;
+    width: 83px;
+    outline: none;
+    border: none;
+    color: #00000000;
+    background-color: #00000000;
+}
+
+*/
+

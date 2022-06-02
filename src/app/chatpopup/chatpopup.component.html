@@ -1,34 +1,92 @@
-<div class="chat">
-    <div class="chatpopup">
+<div class="chat" #chatpopup>
+    <div class="chatpopup" drag 
+    (mousedown)="hold($event)"
+    (mouseup)="leave($event)"
+    id="chatpopup"
+    >
+    <!-- (touchstart)="drag($event)"
+    (touchmove)="drag($event)"
+    (touchend)="drag($event)"    -->
         <!-- <p>I work</p> -->
         <!-- <p><img src="assets/chatbox.svg" style="width: 50px;" (click)="showPopUp()"></p> -->
         <p>
-            <img src="assets/chaticon.png" style="width: 80px" (click)="showPopUp()" />
+            <img src="assets/chaticon.svg" style="width: 50px" (click)="showPopUp()"/>
         </p>
     </div>
 
-    <div class="popupWindow" *ngIf="visibility">
+    <div class="popupWindow" *ngIf="visibility"  (onFocusOut)="focusout($event)"  onblur="alert('blur!')" >
         <!-- Mode of enquery is Troubleshoot -->
+        <div class="closebtn" (click)="showPopUp()"><span> X</span></div>
+
         <app-loader *ngIf="showLoader"></app-loader>
         <div class="popupInner" *ngIf="selected && !submitted && troubleshoot">
-            <span>Troubleshooting</span>
-            <div style="display: block; position: relative;">
-                <div class="inputbox">
-                    <div class="question" (click)="inputclicked($event)">Issue with {{ currentpage }}</div>
-                    <img src="assets/forward_arrow.svg" style="width: 25px;" class="downarrow">
+            <!-- <span>Troubleshooting</span> -->
+            <div style="display: block; ">
+
+                <div class="inputbox greybtn" (click)="inputclicked($event)" style="position: relative;">
+                    <div class="question">{{ currentcategory.catName }}</div>
+                    <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
                 </div>
-                <div class="selectionbox" *ngIf="visible">
-                    <div class="inputbox1" (click)="issueclicked($event, 'Insight')">Issue with Insight</div>
-                    <div class="inputbox1" (click)="issueclicked($event, 'Trends')">Issue with Trends</div>
-                    <div class="inputbox1" (click)="issueclicked($event, 'Support')">Issue with Support</div>
-                    <div class="inputbox1" (click)="issueclicked($event, 'Advertisements')">Issue with Advertisements</div>
+                <div class="selectionbox" *ngIf="visible" >
+                    <div class="inputbox1 greybtn" *ngFor="let item of categories" (click)="issueclicked($event, item)">{{item.catName}}</div>
+                    <div class="inputbox1 greybtn"  (click)="issueclicked($event, {catName:'other', subCategoryList:[]})">Other</div>
+                    <!-- <div class="inputbox1" (click)="issueclicked($event, 'Insight')">Issue with Insight</div> -->
                 </div>
-                <div class="inputbox">
-                    <input type="text" placeholder="Please Explain Issue" class="input"  [(ngModel)]="body" />
+
+                <div class="inputbox greybtn" (click)="inputclicked1($event)" style="position: relative; margin-bottom: 0;" *ngIf="currentcategory.subCategoryList.length>0">
+                    <div class="question" >{{ currentsubcategory.serviceSubcatName }}</div>
+                    <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
                 </div>
-                <div style="text-align: center">
-                    <button (click)="submit('troubleshooting')">Submit</button>
+                <div class="selectionbox" *ngIf="visible1">
+                    <div class="inputbox1 greybtn" *ngFor="let item of currentcategory.subCategoryList" (click)="subcatclicked($event, item)">{{item.serviceSubcatName}}</div>
+                </div> 
+
+
+                <span style="letter-spacing: 0; padding:0; padding-left: 10px; text-transform: none;">Priority :</span>
+
+                <fieldset id="group2" class="priorityradios max-center" (select)="priorityclicked($event, 'radio')">
+                    <div class="max-center">
+                        <input type="radio" checked value="Low Priority" name="priority" (click)="priorityradio()">
+                        <label>Low</label>
+                    </div>
+                    <div class="max-center">
+                        <input type="radio" value="Medium Priority" name="priority" (click)="priorityradio()">
+                        <label>Medium</label>
+                    </div>
+                    <div class="max-center">
+                        <input type="radio" value="High Priority" name="priority" (click)="priorityradio()">
+                        <label>High</label>
+                    </div>
+                </fieldset>
+                <!-- <div class="inputbox greybtn" (click)="inputclicked2($event)" style="position: relative;">
+                    <div class="question">{{currentpriority ? currentpriority : 'High Priority'}}</div>
+                    <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
                 </div>
+                <div class="selectionbox" *ngIf="visible2" >
+                    <div class="inputbox1 greybtn"  (click)="priorityclicked($event,'High Priority')">High Priority</div>
+                    <div class="inputbox1 greybtn"  (click)="priorityclicked($event, 'Low Priority')">Low Priority</div>
+                </div> -->
+                <div class="inputbox border"  style="padding: 0 10px; margin-top: 8px;" >
+                    <textarea type="text" placeholder="Request description" class="input" [(ngModel)]="body" ></textarea>
+                </div>
+
+                <div class="max-center" style="font-size: 12px; text-align: left; margin-bottom: 5px; margin-left: 12px; justify-content: left;">
+                    <input type="checkbox" id="call" #call  (click)="checkbox($event)">
+                    <label for="vehicle1">&nbsp; Preferred time to call</label><br>
+                </div>
+
+                <div class="timer" style="position: relative;" *ngIf="!calldisabled">
+                    <div class="setclock" (click)="opentimer()">
+                        <img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time
+                    </div>
+                    <input type="datetime-local" [min]="mindate()" [(ngModel)]="time" id="date" #date placeholder="Select Preferred Time" data-date-format="YYYY-MM-DD HH:mm:ss" [disabled]="calldisabled">
+                </div>
+
+              
+                <div style="text-align: center"> 
+                    <button (click)="submit('troubleshooting')" style="padding: 0; ">Submit</button>
+                </div>
+
             </div>
         </div>
 
@@ -37,10 +95,10 @@
             <span>Feedback</span>
             <div style="display: block">
                 <div class="inputbox">
-                    <textarea type="text" placeholder="Please Enter Your Feedback Here" class="input" [(ngModel)]="body"></textarea>
+                    <textarea type="text" placeholder="Please Enter Your Feedback Here" class="input"  [(ngModel)]="body"></textarea>
                 </div>
                 <div style="text-align: center">
-                    <button (click)="submit('feedback')">Submit</button>
+                    <button (click)="submit('feedback')" style="padding: 0;border: 11px solid #104B86; ">Submit</button>
                 </div>
             </div>
         </div>
@@ -48,15 +106,15 @@
         <!-- Select mode of enquery -->
         <div class="popupInner" *ngIf="!submitted && !selected">
             <div class="seletoneheader">
-                <div>Hi, Need Help?</div>
+                <div>Hi {{user.FirstName ? user.FirstName : ''}} {{user.LastName ? user.LastName : ''}}, Need Help?</div>
                 <div>We're here for you.</div>
             </div>
             <div style="display: block" class="selectone">
-                <div style="text-align: center; margin: 20px 0">
-                    <button (click)="toTroubleshoot()">Troubleshooting</button>
+                <div style="text-align: center; margin: 20px 0; display: none;">
+                    <button (click)="toFeedback()" >Troubleshooting</button>
                 </div>
-                <div style="text-align: center; margin: 20px 0">
-                    <button (click)="toFeedback()">Submit Request</button>
+                <div style="text-align: center; margin: 20px 0;">
+                    <button (click)="toTroubleshoot()" style=" font-size: 10px;">Submit Request</button>
                 </div>
             </div>
         </div>

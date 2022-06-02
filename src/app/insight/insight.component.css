@@ -19,7 +19,7 @@ button {
   border: 2px solid;
   border-radius: 10px;
   text-transform: uppercase;
-  margin: 15px 10%;
+  margin: 0px 9% 15px 0px;
   font-family: TP, sans-serif;
   letter-spacing: 2px;
 }
@@ -29,19 +29,19 @@ button {
   display: flex;
 }
 
+
 @media screen and (max-width: 1450px) {
-  .dataTable .tableBox {
-    margin: 15px;
-    padding: 25px;
-  }
+
   .table > :not(caption) > * > *{
     padding: 0.5rem 0;
   }
   .icon{width: 33px;}
+  .optionlabel img{
+    margin-right: 2px;
+  }
 }
 @media screen and (min-width: 1451px) {
   .icon{width: 42px;}
-  .tableBox{ padding: 2% 4%;}
 }
 
 @media screen and (max-width: 600px) {
@@ -56,6 +56,9 @@ button {
   p {
     display: flex;
     font-size: 10px !important;
+  }
+  .optionlabel img{
+    margin-right: 10px;
   }
 }
 .icon {
@@ -309,9 +312,13 @@ input::placeholder{
 .fade{opacity:0.6}
 
 @media screen and (min-width: 1400px){thead p{font-size: 17px;} }
-@media screen and (max-width: 1400px){thead p{font-size: 14px;} p{font-size: 10px;}}
+@media screen and (max-width: 1400px){
+  thead p{font-size: 14px;} 
+  p{font-size: 10px;}        
+
+}
 
 
-
+@media screen and (max-width: 993px){.tables{ margin-bottom: 100px;}} 
 
 

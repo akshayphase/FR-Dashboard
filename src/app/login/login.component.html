@@ -33,10 +33,11 @@
         <div class="logincont" (keyup.enter)="login()" *ngIf="!forgotPassVisible">
             <div class="form">
                 <input type="text" placeholder="Username" maxlength="25" minlength="5" [(ngModel)]="username" (keyup)="errormsg=''">
-                <input type="password" placeholder="Password" maxlength="15" minlength="6" [(ngModel)]="password" (keyup)="errormsg=''">
+                <input type="password" placeholder="Password" maxlength="25" minlength="6" [(ngModel)]="password" (keyup)="errormsg=''">
                 <div class="forgotpass" (click)="forgotPassVisible = !forgotPassVisible;errormsg='';">forgot password?</div>
-                <div *ngIf="!errormsg" style="font-size: 18px;">&nbsp;</div>
+                <div *ngIf="!errormsg && !showsessionerror" style="font-size: 18px;">&nbsp;</div>
                 <div class="error" *ngIf="errormsg">{{errormsg}}</div>
+                <div class="error" *ngIf="showsessionerror">Session Expired. Please login again!</div>
                 <button class="signinBtn" (click)="login()" (keyup.enter)="login()" onsubmit="login()" 
                 >SIGN IN</button>
             </div>

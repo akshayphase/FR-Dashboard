@@ -260,7 +260,7 @@ ul {
   /* border: 2px solid; */
   border-radius: 10px;
   text-transform: uppercase;
-  margin: 15px 10%;
+  margin: 15px 9%;
   font-family: TP, sans-serif;
   letter-spacing: 2px;
 }
@@ -279,7 +279,8 @@ ul {
 @media screen and (max-width: 1450px) {
   .dataTable .tableBox {
     margin: 15px;
-    padding: 25px;
+    padding-top: 0;
+    padding: 15px;
   }
 }
 @media screen and (min-width: 1451px) {

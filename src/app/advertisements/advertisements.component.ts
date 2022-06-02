@@ -13,7 +13,7 @@ export class AdvertisementsComponent implements OnInit {
   constructor(private apiservice : ApiService, private router:Router) { }
 
   ngOnInit(): void {
-    this.router.navigateByUrl('/error')
+    // this.router.navigateByUrl('/error')
     // document.body.style.backgroundImage= "linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBt_Zv4413PMLXB3WqQ1827Uv54K8Gu3_lfA&usqp=CAU')"
   }
 

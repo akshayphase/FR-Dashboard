@@ -3,18 +3,18 @@
   <a class="mylogo" [routerLink]="['/guard']"> 
   <img src="assets/IVISsecurity_logo.png" style="height: 32px; " alt="ivisSecurity">
 </a>
-<!-- <img src="assets/IVISsecurity_logo.png" style="height: 32px; margin:10px" alt="ivisSecurity"> -->
   
   <!-- <a style="padding: 0;" [routerLink]="['login']" *ngIf="isloggedin"><div class="button">Login</div></a> -->
   <a style="padding: 0;" (click)="logout1()"><div class="button">Log out</div></a>
-  <!-- <a><div (click)="routeTo('support')">Profile</div></a> -->
-  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/services']">Services</div></a>
+  <!-- <a (click)="openmenu()" style="padding: 2px;"><div ><img [src]="data?.image" onerror="this.src='assets/female.svg'" class="openprofile" style="width: 40px;height:40px; border-radius:50%; padding:2px; background: #fff"></div></a> -->
+  <a  ><div (click)="openprofile=!openprofile" #profilebtn>Profile</div></a>
+  <a  style="display: none;"><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/services']">Services</div></a>
   <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/support']">Support</div></a>
   <a *ngIf="advertisements"><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
   <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/research']">Research</div></a>
   <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
   <a *ngIf="b_intelli" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
-  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Guard</div></a>
+  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Live View</div></a>
   <a class="icon" (click)="openmenu()">
     <img src="assets/menu.svg" style="width: 20px;" alt="Menu">
   </a>
@@ -23,7 +23,7 @@
 
 
 
-  <div class="sidenav"#sidenav>
+  <div class="sidenav" #sidenav>
     <!-- <img src="assets/IVISsecurity_logo.png" style="height: 32px; margin:10px" alt="ivisSecurity"> -->
     <div class="profile">
       <div class="close" (click)="closemenu()"></div>
@@ -35,22 +35,79 @@
       </div>
     </div>
     <div class="menus" (click)="closemenu()">
-      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Guard</div></a>
+      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Live View</div></a>
       <a *ngIf="b_intelli" ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
       <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
       <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/research']">Research</div></a>
       <a *ngIf="advertisements"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
       <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/support']">Support</div></a>
-      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/services']">Services</div></a>
+      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/services']" style="display: none;">Services</div></a>
       <!-- <a href="http://smstaging.iviscloud.net:8090/usveclient/" target="_blank" style="text-decoration: none; color: #2a2a2a;"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu();">Safety Ecort</div></a> -->
-      <a style="text-decoration: none; color: #2a2a2a;"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu();toQRmodal()">Safety Ecort</div></a>
-      <a class="sidenavelements" style="padding: 0;"><div class="button" (click)="logout()">Log out</div></a>
+      <a style="text-decoration: none; color: #2a2a2a;"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu();toQRmodal()">Safety Escort</div></a>
+      <a class="sidenavelements" style="padding: 0;"><div class="button" (click)="logout()" style=" margin-top: 15px;">Log out</div></a>
     </div>
     <!-- <a><div (click)="routeTo('support')">Profile</div></a> -->
   </div>
   <div class="backdrop" (click)="closemenu()"></div>
 
   <app-loader *ngIf="showLoader"></app-loader>
+
+
+
+  <div class="profilemodal" *ngIf="openprofile" #profile>
+
+
+    <div class="modalinside"  #profile>
+      <img [src]="data?.image" onerror="this.src='assets/female.svg'" style="width: 60px;height:60px; border-radius:50%; padding:2px; background: #fff">
+      <p style="font-size: 12px; font-weight: 700; margin: 5px; text-transform: uppercase;text-overflow:ellipsis; overflow-wrap: anywhere;">{{data?.FirstName + ' ' + data?.LastName}}</p>
+      <p class="modaldetails" *ngIf="data?.contact"><img src="assets/phone.svg" style="width: 8px;" alt="">  : {{'+91 '+ data?.contact}}</p>
+      <p class="modaldetails"><img src="assets/mail.svg" style="width: 10px;" alt=""> : {{data?.email ? data?.email : 'Email to be updated'}}</p>
+    </div>
+
+    <div class="profilebtn" (click)="editpro=!editpro">
+      <!-- <div class="profilebtn" (click)="editpro=!editpro" > -->
+        <img src="assets/pencil.svg" alt="">
+      Edit Profile
+    </div>
+    
+    <div class="editprofile" *ngIf="editpro" style="display: none;">
+      <!-- <input type="text" placeholder="Enter mobile number">
+      <input type="text" placeholder="Enter email address">
+      <input type="file" placeholder="Select profile pictute">
+      <div class="profilelogout" style="padding-top: 2px; padding-bottom:2px; margin-bottom: 3px;">Submit</div> -->
+      <div class="form">
+        <input type="text" placeholder="Enter first name" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter last name" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter address line 1" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter address line 2" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter city" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter state" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter pincode" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter country" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter phone number 1" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="Enter phone number 2" maxlength="25" minlength="5" style="box-shadow: none;">
+        <div class="button" (click)="submitprofile()" style="font-family: ES,sans-serif; letter-spacing: 2px;font-size: 12px; font-weight: 700;">SUBMIT</div>
+      </div>
+    </div>
+    <div class="profilebtn" (click)="newpass=!newpass">
+      <img src="assets/key.svg" alt="">
+      Change Password
+    </div>
+    <div class="editprofile" *ngIf="newpass">
+      <!-- <input type="password" placeholder="Enter new password">
+      <input type="password" placeholder="Enter password again">
+      <div class="profilelogout" style="padding-top: 2px; padding-bottom:2px; margin-bottom: 3px;">Submit</div> -->
+      <div class="form">
+        <input type="text" placeholder="Enter email or username" maxlength="25" minlength="5" style="box-shadow: none;" [(ngModel)]="username">
+        <div class="button" (click)="forgotPass()" style="font-family: ES,sans-serif; letter-spacing: 2px;font-size: 12px; font-weight: 700;">SUBMIT</div>
+      </div>
+    </div>
+    
+    <div class="profilelogout">
+      <div class="button" (click)="logout1()" style="font-family: ES,sans-serif; font-weight:700;letter-spacing: 2px;border: 8px solid #104B86; width: 112px;">LOG OUT</div>
+    </div>
+
+  </div>
 
 
 

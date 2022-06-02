@@ -2,150 +2,341 @@
 
 
 <div class="page">
-    <div style="width:100vw; overflow:hidden">
-      <div class="searchbar">
-        <div class="row">
-          <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;"><div  class="searchbox"><input type="text" placeholder="Search Support"><img src="assets/search.svg"></div></div>
-          <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">Support - My Company
+  <div style="width:100vw; overflow:hidden">
+    <div class="searchbar">
+      <div class="row">
+        <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;">
+          <div class="searchbox"><input type="text" placeholder="Search"><img src="assets/search.svg"></div>
+        </div>
+        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1">
+          <div *ngIf="support" class="title1 topTitle" style="margin:0 0 0 25px;"><span *ngIf="site">{{site.sitename}}-</span>Support
+          <!-- <div class="title1 topTitle" style="margin:0 0 0 25px;"><span *ngIf="site">{{site.sitename}}-</span>Support -->
+
+                <div class=" action-icons">  
+            <!-- <img src="assets/add.svg" height="40px" width="40px"> -->
+            <div>&nbsp;</div>
+          </div>
             <img src="assets/ivis-sec.svg" class="qr" (click)="toQRmodal()" id="qrcode">
             <div class="tooltiptext">Do you need Safety Escort?</div>
-          </div></div>
+           
+          </div>
         </div>
       </div>
     </div>
-      <div class="cont">
-          <div class="row">
-              <div class="col-lg-3 col-sm-12 btnvisible" id="topple" #topple>
-  
-                  <!-- <div class="title1">
+      
+      
+
+
+  </div>
+  <div class="cont">
+    <div class="row">
+      <div class="col-lg-3 col-sm-12 btnvisible" id="topple" #topple>
+
+        <!-- <div class="title1">
                      SUPPORT
                   </div> -->
-                  <!-- Quarters with multiple reports  -->
-                  <div class="optionlabelparent"  (click)="openfaq()">
-                    <div class="optionlabel" Style="position:relative;">
-                      <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><div class="label"> Frequently Asked Questions </div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
-                    </div>
-                    <div class="panel" hide="!item.isActive">
-                      <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Question 1</p>   </div>
-                      <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Question 2</p>   </div>
-                      <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Question 3</p>   </div>
-                    </div>
-                  </div> 
-                  <!-- Quarters with multiple reports  -->
-                  <div class="optionlabelparent"  (click)="openContactUs()">
-                    <div class="optionlabel" Style="position:relative;">
-                      <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><div class="label"> Contact Us </div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
-                    </div>
-                    <div class="panel" hide="!item.isActive">
-                      <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Contact 1</p>   </div>
-                      <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Contact 2</p>   </div>
-                      <div class="accordionElements"> <span class="dot"></span><p style="margin: 0 0 0 20px">Contact 3</p>   </div>
-                    </div>
-                  </div> 
-                  <br>
-              </div>
-              <!-- Left Column Ends -->
-  
-              <!-- Right Column Starts -->
-              <div class="col-lg-9 col-sm-12">
-                <!-- Code for FAQ starts here -->
-                <div *ngIf="faq">
-                <div class="title1">
-                    frequently asked questions
-                    <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
-
-                </div>
-                <hr id="hr1">
-                
-                <div class="tables">
-                  <div class="optionlabel2" Style="position:relative;" (click)="toggleAccordian($event)">
-                      <span>Guard</span><div class="accordionArrowBig"><img src="assets/forward_arrow.svg" alt="expand"></div>
-                  </div>
-                  <div class="panel" hide="!item.isActive">
-                    <div class="childBox">
-                      <div class="optionlabel3" Style="position:relative;" (click)="toggleAccordian1($event)">
-                        <span>Insight</span><div class="accordionArrow1"><img src="assets/forward_arrow.svg" alt="expand"></div>
-                      </div>
-                      <div class="panel" hide="!item.isActive">
-                        <div class="accordionElements1" (click)="toggleAccordian2($event)">  
-                          <div style="display:block">
-                            <div style="display:flex; position:relative;">
-                              <span class="faqTitle">Lorem ipsum dolor sit amet?<img src="assets/minus.svg" class="minus" alt="close"><img src="assets/plus.svg" class="plus" alt="expand"></span>
-                            </div>
-                            <div class="panel2">
-                              <span class="faqContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>  
-                            </div>
-                            <div style="height: 30px;">&nbsp;</div>
-                            <hr #hr2 style="margin:0">
-                          </div>
-                        </div> 
-                        <div class="accordionElements1" (click)="toggleAccordian2($event)">  
-                          <div style="display:block">
-                            <div style="display:flex; position:relative;">
-                              <span class="faqTitle">Lorem ipsum dolor sit amet?<img src="assets/minus.svg" class="minus"><img src="assets/plus.svg" class="plus" alt="expand"></span>
-                            </div>
-                            <div class="panel2">
-                              <span class="faqContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>  
-                            </div>
-                            <div style="height: 30px;">&nbsp;</div>
-                            <hr #hr2 style="margin:0">
-                          </div>
-                        </div>                       
-                      </div> 
-                    </div>                                           
-                  </div>                    
-                </div>  
-                <!-- code for FAQ ends here -->
-                </div>
-
-                  
-                <!-- Code for contact us starts here -->
-                <div *ngIf="contactUs">
-                  <div class="title1">
-                    Contact Us
-                    <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
-                    <!-- <button (click)="showOptions()" class="visibilitybtn"></button> -->
-                  </div>
-                  <hr id="hr1">
-                  <div class="optionlabel2" Style="position:relative;" (click)="toggleAccordian($event)">
-                    <span>Area for Troubleshoot</span><div class="accordionArrowBig"><img src="assets/forward_arrow.svg"></div>
-                  </div>
-                  <div class="panel" hide="!item.isActive">
-                    <!-- <div class="opton">  <img src="assets/eye.svg" style="width: 20px;"><p style="margin-left: 15px">Contact 1</p>   </div> -->
-                  </div>
-
-                  <div class="optionlabel2" style="display:block; padding:40px; min-height: 300px">
-                    <div style="padding-bottom: 25px">
-                      Please explain the issue:
-                    </div>
-                    <div style=" font-size:15px">
-                      <textarea placeholder="Your message here" style="border:none;outline:none; color:#7f7f7f; width:-webkit-fill-available; min-height: 150px; max-height:1000px" (keyup)="bodyContent($event)"></textarea>              
-                    </div>
-                  </div>
-
-                  <div style="text-align:left">
-                    <button class="generateBtn" (click)="submitIssue()">
-                      Submit Now
-                    </button>
-                  </div>
-
-                </div>
-                <!-- Code for contact us ends here -->
-              </div>
-            <!-- Column with Reports Ends -->
+        <!-- Quarters with multiple reports  -->
+        <div class="optionlabelparent" (click)="openServiceHelpdesk()">
+          <div class="optionlabel" Style="position:relative;">
+            <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA">
+            <div class="label"> Support Helpdesk </div>
+            <div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+          </div>
+          <div class="panel" hide="!item.isActive">
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Contact 1</p>
             </div>
-            <!-- Row Ends -->
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Contact 2</p>
+            </div>
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Contact 3</p>
+            </div>
+          </div>
         </div>
+
+        <div class="optionlabelparent" (click)="openfaq()">
+          <div class="optionlabel" Style="position:relative;">
+            <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA">
+            <div class="label"> Frequently Asked Questions </div>
+            <div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+          </div>
+          <div class="panel" hide="!item.isActive">
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Question 1</p>
+            </div>
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Question 2</p>
+            </div>
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Question 3</p>
+            </div>
+          </div>
+        </div>
+        <!-- Quarters with multiple reports  -->
+        <div class="optionlabelparent" (click)="openContactUs()">
+          <div class="optionlabel" Style="position:relative;">
+            <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA">
+            <div class="label"> Contact Us </div>
+            <div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+          </div>
+          <div class="panel" hide="!item.isActive">
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Contact 1</p>
+            </div>
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Contact 2</p>
+            </div>
+            <div class="accordionElements"> <span class="dot"></span>
+              <p style="margin: 0 0 0 20px">Contact 3</p>
+            </div>
+          </div>
+        </div>
+
+        <br>
+      </div>
+      <!-- Left Column Ends -->
+
+      <!-- Right Column Starts -->
+      <div class="col-lg-9 col-sm-12">
+
+        
+        <!-- Code for FAQ starts here -->
+        <div *ngIf="faq">
+          <div class="title1">
+            frequently asked questions
+            <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
+
+          </div>
+          <hr id="hr1">
+
+          <div class="tables">
+            <!-- <div class="optionlabel2" id="optionlabel2" Style="position:relative;" (click)="toggleAccordian($event)">
+              <span>Guard</span>
+              <div class="accordionArrowBig"><img src="assets/forward_arrow.svg" alt="expand"></div>
+            </div>
+            <div class="panel" hide="!item.isActive"> -->
+              <div class="childBox">
+                <div class="optionlabel3" Style="position:relative;" (click)="toggleAccordian1($event)">
+                  <span>Insight</span>
+                  <div class="accordionArrow1"><img src="assets/forward_arrow.svg" alt="expand"></div>
+                </div>
+                <div class="panel" hide="!item.isActive">
+                  <div class="accordionElements1" (click)="toggleAccordian2($event)">
+                    <div style="display:block">
+                      <div style="display:flex; position:relative;">
+                        <span class="faqTitle">Lorem ipsum dolor sit amet?<img src="assets/minus.svg" class="minus"
+                            alt="close"><img src="assets/plus.svg" class="plus" alt="expand"></span>
+                      </div>
+                      <div class="panel2">
+                        <span class="faqContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                          occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                          laborum.</span>
+                      </div>
+                      <div style="height: 30px;">&nbsp;</div>
+                      <hr #hr2 style="margin:0">
+                    </div>
+                  </div>
+                  <div class="accordionElements1" (click)="toggleAccordian2($event)">
+                    <div style="display:block">
+                      <div style="display:flex; position:relative;">
+                        <span class="faqTitle">Lorem ipsum dolor sit amet?<img src="assets/minus.svg" class="minus"><img
+                            src="assets/plus.svg" class="plus" alt="expand"></span>
+                      </div>
+                      <div class="panel2">
+                        <span class="faqContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                          occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                          laborum.</span>
+                      </div>
+                      <div style="height: 30px;">&nbsp;</div>
+                      <hr #hr2 style="margin:0">
+                    </div>
+                  </div>
+                </div>
+              <!-- </div> -->
+            </div>
+          </div>
+          <!-- code for FAQ ends here -->
+        </div>
+
+
+        <!-- Code for contact us starts here -->
+        <div *ngIf="contactUs">
+          <div class="title1">
+            Contact Us 
+           
+            
+            <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
+            <!-- <button (click)="showOptions()" class="visibilitybtn"></button> -->
+          </div>
+          
+          <hr id="hr1">
+          <div class="optionlabel2" Style="position:relative;" (click)="toggleAccordian($event)">
+            <span>Area for Troubleshoot</span>
+            <div class="accordionArrowBig"><img src="assets/forward_arrow.svg"></div>
+          </div>
+          <div class="panel" hide="!item.isActive">
+            <!-- <div class="opton">  <img src="assets/eye.svg" style="width: 20px;"><p style="margin-left: 15px">Contact 1</p>   </div> -->
+          </div>
+
+          <div class="optionlabel2" style="display:block; padding:40px; min-height: 300px">
+            <div style="padding-bottom: 25px">
+              Please explain the issue:
+            </div>
+            <div style=" font-size:15px">
+              <textarea placeholder="Your message here"
+                style="border:none;outline:none; color:#7f7f7f; width:-webkit-fill-available; min-height: 150px; max-height:1000px"
+                (keyup)="bodyContent($event)"></textarea>
+            </div>
+          </div>
+
+          <div style="text-align:left">
+            <button class="generateBtn" (click)="submitIssue()">
+              Submit Now
+            </button>
+          </div>
+
+        </div>
+
+        <div *ngIf="support">
+          <div class="title1" style="position: relative;">
+            Requests <span *ngIf="filtereddata.length > 0"> - {{filtereddata.length}}</span>
+
+            <div class="cluster">
+              <div style="display: flex; margin-left: 40px" class="paginate" *ngIf="filtereddata.length > paginatesize">
+                <img src="assets/arrow.svg" style="transform: rotate(180deg);" (click)="previousPage()" alt="prev" [className]="pagenumber == 1 ? 'fade': '' ">
+                <div  class="searchbox" style=" margin: -4px 10px !important; padding: 6px !important;">     
+                  <select name="my-dropdown" (change)="pagination()" [(ngModel)]="pagenumber" class="dropdown">
+                    <option *ngFor="let number of selectNumbers" [value]="number"  style="border: none;outline:none"><div style="padding: 15px; margin:15px; margin-right:15px">&nbsp;&nbsp;{{number + ' of ' + (selectNumbers.length)}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></option>
+                  </select>  
+                  <img src="assets/forward_arrow.svg" style="margin-left: -30px; transform:rotate(90deg); pointer-events:none; width: 20px" alt="drop">  
+                </div>                   
+                <img src="assets/arrow.svg" (click)="nextPage()" alt="next" [className]="pagenumber == selectNumbers?.length ? 'fade': '' ">
+              </div>
+
+              <img src="assets/filter.svg" style="padding:5px;" class="titleimages" (click)="filters()" style="margin: auto;margin-right: 25px;margin-top: -17px; margin-bottom: -17px;">
+              <img src="assets/addnewreq.svg" style="padding:5px;" class="titleimages" style="margin-right: 35px;margin-top: -17px; margin-bottom: -17px;" >
+  
+            </div>
+            <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
+            <!-- <button (click)="showOptions()" class="visibilitybtn"></button> -->
+          </div>
+
+
+
+          <div *ngIf="show && (categories.length >1 || subcategories.length >1 || status.length > 1)">
+            <div class="filtertypes" >
+              <span></span>
+              <span style="font-family: PS,sans-serif;text-transform: uppercase;color: #104B86;letter-spacing: 0; padding:0; padding-left: 10px;">Filter Requests :</span>
+              <!-- <div class="optionlabelparent"   style="z-index: 5; border: 1px solid #e8e6e6;">
+                <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)">
+                  <img src="assets/eye.svg" style="width: 20px;" alt="ivisSecurity"><div class="label"> Select Quarter</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                  <div class="label"> Select Site</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                </div>
+                <div class="panel" hide="!item.isActive">
+                  <div class="accordionElements" > <span class="dot"></span><p style="margin: 0 0 0 20px">item1</p>   </div>
+                  <div class="accordionElements" > <span class="dot"></span><p style="margin: 0 0 0 20px">item1</p>   </div>
+                </div>
+              </div> -->
+    
+              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="categories.length>1">
+                <div class="optionlabel" style="position:relative;background: #f8f8f8" (click)="togglePanel($event)"  #catlabel>
+                  <div class="label">{{selectedCategory ? selectedCategory : 'Select Category'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                </div>
+                <div class="panel" hide="!item.isActive">
+                  <div class="accordionElements" *ngFor="let item of categories" (click)="selectedCategory = item; netfilter('category')"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
+                </div>
+              </div>
+    
+              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="subcategories.length>1">
+                <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)" #subcatlabel>
+                  <div class="label">{{selectedSubcategory ? selectedSubcategory : 'Select Sub-Category'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                </div>
+                <div class="panel" hide="!item.isActive">
+                  <div class="accordionElements" *ngFor="let item of subcategories" (click)="selectedSubcategory = item; netfilter('subcategory')"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
+                </div>
+              </div>
+    
+              <div class="optionlabelparent"   style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="status.length>1">
+                <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)" #statuslabel>
+                  <div class="label">{{selectedStatus? selectedStatus : 'Select Status'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                </div>
+                <div class="panel" hide="!item.isActive" *ngFor="let item of status">
+                  <div class="accordionElements" *ngFor="let item of status" (click)="selectedStatus = item; netfilter('status')"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
+                </div>
+              </div>
+    
+              <div style="text-align:center">
+                <button class="generateBtn" >
+                  Filter
+                </button>
+              </div>
+    
+            </div>
+          </div>
+
+
+
+          <hr id="hr1">
+          <div class="tables">
+          <div class="childBox shadow" style="padding: 0px; overflow: hidden;  font-family: TP,sans-serif; border-radius: 8px;"
+          *ngFor="let item of paginatedRequestList"
+          >
+            <div class="optionlabel3 font" Style="position:relative; margin-bottom: 0; ">
+              <!-- (click)="toggleAccordian1($event)" -->
+              <div class="helpid">{{item.serviceId ? item.serviceId : ''}}</div>
+              <span class="">
+                {{item.serviceCategoryName ? item.serviceCategoryName : ''}} - {{item.serviceSubCategoryName ? item.serviceSubCategoryName : ''}}
+              </span> 
+
+           <div class="actions max-center">
+            <div class="">
+              <button class="outline">{{item.status ? item.status : 'In Process'}}</button>
+             </div>
+             <img  src="assets/editicon2.svg" alt="edit" >
+             <img src="assets/delete.svg" alt="edit" (click)="deleteRequest(item.serviceId)" >
+           </div>
+            </div>
+            <div class="shadowbox">
+              <div style="padding: 0px 5px 0px 15px; font-size: 15px;">{{item.createdTime | date: 'dd MMM, yyyy'}}</div>
+              <div class="timing max-center" *ngIf="item.PrefTimeToCall">Preferred Call Time : <b>02, Nov, 2022, 05:30 PM</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+        <div *ngIf="support && filtereddata.length == 0">
+          <div class="placeholderForReports">
+            <!-- Please Select Start Date and End Date to generate reports<br>&#8592; -->
+            <!-- Please choose different dates to view the reports -->
+            {{placeholder}}
+          </div>
+        </div>
+        <!-- Code for contact us ends here -->
+      </div>
+      <!-- Column with Reports Ends -->
+    </div>
+    <!-- Row Ends -->
   </div>
+</div>
 
 
 
-  <div id="modal">
-    <div class="close" (click)="closemodal()"></div>
-    <div id="modalcontent"></div>
-  </div>
-  
-  
-  
-  
-  
+<div id="modal">
+  <div class="close" (click)="closemodal()"></div>
+  <div id="modalcontent"></div>
+</div>
+
+
+<!-- <div style="position: fixed; top:0;" *ngIf="showAddSite">
+  <app-helpdeskrequest [show]="showAddSite" (newItemEvent)="closenow($event)"></app-helpdeskrequest>
+</div> -->

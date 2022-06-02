@@ -25,6 +25,10 @@ import { ChartsModule } from 'ng2-charts';
 import { ClientServicesComponent } from './client-services/client-services.component';
 import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { ErrorpageComponent } from './services/errorpage/errorpage.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FieldPipe } from './trends/fieldPipe.pipe';
+import { DraggingDirective } from './services/charts/draggable.directive';
+import { HelpdeskrequestComponent } from './support/helpdeskrequest/helpdeskrequest.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +44,7 @@ import { ErrorpageComponent } from './services/errorpage/errorpage.component';
     LoaderComponent,
     SearchPipe,
     SitePipe,
+    FieldPipe,
     SortPipe,
     VjsPlayerComponent,
     LoginComponent,
@@ -47,6 +52,9 @@ import { ErrorpageComponent } from './services/errorpage/errorpage.component';
     ClientServicesComponent,
     AdminpanelComponent,
     ErrorpageComponent,
+    ProfileComponent,
+    DraggingDirective,
+    HelpdeskrequestComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +66,7 @@ import { ErrorpageComponent } from './services/errorpage/errorpage.component';
   ],
   providers: [{provide: LocationStrategy, useClass: PathLocationStrategy}],
   bootstrap: [AppComponent],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  exports:[DraggingDirective]
 })
 export class AppModule { }

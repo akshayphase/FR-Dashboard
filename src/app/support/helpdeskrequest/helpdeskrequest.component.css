@@ -1,0 +1,52 @@
+.add-site {
+  margin-top: 65px !important;
+  max-height: -webkit-calc(110vh - (200px));
+  overflow-y: scroll;
+}
+
+.add-site:before {
+ box-shadow: -25px 0 20px -20px #0000000D inset;
+ opacity: 0.5;
+ content: " ";
+ height: 100%;
+  /* left: -20px; */
+ position: absolute;
+ top: 0;
+ width: 20px;
+}
+
+.add-site {
+ background: none repeat scroll 0 0 #fff;
+ height: -webkit-calc(100vh - (100px));
+ width: 75%;
+ margin: auto;
+ margin-bottom: 0;
+ margin-right: 0;
+ position: relative;
+ padding:0 30px;
+}
+
+.d-flex h6 {
+  text-transform: uppercase;
+  color: #084982;
+  font-weight: bold;
+  margin-left: -12%;
+}
+
+.d-flex img {
+  margin-left: -21%;
+}
+
+
+
+.form-select {
+  background-color: #F8F8F8;
+  height: 50px;
+  border-radius: 10px;
+}
+
+.form-control {
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+}

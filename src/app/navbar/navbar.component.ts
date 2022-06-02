@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertService } from '../services/alertservice/alert-service.service';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth/authservice.service';
 import { StorageService } from '../services/auth/storage.service';
@@ -12,21 +13,41 @@ import { StorageService } from '../services/auth/storage.service';
 export class NavbarComponent implements OnInit {
   @ViewChild("myTopnav", { static: false }) topnav: ElementRef;
   @ViewChild("sidenav", { static: false }) sidenav: ElementRef;
+  @ViewChild('profile') profile: ElementRef;
+  @ViewChild('profilebtn') profilebtn: ElementRef;
+  
+
   isloggedin: any
 
   constructor(
     private router: Router, 
     private authservice: AuthService,
     private storageService:StorageService,
-    private apiservice:ApiService) { }
+    private apiservice:ApiService,
+    private alertservice:AlertService,
+    private renderer1: Renderer2) {
+     
+    }
+
+  startlistenForProfile(){
+    this.renderer1.listen('window', 'click',(e:Event)=>{
+      if(!this.profilebtn.nativeElement.contains(e.target) && !this.profile.nativeElement.contains(e.target)) {
+      this.openprofile=false;
+      }
+    });
+  }
+
   opened= true;
   advertisements=true;
   liveview=true;
   b_intelli = true;
   alarms = true;
   showLoader=false;
+  openprofile=false;
+  editpro=false;
+  newpass=false;
 
-  ngOnInit(): void {    
+  ngOnInit(): void {  
     this.check();
     this.data = this.storageService.getEncrData('user');
   }
@@ -34,9 +55,10 @@ export class NavbarComponent implements OnInit {
   ngAfterViewInit(){
     this.getsiteservices();
   }
+
+
   getsiteservices(){
     this.apiservice.siteservices$.subscribe((res)=>{
-
       setTimeout(()=>{
         if(res.Status != "Failed" && res.Services){
           var servs = res.Services;
@@ -49,6 +71,7 @@ export class NavbarComponent implements OnInit {
     
     })
   }
+
 
   check(){
   var x = this.authservice.getAuthStatus();
@@ -105,6 +128,31 @@ export class NavbarComponent implements OnInit {
 
   toQRmodal(){
     this.apiservice.toQR();
+  }
+
+  username:any;
+  errormsg:any
+  forgotPass(){
+    let x:any = this.username;
+      if(x == '' || x == null){this.errormsg =('Please enter username'); this.alertservice.success(this.errormsg)}
+      else if(x != '' && x.length<5){this.errormsg =('Username is invalid'); this.alertservice.success(this.errormsg)}
+      else{
+        this.showLoader=true;
+        this.authservice.forgotPassword(x).subscribe((res:any)=>{
+          this.showLoader=false;   
+          this.newpass=false;  
+          this.username = '';     
+          if(res.Status == "Success"){ this.alertservice.success("Your password reset link has been sent to your Email.")}
+          // if(res.Status == "Failed"){this.errormsg = 'Username is invalid'; this.alertservice.success(this.errormsg)}
+          if(res.Status == "Failed"){this.errormsg = res.Message; this.alertservice.success(this.errormsg)}
+        })
+      }
+
+    // this.alertService.warning("Something went wrong! Please try later.")
+  }
+  submitprofile(){
+    this.alertservice.success("Profile edit is coming soon");
+    this.editpro =false;
   }
 
 }

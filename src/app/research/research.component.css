@@ -45,3 +45,60 @@ p{margin: 0;}
 }
 
 
+
+
+.dataTable {
+    background-color: #fff;
+    border-radius: 2px;
+    margin: 5px 10px;
+    font-family: TP, sans-serif;
+    letter-spacing: 0.2px;
+
+    border-top: 15px solid red;
+    border-image: linear-gradient(280deg, rgba(199,55,26, 0.9) 38%, rgba(12,86,164, 0.9) 86%) 1 stretch;
+
+  }
+  .dataTable .tableBox {
+    margin: 2%;
+    overflow: hidden !important;
+    display: flex;
+  }
+  .researchcontent{
+      margin: 2%;
+  }
+  .title{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5%;
+  }
+  .title img{
+      height: 50px;
+  }
+  .pagetitle{
+    font-family: SG,'sans-serif';
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+  .pagesubtitle{
+    font-family: ES,'sans-serif';
+    font-size: 18px;
+    letter-spacing: 3px;
+  }
+  .contents{
+      margin-bottom: 70px;
+  }
+  .conttitle{
+    font-family: SG,'sans-serif';
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px; 
+    margin-bottom: 20px;  
+  }
+  .contcontent{
+    font-family: TP,'sans-serif';
+    line-height: 1.8;
+  }

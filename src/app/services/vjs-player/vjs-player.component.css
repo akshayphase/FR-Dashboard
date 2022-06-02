@@ -1,7 +1,7 @@
 .video-js.vjs-fluid, .video-js.vjs-16-9, .video-js.vjs-4-3, .video-js.vjs-9-16, .video-js.vjs-1-1{
     padding: 34%; 
-    background:  rgba(28,74,130);
-    /* background: #010101; */
+    /* background:  rgba(28,74,130); */
+    background: #000000;
     border: 1px solid #7f7f7f;
 }
 .vjs-loading-spinner{
