@@ -9,6 +9,16 @@
       <feComposite in="SourceGraphic"/>
     </filter>
   </defs>
+
+
+
+    <linearGradient id="MyGradient">
+      <stop offset="5%" stop-color="#0756ce" />
+      <stop offset="95%" stop-color="#d04329" />
+	</linearGradient>
+
+
+  
   <g id="Group_146" data-name="Group 146" transform="matrix(1, 0, 0, 1, -1092.835815, -238.059692)">
     <g transform="matrix(1, 0, 0, 1, 1092.5, 237.5)" filter="url(#Rectangle_116)">
       <g id="Rectangle_116-2" data-name="edit" transform="translate(22.5 17.5)" fill="none" stroke="#00A44C" stroke-width="1">

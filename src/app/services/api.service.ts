@@ -125,6 +125,30 @@ export class ApiService {
     // });
     return this.http.post(url, body);
   }
+
+  updateHelpDeskRequest(payload:any ){
+    let url = `${this.baseurl}businessInterface/helpdesk/updateServiceRequest_1_0`;
+    var a = this.storageService.getEncrData('user');
+    var username= a.UserName;
+    let body = new FormData(); 
+    if(payload.time == null){payload.time == 'not mentioned'}
+    body.append('serviceName', payload.servicename);
+    body.append('subServiceName', payload.serviceSubCategoryName);
+    body.append('userName', username);
+    body.append('calling_System_Detail', 'portal');
+    body.append('description', payload.description);
+    body.append('priority', payload.priority);
+    body.append('preferredTimeToCall', payload.PrefTimeToCall);
+    body.append('Attachements', '');
+    body.append('accessToken', a.access_token);
+    body.append('status',payload.status);
+    body.append('remarks',payload.remarks);
+    // body.forEach((value,key) => {
+    //     console.log(key+" "+value)
+    // });
+    return this.http.post(url, body);
+  }
+
   getHelpDeskRequests(){
     let url = `${this.baseurl}businessInterface/helpdesk/getServiceReq_1_0`;
     var a = this.storageService.getEncrData('user');

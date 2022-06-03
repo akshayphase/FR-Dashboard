@@ -215,10 +215,17 @@ p{margin: 0;}
     text-transform: uppercase;
 } 
 .actions img{
-    width: 40px;
+    width: 35px;
     margin: 2px;
 }
 .shadowbox .timing{
+    margin: auto;
+    margin-right: 30px;
+    color: #000;
+    font-family: TP,sans-serif;
+    font-size: 12px;
+}
+.shadowbox .reqdescr{
     margin: auto;
     margin-right: 30px;
     color: #000;
@@ -234,11 +241,11 @@ p{margin: 0;}
     width: 40px;
 }
 .font{
-    font-size: 16px;
+    font-size: 14px;
 }
 @media screen and (max-width:660px) {
     .optionlabel3{
-        font-size: 14px;
+        font-size: 12px;
     }
     .actions img{
         width: 30px;
@@ -273,6 +280,18 @@ p{margin: 0;}
     .titleimages{
         width: 25px;
     }
+    .col-lg-9{
+        overflow: visible;
+    }
+}
+@media screen and (min-width:1450px) {
+    .tables{
+        margin-right: 7%;
+    }
+}
+#hr1{
+    width: -webkit-calc(100% - (14px));
+    margin-left: -14px;
 }
 
 
@@ -356,4 +375,135 @@ select {
 .filtertypes .accordionElements{
     font-size: 12px;
 }
+
+
+.dateinputform {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    pointer-events: all;
+    outline: none;
+    border: none;
+    background-color: #00000000;
+    width: 100%;
+  }
+  .dateinput {
+    pointer-events: none;
+    visibility: none;
+    border: #00000000;
+    outline: none;
+    background-color: #00000000;
+    color: #00000000;
+    display: none;
+    width: 100%;
+  }
+  
+
+
+:host ::ng-deep .ngb-dp-months {
+    background: rgb(180, 180, 230);
+    font-family: PS, sans-serif;
+    color: #ffffff !important;
+    font-size: 12px;
+  }
+  :host ::ng-deep .ngb-dp-month {
+    background: #104b86;
+    pointer-events: all;
+  }
+  :host ::ng-deep .the-ngb-dp-class {
+    background: rgb(248, 209, 209);
+    pointer-events: all;
+  }
+  ::ng-deep div.ngb-dp-arrow > button {
+    color: #ffffff;
+    z-index: 99;
+    pointer-events: all;
+  }
+  :host ::ng-deep .ngb-dp {
+    font-family: PS, sans-serif;
+  }
+  :host ::ng-deep ngb-datepicker {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ffffff;
+    font-family: PS, sans-serif;
+    font-size: 12px;
+
+    box-shadow: 2px 2px 0px 0px rgba(255, 255, 255, 0.96);
+  }
+  :host::ng-deep .ngb-dp-header {
+    color: #ffffff !important;
+    background: #104b86;
+  }
+  :host ::ng-deep .ngb-dp-day > .btn-light {
+    border: red;
+    background-color: #ffffff !important;
+    color: #7f7f7f !important;
+    margin: auto;
+  }
+  :host
+    ::ng-deep
+    ngb-datepicker-navigation-select.ngb-dp-navigation-select
+    > .custom-select {
+    border-radius: 10px !important;
+    background-color: #00000000;
+    color: #ffffff !important;
+    border: none;
+    text-align: center;
+  }
+  :host
+    ::ng-deep
+    ngb-datepicker-navigation-select.ngb-dp-navigation-select
+    > .custom-select
+    > option {
+    background-color: rgba(16, 75, 134, 0.6);
+    border-radius: 15px;
+    outline: none;
+  }
+  
+  :host ::ng-deep .ngb-dp-day {width: 100%;}
+  :host ::ng-deep .ngb-dp-weekday {width: 100%;}
+  :host ::ng-deep [ngbDatepickerDayView] {width: 100%;}
+  :host ::ng-deep ngb-datepicker {width: 100%;}
+  :host ::ng-deep .ngb-dp-month {width: 100%;}
+  
+  /**/
+  
+  :host ::ng-deep #months > .ngb-dp-months {display: none;}
+  :host ::ng-deep #months > .ngb-dp-header {padding: 4px; }
+  #searchinput:active > :host ::ng-deep #months {display: visible;}
+  .padd{padding: 2.5px !important; height: 49px !important;}
+  #months{position: inherit;top: 0;}
+  :host ::ng-deep #monthpicker > ngb-datepicker {width: 100%; top:33px }
+  
+
+
+.generateBtn{
+    width: 120px;
+    border: 8px solid #104B86 !important;
+    margin: 6px !important;
+}
+.modalform{font-family: PS,sans-serif}
+.servicetitle, .servicesubtitle, .servicestatus{
+    text-align: left;
+    font-size: 12px;
+    margin-left: 8px;
+}
+.servicetitle{
+    color: #104B86;
+    font-size: 13px;
+}n 
+.servicesubtitle{color: #010101;}
+.servicestatus{color: #7c7c7c;}
+.modalform .inputbox1{width: 314px !important;}
+.radios input{height: auto;}
+.radios label{margin-right: 33px; color: #767676;}
+/* .radios label:last-child{margin-right: 0;} */
+.radios{font-size: 12px;}
+.radiobox{justify-content: space-between;}
+p.form_text1>span {
+    display: inline-block;
+    min-width: 120px;
+  }
+
 

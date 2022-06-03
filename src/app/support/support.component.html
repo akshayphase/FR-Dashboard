@@ -6,7 +6,7 @@
     <div class="searchbar">
       <div class="row">
         <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;">
-          <div class="searchbox"><input type="text" placeholder="Search"><img src="assets/search.svg"></div>
+          <div class="searchbox" style="opacity: 0.1; pointer-events:none"><input type="text" placeholder="Search"><img src="assets/search.svg"></div>
         </div>
         <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1">
           <div *ngIf="support" class="title1 topTitle" style="margin:0 0 0 25px;"><span *ngIf="site">{{site.sitename}}-</span>Support
@@ -221,7 +221,7 @@
               </div>
 
               <img src="assets/filter.svg" style="padding:5px;" class="titleimages" (click)="filters()" style="margin: auto;margin-right: 25px;margin-top: -17px; margin-bottom: -17px;">
-              <img src="assets/addnewreq.svg" style="padding:5px;" class="titleimages" style="margin-right: 35px;margin-top: -17px; margin-bottom: -17px;" >
+              <img src="assets/addnewreq.svg" (click)="openaddmodal()" style="padding:5px;" class="titleimages" style="margin-right: 35px;margin-top: -17px; margin-bottom: -17px;" >
   
             </div>
             <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
@@ -245,7 +245,7 @@
                 </div>
               </div> -->
     
-              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="categories.length>1">
+              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="categories.length>0">
                 <div class="optionlabel" style="position:relative;background: #f8f8f8" (click)="togglePanel($event)"  #catlabel>
                   <div class="label">{{selectedCategory ? selectedCategory : 'Select Category'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
@@ -254,7 +254,7 @@
                 </div>
               </div>
     
-              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="subcategories.length>1">
+              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="subcategories.length>0">
                 <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)" #subcatlabel>
                   <div class="label">{{selectedSubcategory ? selectedSubcategory : 'Select Sub-Category'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
@@ -271,10 +271,25 @@
                   <div class="accordionElements" *ngFor="let item of status" (click)="selectedStatus = item; netfilter('status')"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
                 </div>
               </div>
+
+              <div class="optionlabelparent"style="overflow:visible;z-index: 5; border: 1px solid #e8e6e6; font-family:TP,sans-serif" >
+              <div class="optionlabel" Style="position:relative;background: #f8f8f8"  #statuslabel>
+                <div (click)="start.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
+                  <span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;width: auto;margin: auto; margin-left: 0;">
+                      Date : {{displaYstartDate ? displaYstartDate : 'Select'}}</span><img src="assets/calender.svg" class="calendericon"><br>
+                </div>
+                <form class="dateinputform" >
+                  <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event)" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate" >
+                </form>
+              </div>
+              </div>
     
-              <div style="text-align:center">
+              <div style="text-align:center; display: flex;">
                 <button class="generateBtn" >
                   Filter
+                </button>
+                <button class="generateBtn" >
+                  Clear
                 </button>
               </div>
     
@@ -292,20 +307,22 @@
               <!-- (click)="toggleAccordian1($event)" -->
               <div class="helpid">{{item.serviceId ? item.serviceId : ''}}</div>
               <span class="">
-                {{item.serviceCategoryName ? item.serviceCategoryName : ''}} - {{item.serviceSubCategoryName ? item.serviceSubCategoryName : ''}}
+                <span style="color: #104b86; margin:0;">{{item.accountShortName}} - </span>{{item.serviceCategoryName ? item.serviceCategoryName : ''}} - {{item.serviceSubCategoryName ? item.serviceSubCategoryName : ''}}
               </span> 
 
            <div class="actions max-center">
             <div class="">
               <button class="outline">{{item.status ? item.status : 'In Process'}}</button>
              </div>
-             <img  src="assets/editicon2.svg" alt="edit" >
+             <img  src="assets/view.svg" alt="edit" (click)="openviewmodal(item)">
+             <img  src="assets/editicon2.svg" alt="edit" (click)="openeditmodal(item)">
              <img src="assets/delete.svg" alt="edit" (click)="deleteRequest(item.serviceId)" >
            </div>
             </div>
             <div class="shadowbox">
-              <div style="padding: 0px 5px 0px 15px; font-size: 15px;">{{item.createdTime | date: 'dd MMM, yyyy'}}</div>
-              <div class="timing max-center" *ngIf="item.PrefTimeToCall">Preferred Call Time : <b>02, Nov, 2022, 05:30 PM</b></div>
+              <div style="padding: 0px 5px 0px 15px; font-size: 13px; color: #fff;">{{item.createdTime | date: 'dd MMM, yyyy'}}</div>
+              <!-- <div class="timing max-center" *ngIf="item.PrefTimeToCall">Preferred Call Time : <b>02, Nov, 2022, 05:30 PM</b></div> -->
+              <div class="reqdescr"><b>Description : </b>{{item.description}}</div>
             </div>
           </div>
         </div>
@@ -340,3 +357,273 @@
 <!-- <div style="position: fixed; top:0;" *ngIf="showAddSite">
   <app-helpdeskrequest [show]="showAddSite" (newItemEvent)="closenow($event)"></app-helpdeskrequest>
 </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div id="myModal" class="modal" #modal>
+  <div class="modal-content">
+    <div class="formtitle">Edit Requests 
+    <img src="assets/close.svg" style="cursor:pointer;float: right;" alt="edit" #close (click)="closeModel()">
+  </div>
+    <form class="form">
+        <input type="text" placeholder="Select Customer">
+        <input type="text" placeholder="Select Customer">
+        <input type="text" placeholder="Select Customer">
+        <input type="text" placeholder="Select Customer">
+        <input type="text" placeholder="Select Customer">
+        <input type="text" placeholder="Select Customer">
+        <input type="text" placeholder="Select Customer">
+        <input type="text" placeholder="Select Customer">
+
+        <div class="inputbox greybtn" (click)="inputclicked1($event)" style="position: relative; margin-bottom: 0;" >
+          <div class="question" >select</div>
+          <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
+      </div>
+      <div class="selectionbox" >
+          <div class="inputbox1 greybtn" (click)="subcatclicked($event)">name</div>
+      </div> 
+
+
+        <div style="text-align:center">
+          <button class="generateBtn">Submit</button>
+          <button class="generateBtn" (click)="closeModel()">cancel</button>
+        </div>
+    </form>
+  </div>
+</div> -->
+
+<div class="modal max-center" id="editmodal">
+  <div class="formcont max-center">
+    <div class="modalform">
+      <div class="formtitle">Edit Request - #{{requestbean.serviceId}}
+        <img src="assets/close.svg" alt="edit" #close (click)="closeEditModal()">
+      </div>
+      <div class="" style="padding:15px 30px 0 30px;">
+        <div style="display: flex;">
+          <div class="servicetitle">{{requestbean.serviceCategoryName}}</div>
+          <div class="servicestatus" style="text-align: right; margin: auto;margin-right: 0;"> {{requestbean.createdTime  | date: 'dd MMM, yyyy'}}</div>
+        </div>
+        <div class="servicesubtitle">{{requestbean.serviceSubCategoryName}}</div>  
+        <div class="servicesubtitle" style="color:#00A44C">{{requestbean.status}}</div>
+        <div>
+          <div style="display: flex;" class="radiobox" >
+            <div class="servicestatus" style="align-self: center; width:85px;">Priority  &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
+            <fieldset id="group2" class="priorityradios max-center" (select)="priorityclicked($event, 'radio')">
+              <div class="max-center radios">
+                <input type="radio" value="High Priority" name="priority" (click)="priorityradio()">
+                <label>High</label>
+              </div>
+              <div class="max-center radios">
+                <input type="radio" value="Medium Priority" name="priority" (click)="priorityradio()">
+                <label>Medium</label>
+              </div> 
+              <div class="max-center radios">
+                  <input type="radio" checked value="Low Priority" name="priority" (click)="priorityradio()">
+                  <label style="margin-right: 0;">Low</label>
+              </div>
+          </fieldset>
+          </div>
+        </div>
+      <div  style="display: flex;" class="radiobox">
+        <div class="servicestatus" style="width:112px;">Description :</div>
+        <textarea type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="requestbean.description" style="width: -webkit-fill-available;height: 50px;"></textarea>
+      </div>
+      <div  style="display: flex;" class="radiobox">
+        <div class="servicestatus" style="width:112px;">Remarks   &nbsp;  &nbsp;  &nbsp;  : </div>
+        <textarea type="text" placeholder="Remarks" [value]="requestbean.remarks" [(ngModel)]="requestbean.remarks" style="width: -webkit-fill-available;height: 50px;"></textarea>
+      </div>
+      <div>
+        <div class="max-center" style="font-size: 12px; text-align: left; margin-bottom: 5px; margin-left: 16px; justify-content: left;">
+          <input type="checkbox" id="call" #call  (click)="checkbox($event)" style="height: auto;">
+          <label for="vehicle1" style="color:#767676;">&nbsp; Preferred time to call  <span *ngIf="requestbean.PrefTimeToCall" style="color: #767676; font-size:10px;">({{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a' }})</span></label><br>
+        </div>
+        <div class="timer" style="position: relative;" *ngIf="!calldisabled">
+          <div class="setclock" (click)="opentimer()">
+              <img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time
+          </div>
+          <input type="datetime-local" [min]="mindate()" [(ngModel)]="requestbean.PrefTimeToCall" id="date" #date placeholder="Select Preferred Time" data-date-format="YYYY-MM-DD HH:mm:ss" [disabled]="calldisabled" style="border: none !important; margin-top: -27px;">
+      </div>
+     </div>
+    </div>
+      <button class="generateBtn" (click)="submitedit()">Submit</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal max-center" id="viewmodal">
+  <div class="formcont max-center">
+    <div class="modalform">
+      <div class="formtitle">View Request - #{{requestbean.serviceId}}
+        <img src="assets/close.svg" alt="edit" #close (click)="closeviewModal()">
+      </div>
+      <div class="" style="padding:15px 30px 0 30px;">
+        <div style="display: flex;">
+          <div class="servicetitle">{{requestbean.serviceCategoryName}}</div>
+          <div class="servicestatus" style="text-align: right; margin: auto;margin-right: 0;"> {{requestbean.createdTime  | date: 'dd MMM, yyyy'}}</div>
+        </div>
+        <div class="servicesubtitle">{{requestbean.serviceSubCategoryName}}</div>
+
+        <!-- <div style="display: flex;"> -->
+  
+          <div class="servicesubtitle" style="color:#00A44C">{{requestbean.status}}</div>
+        <!-- </div> -->
+        <!-- <div style="display: grid; grid-template-columns: repeat(2,1fr);">
+          <div class="servicestatus">Created Date :</div>
+          <div class="servicestatus" style="text-align: right;"> {{requestbean.createdTime  | date: 'dd MMM, yyyy'}}</div>
+        </div> -->
+
+        <div>
+          <div style="display: flex;" class="" >
+            <div class="servicestatus" style="align-self: center; width:85px;">Priority   &nbsp;   &nbsp;   &nbsp;   &nbsp;  &nbsp;:</div>
+            <div class="servicestatus">{{requestbean.priority}}</div>
+          </div>
+        </div>
+      <!-- <input type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="requestbean.description"> -->
+      <div>
+        <div style="display: flex;" class="" >
+          <div class="servicestatus" style="align-self: center; width:85px;">Description :</div>
+          <div class="servicestatus">{{requestbean.description}}</div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex;" class="" >
+          <div class="servicestatus" style="width:112px;">Remarks &nbsp; &nbsp;  &nbsp; : </div>
+          <div class="servicestatus">{{requestbean.remarks}}</div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex;" class="" >
+          <div class="servicestatus" >Preferred time to call : </div>
+          <div class="servicestatus">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a'}}</div>
+        </div>
+      </div>
+     <!-- <textarea type="text" placeholder="Remarks" [value]="requestbean.remarks" [(ngModel)]="requestbean.remarks" style="width: -webkit-fill-available;height: 50px;"></textarea> -->
+    </div>
+    <div class="servicestatus" >&nbsp;</div>
+      <!-- <button class="generateBtn" (click)="closeviewModal()">Close</button> -->
+      <!-- <button class="generateBtn" (click)="closeModal()">cancel</button> -->
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal max-center" id="addmodal">
+  <div class="formcont max-center">
+    <div class="modalform">
+      <div class="formtitle">Add Request
+        <img src="assets/close.svg" alt="edit" #close (click)="closeAddModal()">
+      </div>
+      <div class="" style="padding:15px 30px 0 30px;">
+
+        <div>
+          <div style="display: flex;" class="" >
+            <div class="servicestatus" style="align-self: center; width:100px;">Service&nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
+            <div style="width:-webkit-fill-available;">
+              <div class="inputbox greybtn" (click)="inputclicked1($event);" style="position: relative; margin-bottom: 0; width: -webkit-fill-available;">
+                <div class="question" >{{ currentaddcat.catName }}</div>
+                <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
+              </div>
+              <div class="selectionbox" *ngIf="visible1">
+                <div class="inputbox1 greybtn" style="width: 232px !important;" (click)="issueclicked($event, item)" *ngFor="let item of catsforadd">{{item.catName}}</div>
+                <!-- <div class="inputbox1 greybtn" style="width: 232px !important;">Medium Priority</div>
+                <div class="inputbox1 greybtn" style="width: 232px !important;">Low Priority</div> -->
+              </div> 
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="currentaddcat?.subCategoryList?.length>0">
+          <div style="display: flex;" class="" >
+            <div class="servicestatus" style="align-self: center; width:100px;">Service&nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
+            <div style="width:-webkit-fill-available;">
+              <div class="inputbox greybtn" (click)="inputclicked2($event);" style="position: relative; margin-bottom: 0; width: -webkit-fill-available;">
+                <div class="question" >{{ currentaddsubcat?.serviceSubcatName }}</div>
+                <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
+              </div>
+              <div class="selectionbox" *ngIf="visible2">
+                <div class="inputbox1 greybtn" style="width: 232px !important;" (click)="subcatclicked($event, item)" *ngFor="let item of currentaddcat.subCategoryList">{{item.serviceSubcatName}}</div>
+                <!-- <div class="inputbox1 greybtn" style="width: 232px !important;">Medium Priority</div>
+                <div class="inputbox1 greybtn" style="width: 232px !important;">Low Priority</div> -->
+              </div> 
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display: flex;" class="radiobox" >
+            <div class="servicestatus" style="align-self: center; width:85px;">Priority  &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
+            <fieldset id="group2" class="priorityradios max-center" (select)="priorityclicked($event, 'radio')">
+              <div class="max-center radios">
+                <input type="radio" value="High Priority" name="priority" (click)="priorityradio()">
+                <label>High</label>
+              </div>
+              <div class="max-center radios">
+                <input type="radio" value="Medium Priority" name="priority" (click)="priorityradio()">
+                <label>Medium</label>
+              </div> 
+              <div class="max-center radios">
+                  <input type="radio" checked value="Low Priority" name="priority" (click)="priorityradio()">
+                  <label style="margin-right: 0;">Low</label>
+              </div>
+          </fieldset>
+          </div>
+        </div>
+      <!-- <input type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="requestbean.description"> -->
+      <div  style="display: flex;" class="radiobox">
+        <div class="servicestatus" style="width:112px;">Description :</div>
+        <textarea type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="adddescription" style="width: -webkit-fill-available;height: 50px;"></textarea>
+      </div>
+      <div  style="display: flex;" class="radiobox">
+        <div class="servicestatus" style="width:112px;">Remarks   &nbsp;  &nbsp;  &nbsp;  : </div>
+        <textarea type="text" placeholder="Remarks" [value]="addremark" [(ngModel)]="addremark" style="width: -webkit-fill-available;height: 50px;"></textarea>
+      </div>
+      <div>
+        <!-- <div class="servicestatus" style="margin: 10px 0 0 22px;">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a' }}</div> -->
+        <div class="max-center" style="font-size: 12px; text-align: left; margin-bottom: 5px; margin-left: 16px; justify-content: left;">
+          <input type="checkbox" id="call" #call  (click)="checkbox($event)" style="height: auto;">
+          <label for="vehicle1" style="color:#767676;">&nbsp; Preferred time to call  <span *ngIf="addtime" style="color: #767676; font-size:10px;">({{addtime | date: 'dd MMM, yyyy - HH:mm a' }})</span></label><br>
+        </div>
+        <div class="timer" style="position: relative;" *ngIf="!calldisabled">
+          <div class="setclock" (click)="opentimer()">
+              <img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time
+          </div>
+          <input type="datetime-local" [min]="mindate()" [(ngModel)]="addtime" id="date" #date placeholder="Select Preferred Time" data-date-format="YYYY-MM-DD HH:mm:ss" [disabled]="calldisabled" style="border: none !important; margin-top: -27px;">
+      </div>
+     </div>
+    </div>
+      <button class="generateBtn" (click)="addreq()">Submit</button>
+      <!-- <button class="generateBtn" (click)="closeModal()">cancel</button> -->
+    </div>
+  </div>
+</div>
+
+
+

@@ -131,7 +131,7 @@
                             <tbody *ngFor="let data of report.data">
                               <tr class="tableElements">
                                 <th scope="row"><p><img class="icon" [src]="'http://ec2-34-201-14-199.compute-1.amazonaws.com/reports/assets/img/icons/'+data.icon" onerror="this.src='assets/eye.svg';">{{data.type}}</p></th>
-                                <td *ngFor="let col of getcols(report);">{{data[col.field] ? data[col.field] : '-'}}</td>
+                                <td *ngFor="let col of getcols(report);">{{data[col.field] ? data[col.field] : 'N/A'}}</td>
                               </tr>
                             </tbody>
                           </table>

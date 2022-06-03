@@ -64,7 +64,7 @@
       <p class="modaldetails"><img src="assets/mail.svg" style="width: 10px;" alt=""> : {{data?.email ? data?.email : 'Email to be updated'}}</p>
     </div>
 
-    <div class="profilebtn" (click)="editpro=!editpro">
+    <div class="profilebtn" (click)="editpro=!editpro; openprofile=!openprofile;openModal()">
       <!-- <div class="profilebtn" (click)="editpro=!editpro" > -->
         <img src="assets/pencil.svg" alt="">
       Edit Profile
@@ -113,3 +113,39 @@
 
 
 
+  
+<div class="modal max-center" id="editmodal1">
+  <div class="formcont max-center">
+    <div class="modalform">
+      <div class="formtitle">Edit Profile
+        <img src="assets/close.svg" alt="edit" #close (click)="closeModal();">
+      </div>
+      <div class="grid">
+        <input type="text" placeholder="first name" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="last name" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="address line 1" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="address line 2" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="city" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="state" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="pincode" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="country" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="phone number 1" maxlength="25" minlength="5" style="box-shadow: none;">
+        <input type="text" placeholder="phone number 2" maxlength="25" minlength="5" style="box-shadow: none;">
+
+        <!-- <div>
+          <div class="inputbox greybtn" (click)="inputclicked1($event);" style="position: relative; margin-bottom: 0;">
+            <div class="question" >Hello</div>
+            <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
+          </div>
+          <div class="selectionbox" *ngIf="visible1">
+            <div class="inputbox1 greybtn">item</div>
+            <div class="inputbox1 greybtn">item</div>
+            <div class="inputbox1 greybtn">item</div>
+          </div> 
+        </div> -->
+      </div>
+      <button class="profilemodalbtn">Submit</button>
+      <!-- <button class="profilemodalbtn" (click)="closeModal()">cancel</button> -->
+    </div>
+  </div>
+</div>

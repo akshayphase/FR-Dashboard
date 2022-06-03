@@ -28,8 +28,8 @@
                     <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
                 </div>
                 <div class="selectionbox" *ngIf="visible" >
-                    <div class="inputbox1 greybtn" *ngFor="let item of categories" (click)="issueclicked($event, item)">{{item.catName}}</div>
-                    <div class="inputbox1 greybtn"  (click)="issueclicked($event, {catName:'other', subCategoryList:[]})">Other</div>
+                    <div class="inputbox1 greybtn" *ngFor="let item of categories" (click)="issueclicked($event, item)" >{{item.catName}}</div>
+                    <!-- <div class="inputbox1 greybtn"  (click)="issueclicked($event, {catName:'other', subCategoryList:[]})">Other</div> -->
                     <!-- <div class="inputbox1" (click)="issueclicked($event, 'Insight')">Issue with Insight</div> -->
                 </div>
 

@@ -85,8 +85,6 @@ export class ChatpopupComponent implements OnInit {
       this.currentsubcategory = [];
      }
     });
-
- 
   }
 
   time:any;

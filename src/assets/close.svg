@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="86.569" height="86.569" viewBox="0 0 86.569 86.569">
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="86.569" height="86.569" viewBox="0.403 0.403 40.667 40.566" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="Rectangle_130" x="0" y="0" width="86.569" height="86.569" filterUnits="userSpaceOnUse">
       <feOffset dx="5" dy="5" input="SourceAlpha"/>
@@ -8,7 +9,7 @@
       <feComposite in="SourceGraphic"/>
     </filter>
   </defs>
-  <g id="Group_101" data-name="Group 101" transform="translate(-719.734 -929.038) rotate(45)">
+  <g id="Group_101" data-name="Group 101" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, -737.551147, -946.855164)">
     <g transform="matrix(0.71, -0.71, 0.71, 0.71, 1165.86, 148)" filter="url(#Rectangle_130)">
       <g id="Rectangle_130-2" data-name="Rectangle 130" transform="translate(38.28 10) rotate(45)" fill="#fff" stroke="#efefef" stroke-width="1">
         <rect width="40" height="40" rx="20" stroke="none"/>

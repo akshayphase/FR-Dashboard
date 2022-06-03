@@ -155,4 +155,22 @@ export class NavbarComponent implements OnInit {
     this.editpro =false;
   }
 
+
+
+  
+  visible1=false
+  openModal(){
+    var x = <HTMLElement>document.getElementById('editmodal1')
+    x.style.display = "block";
+  }
+  closeModal(){
+    var x = <HTMLElement>document.getElementById('editmodal1')
+    x.style.display = "none";
+  }
+  inputclicked1(e:any){
+    this.visible1=!this.visible1
+  }
+  subcatclicked(t:any){
+  }
+
 }
