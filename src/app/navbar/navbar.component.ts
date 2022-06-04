@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { AlertService } from '../services/alertservice/alert-service.service';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth/authservice.service';
@@ -16,6 +17,8 @@ export class NavbarComponent implements OnInit {
   @ViewChild('profile') profile: ElementRef;
   @ViewChild('profilebtn') profilebtn: ElementRef;
   
+  profileopened$=new BehaviorSubject<boolean>(false);
+
 
   isloggedin: any
 
@@ -26,13 +29,15 @@ export class NavbarComponent implements OnInit {
     private apiservice:ApiService,
     private alertservice:AlertService,
     private renderer1: Renderer2) {
-     
     }
 
   startlistenForProfile(){
     this.renderer1.listen('window', 'click',(e:Event)=>{
-      if(!this.profilebtn.nativeElement.contains(e.target) && !this.profile.nativeElement.contains(e.target)) {
-      this.openprofile=false;
+      // console.log(e.target)
+      if(this.openprofile == true){
+        if(!this.profilebtn.nativeElement.contains(e.target) && !this.profile.nativeElement.contains(e.target)) {
+          this.openprofile=false;
+          }
       }
     });
   }
@@ -50,10 +55,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {  
     this.check();
     this.data = this.storageService.getEncrData('user');
+    
   }
   data:any;
   ngAfterViewInit(){
     this.getsiteservices();
+    this.startlistenForProfile()
   }
 
 
@@ -111,7 +118,6 @@ export class NavbarComponent implements OnInit {
     var y = (document.getElementsByClassName('backdrop') as HTMLCollectionOf<HTMLElement>);
     (y[0]).style.display = "none";    
   }
-
   
   logout() {
     this.showLoader = true;

@@ -38,8 +38,8 @@ export class LoginComponent implements OnInit {
     }
     if(this.apiService.error != ''){
       // this.errormsg = this.apiService.error;
-      this.cdr.detectChanges();
       this.showsessionerror=true;
+      this.cdr.detectChanges();
     }
     
     // var x = this.storageService.getEncrData('user')

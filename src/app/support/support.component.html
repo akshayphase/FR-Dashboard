@@ -207,7 +207,6 @@
         <div *ngIf="support">
           <div class="title1" style="position: relative;">
             Requests <span *ngIf="filtereddata.length > 0"> - {{filtereddata.length}}</span>
-
             <div class="cluster">
               <div style="display: flex; margin-left: 40px" class="paginate" *ngIf="filtereddata.length > paginatesize">
                 <img src="assets/arrow.svg" style="transform: rotate(180deg);" (click)="previousPage()" alt="prev" [className]="pagenumber == 1 ? 'fade': '' ">
@@ -234,16 +233,17 @@
             <div class="filtertypes" >
               <span></span>
               <span style="font-family: PS,sans-serif;text-transform: uppercase;color: #104B86;letter-spacing: 0; padding:0; padding-left: 10px;">Filter Requests :</span>
-              <!-- <div class="optionlabelparent"   style="z-index: 5; border: 1px solid #e8e6e6;">
+              
+              
+              <div class="optionlabelparent"   style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="totalsites.length>1">
                 <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)">
-                  <img src="assets/eye.svg" style="width: 20px;" alt="ivisSecurity"><div class="label"> Select Quarter</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                   <div class="label"> Select Site</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
                 <div class="panel" hide="!item.isActive">
                   <div class="accordionElements" > <span class="dot"></span><p style="margin: 0 0 0 20px">item1</p>   </div>
                   <div class="accordionElements" > <span class="dot"></span><p style="margin: 0 0 0 20px">item1</p>   </div>
                 </div>
-              </div> -->
+              </div>
     
               <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="categories.length>0">
                 <div class="optionlabel" style="position:relative;background: #f8f8f8" (click)="togglePanel($event)"  #catlabel>
@@ -254,7 +254,7 @@
                 </div>
               </div>
     
-              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="subcategories.length>0">
+              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="selectedCategory && subcategories.length>0">
                 <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)" #subcatlabel>
                   <div class="label">{{selectedSubcategory ? selectedSubcategory : 'Select Sub-Category'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
@@ -279,16 +279,28 @@
                       Date : {{displaYstartDate ? displaYstartDate : 'Select'}}</span><img src="assets/calender.svg" class="calendericon"><br>
                 </div>
                 <form class="dateinputform" >
-                  <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event)" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate" >
+                  <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'start')" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate" >
                 </form>
               </div>
               </div>
+
+              <div class="optionlabelparent"style="overflow:visible;z-index: 5; border: 1px solid #e8e6e6; font-family:TP,sans-serif" *ngIf="displaYstartDate">
+                <div class="optionlabel" Style="position:relative;background: #f8f8f8"  #statuslabel>
+                  <div (click)="start1.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
+                    <span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;width: auto;margin: auto; margin-left: 0;">
+                        Date : {{displaYendDate ? displaYendDate : 'Select'}}</span><img src="assets/calender.svg" class="calendericon"><br>
+                  </div>
+                  <form class="dateinputform" >
+                    <input type="text" ngbDatepicker #start1="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'end')" [minDate]="minenddate" [maxDate]="maxDate" >
+                  </form>
+                </div>
+                </div>
     
               <div style="text-align:center; display: flex;">
-                <button class="generateBtn" >
-                  Filter
+                <button class="generateBtn" (click)="applysearchfilters()">
+                  Search
                 </button>
-                <button class="generateBtn" >
+                <button class="generateBtn" (click)="clearsearchfilters()">
                   Clear
                 </button>
               </div>
@@ -508,19 +520,22 @@
       <div>
         <div style="display: flex;" class="" >
           <div class="servicestatus" style="align-self: center; width:85px;">Description :</div>
-          <div class="servicestatus">{{requestbean.description}}</div>
+          <div class="servicestatus">{{requestbean.description ? requestbean.description : 'N/A'}}</div>
         </div>
       </div>
       <div>
         <div style="display: flex;" class="" >
-          <div class="servicestatus" style="width:112px;">Remarks &nbsp; &nbsp;  &nbsp; : </div>
-          <div class="servicestatus">{{requestbean.remarks}}</div>
+          <div class="servicestatus" style="width:85px;">Remarks &nbsp; &nbsp;  &nbsp; : </div>
+          <div class="servicestatus">{{requestbean.remarks ? requestbean.remarks : 'N/A'}}</div>
         </div>
       </div>
       <div>
         <div style="display: flex;" class="" >
           <div class="servicestatus" >Preferred time to call : </div>
-          <div class="servicestatus">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a'}}</div>
+          <div class="servicestatus">
+            <span *ngIf="requestbean.PrefTimeToCall">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a'}}</span>
+            <span *ngIf="!requestbean.PrefTimeToCall">N/A</span>
+          </div>
         </div>
       </div>
      <!-- <textarea type="text" placeholder="Remarks" [value]="requestbean.remarks" [(ngModel)]="requestbean.remarks" style="width: -webkit-fill-available;height: 50px;"></textarea> -->

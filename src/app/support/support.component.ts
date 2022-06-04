@@ -70,7 +70,7 @@ export class SupportComponent implements OnInit {
   }
   pagination(){
     this.selector();
-    var requests = this.requests;
+    var requests = this.filtereddata;
     var x;
     var y = Number(this.pagenumber)
     x = y-=1
@@ -83,6 +83,7 @@ export class SupportComponent implements OnInit {
   requests:any=[];
   categories:any=[];
   subcategories:any=[];
+  totalsites:any=[];
   status:any=[];
   getHelpDeskRequests(){
     this.showLoader=true;
@@ -93,12 +94,13 @@ export class SupportComponent implements OnInit {
       // console.log(res)
       if(res.Status == "Success"){
         this.requests = res?.helpDeskList;
-        this.requests = (this.requests.filter(function(e:any) { return e.status !== 'Deleted' }))
+        this.requests = (this.requests.filter(function(e:any) { return e.status !== 'Deleted' })).reverse();
         const a = res?.helpDeskList.filter(function(e:any) { return e.status !== 'Deleted' });
-        this.pagination();
         // var b = a.splice(a.findIndex((e:any) => e.status === "Deleted"),1);
         this.filtereddata = a;
         this.getfilterdata(a);  
+        this.pagination();
+
         if(a.length == 0){
           this.placeholder = "There are no requests for this site."
         }
@@ -122,7 +124,6 @@ export class SupportComponent implements OnInit {
       this.getHelpDeskRequests();
     })
   }
-
   getfilterdata(a:any){
     const cde = Array.from(a.reduce((m:any, 
       {serviceCategoryName}:{serviceCategoryName:any} ) => m.set(serviceCategoryName, (m.get(serviceCategoryName) || 0)), 
@@ -138,7 +139,13 @@ export class SupportComponent implements OnInit {
       {status}:{status:any} ) => m.set(status, (m.get(status) || 0)), 
       new Map), ([status]) => ({status}));
       hij.forEach(el1 => {this.status.push(el1.status)});  
+
+    const klm = Array.from(a.reduce((m:any, 
+      {accountShortName}:{accountShortName:any} ) => m.set(accountShortName, (m.get(accountShortName) || 0)), 
+      new Map), ([accountShortName]) => ({accountShortName}));
+      klm.forEach(el1 => {this.totalsites.push(el1.accountShortName)}); 
   }
+  selectedsite:any;
   selectedCategory:any;
   selectedSubcategory:any;
   selectedStatus:any;
@@ -165,26 +172,64 @@ export class SupportComponent implements OnInit {
     // }
     this.pagination();
   }
+  applysearchfilters(){
+    // console.log(this.selectedsite,this.selectedCategory,this.selectedSubcategory,this.selectedStatus,this.startDate, this.endDate)
+    var sitefilter;
+    var catfilter;
+    var subcatfilter;
+    var datefilter;
+    var rawdata;
+    
+    rawdata= (this.requests.filter(function(e:any) { return e.status !== 'Deleted' })).reverse();
+    // console.log(rawdata)
+    if(this.selectedsite){sitefilter = rawdata.filter((el:any) => { return el.accountShortName === this.selectedsite })  }
+    else{sitefilter = rawdata}
+    // console.log(sitefilter)
+    if(this.selectedCategory){catfilter = sitefilter.filter((el:any) => { return el.serviceCategoryName === this.selectedCategory })}
+    else{catfilter = sitefilter}
+    // console.log(catfilter)
+    if(this.selectedSubcategory){subcatfilter = catfilter.filter((el:any) => { return el.serviceSubCategoryName === this.selectedSubcategory })}
+    else{subcatfilter = catfilter}
+    // console.log(subcatfilter)
+    if(this.startDate){
+      var startDate = new Date(this.displaYstartDate);
+      var endDate = new Date(this.displaYendDate);
+      endDate.setDate(endDate.getDate() + 1);
+      var datefilter = subcatfilter.filter((a:any)=>{
+        var aDate = new Date(a.createdTime);
+        // console.log(startDate, endDate);
+        return aDate <= endDate && aDate >= startDate ;
+      })
+    }else{datefilter = subcatfilter}
+    // console.log(datefilter)  
+    this.filtereddata = datefilter;
+    console.log(datefilter)
+  }
+  clearsearchfilters(){}
+  
   filter(){
     var abc:any =[];
     if(this.selectedCategory == "Other")
     abc = this.requests.filter((e:any)=> { return e.serviceCategoryName == this.selectedCategory });
   }
   startDate:any;
+  endDate:any;
   displaYstartDate:any;
+  displaYendDate:any;
   maxDate:any;
+  minenddate:any;
 
-  onDateSelect(event:any){
+  onDateSelect(event:any,select:any){
     var x = event.day;
     var y = event.month;
     var a;
     var b;
+    console.log(select)
     if(x<10){a = '0' + x;} else{ a = x };
     if(y<10){b = '0' + y;} else { b = y };
-    this.displaYstartDate = a+'/'+b+'/'+ event.year;
-    // if(select == 'end'){this.endDate = a+'/'+b+'/'+ event.year; this.displaYendDate=b+'/'+a+'/'+ event.year};
-    // if(select == 'start'){this.startDate = a+'/'+b+'/'+ event.year; this.displaYstartDate=b+'/'+a+'/'+ event.year;
-    // this.minenddate={year: event.year, month: event.month, day: event.day};};
+    if(select == 'end'){this.endDate = a+'/'+b+'/'+ event.year; this.displaYendDate=b+'/'+a+'/'+ event.year};
+    if(select == 'start'){this.startDate = a+'/'+b+'/'+ event.year; this.displaYstartDate=b+'/'+a+'/'+ event.year;
+    this.minenddate={year: event.year, month: event.month, day: event.day};};
   }
 
   openfaq(){
@@ -292,7 +337,7 @@ export class SupportComponent implements OnInit {
   show = false;
   filters() {
     // console.log("hello")
-    // this.show = !this.show;
+    this.show = !this.show;
   }
   showAddSite = false;
   closenow(value:any) {

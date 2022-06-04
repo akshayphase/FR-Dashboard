@@ -225,8 +225,7 @@ export class InsightComponent implements OnInit {
   }
   datesarr = ["2022-05-02","2022-05-03","2022-05-21","2022-05-24","2022-05-11","2022-05-06"];
   dates(arr:any[]){
-    console.log(arr)
-    // console.log(arr);
+    // console.log(arr)
     arr.forEach(el => {
       var splits:any = el.split("-"); 
       var newdate;

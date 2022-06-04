@@ -46,13 +46,7 @@ export class ChatpopupComponent implements OnInit {
     private alertService:AlertService,
     private storageservice: StorageService,
     private renderer: Renderer2) {
-      // this.renderer.listen('window', 'click',(e:Event)=>{
-      //       if(!this.popupbox.nativeElement.contains(e.target) && !this.popupbox.nativeElement.contains(e.target)) {
-      //       this.visibility=false;
-      //   }
-      // });
-    
-
+   
     this.router.events.subscribe((event)=>{
       if ( event instanceof RoutesRecognized ) {
         this.currentpage = (event.state.root.firstChild?.data['routeName']);
@@ -60,9 +54,22 @@ export class ChatpopupComponent implements OnInit {
     });
 
   }
+
+  // startlistenerforpopup(){
+  //   this.renderer.listen('window', 'click',(e:Event)=>{
+  //     // if(!this.profilebtn.nativeElement.contains(e.target) && !this.profile.nativeElement.contains(e.target)) {
+
+  //         if(!this.popupbox.nativeElement.contains(e.target) && !this.popupbox.nativeElement.contains(e.target)) {
+  //         this.visibility=false;
+  //     }
+  //   });
+  // }
+
   ngOnInit(): void {
     this.gethelpDeskCategories();
     this.user = this.storageservice.getEncrData("user");
+    // this.startlistenerforpopup();
+
   }
 
   categories:any;
