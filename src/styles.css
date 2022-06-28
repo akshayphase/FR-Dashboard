@@ -63,7 +63,7 @@ input, textarea {caret-color: #e1e1e1;}
 @media screen and (min-width:992px){
 .col-lg-3{width: 20% !important;}
 .col-lg-9{width: 79% !important;}
-.searchbox{margin: 6px 2.4% 6px 34px !important; padding: 5px !important;}
+.searchbox{margin: 6px 2.4% 6px 34px !important; padding: 3px !important;}
 
 }
 .searchbox{margin: 5px 5px !important;}
@@ -77,20 +77,20 @@ input, textarea {caret-color: #e1e1e1;}
 
 @media screen and (min-width:992px) {
   .grid-container, .tables{
-    max-height: -webkit-calc(100vh - (195px));
+    max-height: calc(100vh - (188px));
     /* max-height: -webkit-calc(100vh - (225px)); */
     overflow-y: scroll;
   }
   .col-lg-3{
     direction: rtl;
-    max-height: -webkit-calc(100vh - (133px));
+    max-height: calc(100vh - (133px));
     overflow-y: scroll;
   }
   .optionlabelparent{direction: ltr;}
   .optionlabel{direction: ltr;}
   .searchbox{direction: ltr;}
   .title1{direction: ltr;}
-  .searchbar > .row > .col-lg-3{margin-left: 5px;}
+  .searchbar > .row > .col-lg-3{margin-left: 5px;overflow: hidden;}
 }
 .cont .row{
   margin: 0;
@@ -108,7 +108,7 @@ input, textarea {caret-color: #e1e1e1;}
 .title1{
   width: -webkit-fill-available;
   letter-spacing: 5px;
-  margin: 8px 0 0px 10px;
+  margin: 4px 0 0px 10px;
   /* margin: 15px 0 10px 55px; */
   font-size: 16px;
   color: #fff;
@@ -123,6 +123,7 @@ input, textarea {caret-color: #e1e1e1;}
   border: 0.5px solid #ffffff;
   opacity: 1;
   width: 100%;
+  margin-top: 12px;
   margin-left: -25px;
 }
 .optionlabelparent{
@@ -150,7 +151,7 @@ input, textarea {caret-color: #e1e1e1;}
   overflow: hidden;
   white-space: nowrap;
   /* max-width: 75%; */
-  width: -webkit-calc(100% - (40px));
+  width: calc(100% - (40px));
   font-family: TP,sans-serif;
 }
 .optionlabel img{
@@ -362,7 +363,7 @@ p{
   display: flex;
 }
 .searchbox input{
-  width: -webkit-calc(100% - (36px)) !important;
+  width: calc(100% - (36px)) !important;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -386,7 +387,7 @@ textarea:focus, input:focus{
   outline: none;
 }
 .searchbox img{
-  width: 16px;
+  width: 10px;
 }
 
 /* Searchbar CSS ends here */
@@ -759,4 +760,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 #date{
   width: 120px;
   margin: auto;
+}
+.searchbox input::placeholder{
+  font-size: 12px !important;
 }

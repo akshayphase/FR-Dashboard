@@ -69,14 +69,17 @@ export class ChatpopupComponent implements OnInit {
     this.gethelpDeskCategories();
     this.user = this.storageservice.getEncrData("user");
     // this.startlistenerforpopup();
-
+ 
   }
 
   categories:any;
   currentcategory:any;
   currentsubcategory:any;
   selectedSubcategory:any;
-  currentpriority = 'Low Priority';
+  currentpriority = 'Low';
+
+  showcategories:any;
+  showsubcats:any;
   gethelpDeskCategories(){
     this.apiService.getHelpDeskCategories().subscribe((res:any)=>{
      if(res.Status=="Success"){
@@ -84,8 +87,8 @@ export class ChatpopupComponent implements OnInit {
       this.categories = (this.unique(a,'catName'))
       this.currentcategory = this.categories[0];
       this.currentsubcategory = this.categories[0].subCategoryList[0];
-      // console.log(this.currentsubcategory)
-      // console.log(this.categories)
+      this.showcategories = this.categories.filter((item:any)=> item.catName !== this.currentcategory.catName)
+      this.showsubcats = this.currentcategory.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentsubcategory.serviceSubcatName)
      }else{
       this.categories = []
       this.currentcategory = [];
@@ -96,6 +99,13 @@ export class ChatpopupComponent implements OnInit {
 
   time:any;
   addHelpDeskRequest(){
+    if(this.calldisabled == false && this.time == null){
+      this.alertService.success('Alert', 'Please select preferred time')
+    }else{
+      this.addHelpDeskRequest1();
+    }
+  }
+  addHelpDeskRequest1(){
     // console.log(this.currentcategory);
     // console.log(this.currentsubcategory);
     if(this.currentsubcategory == null){
@@ -116,11 +126,18 @@ export class ChatpopupComponent implements OnInit {
     }
     // console.log(payload)
     this.apiService.addHelpDeskRequest(payload).subscribe((res:any)=>{
-      // console.log(res);
+      if(res.Status == "Success"){
+          // console.log(res);
       setTimeout(()=>{ this.showLoader = false; this.submitted = !this.submitted;}, 1000);
       setTimeout(()=>{this.visibility = false;},5000);
-      this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
+      // this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
       this.showLoader = false;
+      setTimeout(() => {
+        if(this.currentpage == 'Support'){
+          window.location.reload();
+        }
+      }, 2000);
+      }
     });
   }
   unique(arr:any, key:any) {
@@ -128,45 +145,53 @@ export class ChatpopupComponent implements OnInit {
   } 
   showPopUp(){
     this.visibility = !this.visibility;
+    // this.alertService.success("Testing"," Alert messages will appear here.")
+
     this.selected = false;
     if(this.submitted = true){
       this.submitted = !this.submitted;
     }
   }
-  change(e:any){
-    this.body = (e.target.value)
-  }
+  // change(e:any){
+  //   this.body = (e.target.value)
+  // }
+  message:any;
   submit(type:any){
     this.showLoader = true; 
     var site = this.storageservice.getEncrData('siteidfromgaurdpage');
-    if(this.body !=null && site.siteid !=null){
+    if((this.body !=null && site.siteid !=null) && this.body != ''){
       this.addHelpDeskRequest();
       
     }else{
       this.showLoader=false;
-      this.alertService.warning("Please enter the request")
+      this.message = 'Please provide request description'
+      this.error = true;
+      // this.openalertModal();
+      // this.alertService.warning("Warning","Please provide request description");
     }
     // var x:string;
     // if(type == 'troubleshooting'){ x = "Issue with " + this.currentpage; this.send(x)}
     // if(type == 'feedback'){ x = "Feedback Request"; this.send(x)}
   }
+  error = false;
   send(subject:string){
     if(this.body != '' && this.body != null && this.body != undefined){
       this.apicall(subject)
     }else{
       this.showLoader=false;
-      this.alertService.warning("Please enter the request")
+      this.alertService.warning( "Warning","Please enter the request")
+      this.error = true;
     }
   }
   apicall(subject:string){
     this.apiService.sendEmail(this.body, subject).subscribe((res:any)=>{
       setTimeout(()=>{ this.showLoader = false; this.submitted = !this.submitted;}, 1000);
       setTimeout(()=>{this.visibility = false;},5000)
-      this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
+      // this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
       // console.log(res) // Status: success
     },(error)=>{
       this.showLoader=false;
-      this.alertService.success("Something went wrong. Please try again later.")
+      this.alertService.success("Warning","Something went wrong. Please try again later.")
     })
   }
   toFeedback(){
@@ -210,13 +235,16 @@ export class ChatpopupComponent implements OnInit {
     this.currentcategory = cat;
     this.visible = !this.visible;
     this.currentsubcategory = this.currentcategory.subCategoryList[0];
+    this.showcategories = this.categories.filter((item:any)=> item.catName !== this.currentcategory.catName)
+    this.showsubcats = this.currentcategory.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentsubcategory.serviceSubcatName)
   }
   subcatclicked(e:any, scat:any){
     var x = (e.target.parentNode.previousElementSibling);
     x.style.borderRadius = "8px"
     // this.currentpage = str;
     this.currentsubcategory = scat;
-    this.visible1 = !this.visible1
+    this.visible1 = !this.visible1  
+    this.showsubcats = this.currentcategory.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentsubcategory.serviceSubcatName)
   }
   priorityclicked(e:any, priority:any){
     var x = (e.target.parentNode.previousElementSibling);
@@ -282,6 +310,10 @@ export class ChatpopupComponent implements OnInit {
     this.date.nativeElement
     this.date.nativeElement.focus();
   }
+  preftime(type:any){
+    if(type == 'yes'){this.calldisabled = false}
+    if(type == 'no'){this.calldisabled = true}
+  }
 
   mindate(){
     var today:any = new Date();
@@ -303,4 +335,33 @@ export class ChatpopupComponent implements OnInit {
     today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
     return today;
   }
+
+
+
+@ViewChild ("chatpopup") popupmodal:ElementRef;
+@HostListener('document:mousedown', ['$event'])
+onGlobalClick(e:any): void {
+  var x = <HTMLElement>document.getElementById('warningmodal')
+  if(x.style.display == "none"){
+    if(this.visibility){
+      if (!this.popupmodal.nativeElement.contains(e.target)) {
+        this.visibility=!this.visibility;
+        this.calldisabled = true;
+        this.time = null;
+     }else{}
+    }
+  }
+ 
+}
+
+
+closealertModal(){
+  var x = <HTMLElement>document.getElementById('warningmodal')
+  x.style.display = "none";
+}
+openalertModal(){
+  var x = <HTMLElement>document.getElementById('warningmodal')
+  x.style.display = "block";
+}
+
 }

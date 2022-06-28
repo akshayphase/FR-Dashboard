@@ -10,13 +10,14 @@ import { AlertService } from '../alert-service.service';
 export class AlertComponent implements OnInit {
   private subscription: Subscription;
   message: any;
+  title:any;
 
   constructor(private alertService: AlertService) {
     var timer: any = null;
     // subscribe to alert messages
     this.subscription = alertService.getMessage().subscribe(message => {
       if (timer) {clearTimeout(timer); timer = null;}
-      timer = setTimeout(()=>{this.closeMessage()}, 5000);
+      // timer = setTimeout(()=>{this.closeMessage()}, 5000);
       this.message = message;
       timer;
     });
@@ -30,4 +31,11 @@ export class AlertComponent implements OnInit {
   closeMessage() {
     this.alertService.clearAlertMessage();    
   } 
+
+
+  closealertModal(){
+    this.alertService.clearAlertMessage();    
+    var x = <HTMLElement>document.getElementById('warningmodal1')
+    x.style.display = "none";
+  }
 }

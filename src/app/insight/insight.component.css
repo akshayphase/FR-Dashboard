@@ -29,7 +29,6 @@ button {
   display: flex;
 }
 
-
 @media screen and (max-width: 1450px) {
 
   .table > :not(caption) > * > *{
@@ -64,6 +63,7 @@ button {
 .icon {
   padding: 3px;
   margin: 0 25px 0 10px;
+  text-align: center;
 }
 
 .table > :not(caption) > * > *{

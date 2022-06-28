@@ -33,6 +33,7 @@ export class GaurdComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    
     // document.body.style.backgroundImage= "linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url('../../assets/background.jpg'))";
     document.body.style.backgroundImage= "linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%), url('../../assets/background.jpg'))";
     if(this.apiService.sessionstatus() == false){
@@ -43,14 +44,13 @@ export class GaurdComponent implements OnInit {
   @ViewChildren("vjs") vjs: QueryList<any>;
   checkError:any;
   ngAfterViewInit(){
-    this.adjustGrid();
-    this.changeDetection.detectChanges();
     setTimeout(()=>{
       this.checkError =  setInterval(()=>{ 
          this.vjs.forEach(el => {
           var errorpop = (el.player.error_);
            let app_vjs_player = el.target.nativeElement.parentNode.parentNode
            let snapshotimg = el.target.nativeElement.parentNode.parentNode.nextElementSibling;
+           console.log(errorpop)
            if(errorpop != null){
              app_vjs_player.style.display = "none";
              snapshotimg.style.display = "block";
@@ -60,6 +60,9 @@ export class GaurdComponent implements OnInit {
          }); 
        }, 1000);
     }, 1000);
+
+    this.adjustGrid();
+    this.changeDetection.detectChanges();
   }
   ngOnDestroy(){
     if(this.checkError) {clearInterval(this.checkError);}
@@ -119,7 +122,7 @@ export class GaurdComponent implements OnInit {
     setTimeout(() => {
       this.panel.nativeElement.style.maxHeight = this.panel.nativeElement.style.scrollHeight + 'px';
       if(this.cameras.length >0){this.optionlabel.nativeElement.click();}
-    }, 1000);
+    }, 1500);
   }
   firstAPiHitforCamdata(){ 
     this.apiService.getCameras(this.sites.siteList[0].siteid).subscribe((res:any)=>{
@@ -139,7 +142,7 @@ export class GaurdComponent implements OnInit {
         setTimeout(() => {
           this.panel.nativeElement.style.maxHeight = this.panel.nativeElement.style.scrollHeight + 'px';
           if(this.cameras.length >0){this.optionlabel.nativeElement.click();}
-        }, 1000);
+        }, 2000);
       }
     },(error)=>{
       if(error){
@@ -197,9 +200,8 @@ export class GaurdComponent implements OnInit {
         var x:any = this.storageService.getEncrData('savedcams');
         if(x){
           x.forEach((el:any) => {
-            if(el.siteid == site.siteid){ this.cameras = el.data, this.currentsite = el.siteid}
+            if(el.siteid == site.siteid){ this.cameras = el.data, this.currentsite = el.siteid;}
           });
-          this.commoncommands();
           if(event.target.nextElementSibling == null){
             this.showcams=false 
           }
@@ -210,6 +212,7 @@ export class GaurdComponent implements OnInit {
               if(this.cameras.length>0){this.toggleAccordian(event, index);}
             },200)}
           }
+          this.commoncommands();
         }else{
           this.cameras = null;
           this.paginatedCameraList = null;
@@ -294,6 +297,7 @@ export class GaurdComponent implements OnInit {
     }else{
       a.style.paddingRight = 0+ "%";
     }
+    this.pagination();
   }
   cameraIdClicked(cam:any){
     this.pagenumber = 1;

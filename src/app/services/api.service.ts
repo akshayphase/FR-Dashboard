@@ -13,6 +13,7 @@ export class ApiService {
   tokenExpired$=new BehaviorSubject<boolean>(false);
 
   baseurl1='http://smstaging.iviscloud.net:8090/';
+  // baseurl="http://usmgmt.iviscloud.net/";
   baseurl="http://usmgmt.iviscloud.net:777/";
 
   sitelisturl = `${this.baseurl}businessInterface/sites/sitesList_2_0`;
@@ -33,7 +34,7 @@ export class ApiService {
       accessToken : a.access_token,
       calling_System_Detail: "portal",
     }
-        // console.log("sitelist: ",this.sitelisturl,payload);
+    // console.log("sitelist: ",this.sitelisturl,payload);
 
     return this.http.post(this.sitelisturl,payload)
   }
@@ -116,7 +117,7 @@ export class ApiService {
     body.append('userName', username);
     body.append('calling_System_Detail', 'portal');
     body.append('description', payload.message);
-    body.append('priority', 'High');
+    body.append('priority', payload.priority);
     body.append('preferredTimeToCall', payload.time);
     body.append('Attachements', '');
     body.append('accessToken', a.access_token);
@@ -130,19 +131,21 @@ export class ApiService {
     let url = `${this.baseurl}businessInterface/helpdesk/updateServiceRequest_1_0`;
     var a = this.storageService.getEncrData('user');
     var username= a.UserName;
+
     let body = new FormData(); 
-    if(payload.time == null){payload.time == 'not mentioned'}
-    body.append('serviceName', payload.servicename);
+    if(payload.PrefTimeToCall != null){body.append('preferredTimeToCall', payload.PrefTimeToCall);}
+    body.append('serviceName', payload.serviceCategoryName);
     body.append('subServiceName', payload.serviceSubCategoryName);
     body.append('userName', username);
     body.append('calling_System_Detail', 'portal');
     body.append('description', payload.description);
     body.append('priority', payload.priority);
-    body.append('preferredTimeToCall', payload.PrefTimeToCall);
     body.append('Attachements', '');
     body.append('accessToken', a.access_token);
     body.append('status',payload.status);
     body.append('remarks',payload.remarks);
+    body.append('serviceId',payload.serviceId)
+    body.append('siteId',payload.accountId)
     // body.forEach((value,key) => {
     //     console.log(key+" "+value)
     // });
@@ -198,12 +201,21 @@ export class ApiService {
     // console.log("bireport: ",url);
     return this.http.get(newurl1);
   }
-
+  downloadReport(siteid:any, startdate:any, enddate:any){
+    let url = 'http://smstaging.iviscloud.net:8090/bireports/download/getPdfReport'
+    let url1 = `${this.baseurl}businessInterface/`
+    var payload = {  
+      id:siteid,
+      startdate:startdate,
+      enddate:enddate
+    }
+    return this.http.post(url, payload)
+  }
   getBiAnalyticsResearch(siteid:any, startDate:any){
     // console.log(siteid,startDate)
     let biAnalyticsReport = this.baseurl+'businessInterface/insights/getAnalyticsListforSite_1_0?';
     const newurl1 = `${biAnalyticsReport}SiteId=${siteid}&calling_System_Detail=IVISUSA&date=${startDate}%22`
-    const newurl="http://usmgmt.iviscloud.net:777/businessInterface/insights/getAnalyticsListforSite_1_0?SiteId=1002&calling_System_Detail=IVISUSA&date=2022/03/01%22";
+    const newurl=this.baseurl+"businessInterface/insights/getAnalyticsListforSite_1_0?SiteId=1002&calling_System_Detail=IVISUSA&date=2022/03/01%22";
     // console.log("bireport: ",newurl);
     return this.http.get(newurl1);
   }
@@ -234,6 +246,35 @@ export class ApiService {
   getTrendsFields(siteid:any){
     let url = this.baseurl +"bireports/getServices"
   }
+  getsiteid(siteid:any){
+    let url = `${this.baseurl}cpus/sites/getBICustomerSiteId_1_0?accId=${siteid}`;
+    return this.http.get(url)
+  }
+  downloadReport1(id:any, startdate:any, enddate:any){
+    // let url = `http://localhost:8080/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
+    // let url1 ="http://localhost:8080/download/getPdfReport?id=2&startdate=2022-03-01&enddate=2022-03-01";
+    // return fetch(url);
+
+    var x = new HttpHeaders({Accept: 'application/pdf', 'Content-Type': 'application/pdf', responseType: 'blob'});
+
+    let url = `${this.baseurl}bireports/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
+   
+    // let url2 = `http://smstaging.iviscloud.net:8090/bireports/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
+    // let url1 = `http://localhost:8080/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
+    // let url3 = `http://10.0.2.197:8080/download/getPdfReport?id=2&startdate=2022-06-07&enddate=2022-06-07`;
+    
+
+    return this.http.get(url, { headers: x , responseType: 'blob' })
+    // return this.http.get(url, { headers: x , responseType: 'blob' });
+    // return this.http.get(url);
+    // let url = `http://localhost:8080/download/getPdfReport`;
+    // var payload={     
+    //   id:id,
+    //   startdate:startdate,
+    //   enddate:enddate
+    // }
+    // return this.http.get(url + `?data=${encodeURIComponent(JSON.stringify(payload))}`)
+  }
   sessionstatus(){
     var hours = 24; // 0.01 is 35secs
     var now:any = new Date().getTime();
@@ -261,7 +302,8 @@ export class ApiService {
       userEmail:a.email,
       realm: a.Realm,
       calling_System_Detail: "portal",
-      roles: ''
+      roles: '',
+     
     };
     return this.http.post(url,payload)
   }
@@ -357,5 +399,12 @@ export class ApiService {
   }
 
 
+  updateprofile(){
+    let url = this.baseurl+'businessInterface/insights/getAnalyticsListforSite_1_0?';
+    var payload ={
+
+    }
+    
+  }
 
 }

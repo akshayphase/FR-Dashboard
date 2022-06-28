@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { ApiService } from '../services/api.service';
@@ -113,7 +114,7 @@ getBiTrends(){
     y.innerHTML = '';
     this.graphsdata.forEach((el:any) => {
       y.insertAdjacentHTML("beforeend",
-      `<div class='card' style="margin:10px; padding:10px;"><div id=${'container'+String(this.graphsdata.indexOf(el))}></div></div>`);
+      `<div class='card' style="margin:8px; padding:5px;"><div id=${'container'+String(this.graphsdata.indexOf(el))}></div></div>`);
       this.mychart(el,this.graphsdata.indexOf(el))
     });
     this.showLoader = false;
@@ -189,11 +190,22 @@ firstreport(){
     this.currentsite = p.sitename;
     this.reportsite = this.currentsite;
     this.currentsiteid = p.siteid;
-    var yesterday =this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'yyyy/MM/dd')
-    this.getResearchData(this.currentsiteid,yesterday);
+    this.showLoader=true;
+    this.getsitenonworkingdays()
+    // setTimeout(() => {
+    //   if(this.lastWorkingDay){
+    //     // console.log(this.lastWorkingDay)
+    //     this.getResearchData(this.currentsiteid,this.lastWorkingDay);
+    //   }else{
+    //     var yesterday =this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'yyyy/MM/dd')
+    //     this.getResearchData(this.currentsiteid,yesterday);
+    //   }
+    // }, 2000);
   }
 }
 siteClicked(e:any,site:any){
+  this.showLoader = true;
+  this.graphsdata = null;
   this.storageService.storeEncrData('siteidfromgaurdpage', site);
   this.currentsite = site.sitename;
   this.currentsiteid = site.siteid
@@ -206,7 +218,9 @@ siteClicked(e:any,site:any){
     var startDateParts:any = this.startDate.split("/");
     date =  [(startDateParts[2])]+'/'+startDateParts[1] +'/'+ startDateParts[0];
   }
-  this.getResearchData(this.currentsiteid,date);
+  // this.getResearchData(this.currentsiteid,date);
+  // this.rsdata = null;
+  this.getsitenonworkingdays();
 }
 currentfield:any;
 currentfieldid:any;
@@ -221,7 +235,7 @@ getResearchonClick(){
   this.placeholderhere = "Loading...";
   if(this.startDate==null){
     var yesterday =this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'yyyy/MM/dd')
-    this.getResearchData(this.currentsiteid,yesterday);
+    this.getResearchData(this.currentsiteid,this.lastWorkingDay);
   }else{
     var startDateParts:any = this.startDate.split("/");
     var sd = (startDateParts[2])+'/'+startDateParts[1] +'/'+ startDateParts[0]
@@ -445,6 +459,63 @@ calcperc(i:any){
     return diff;
   }
 }
+
+
+
+
+selectedSpan:any;
+lastWorkingDay:any;
+datesarr=[];
+disabledays:any;
+disabledDates:NgbDateStruct[]=[{year:2019,month:2,day:26}]
+getsitenonworkingdays(){
+  var p =  this.storageService.getEncrData('siteidfromgaurdpage');
+  var siteid=p.siteid;
+  var year = (new Date()).getFullYear();
+  var yeararr=[year-1, year-2, year-3, year-4]
+  var datesarr:any=[]
+  this.apiservice.getNonWorkingDays(siteid,year).subscribe((res:any)=>{
+    if(res.Status=="Success"){
+      var dateParts = res.LastWorkingDay.split('-');
+      this.lastWorkingDay = dateParts[0]+'/'+dateParts[1]+'/'+dateParts[2]
+      this.selectedSpan = this.months[Number(dateParts[1])-1]+' '+dateParts[0] +', '+ dateParts[2];
+      this.displayDate=dateParts[1]+'/'+dateParts[2]+'/'+ dateParts[0];
+      datesarr.push(res.NotWorkingDaysList);
+      this.datesarr = datesarr.flat();
+      this.getResearchData(this.currentsiteid,this.lastWorkingDay);
+      // this.getResearchData(this.currentsiteid,this.lastWorkingDay);
+      yeararr.forEach((el:any) => {
+        this.apiservice.getNonWorkingDays(siteid,el).subscribe((res:any)=>{
+          if(res.Status=="Success"){
+            datesarr.push(res.NotWorkingDaysList);
+            this.datesarr = datesarr.flat()
+          }
+        })
+      });
+      setTimeout(() => {
+        this.dates(this.datesarr)
+      }, 2000);
+    }else{
+      console.log("Trends : Last working day is not available")
+      var yesterday =this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'yyyy/MM/dd')
+      this.getResearchData(this.currentsiteid,yesterday);
+      this.dates([]);
+    }
+  })
+}
+dates(arr:any[]){
+  arr.forEach(el => {
+    var splits:any = el.split("-"); 
+    var newdate;
+    this.disabledDates.push({year:+splits[0],month:+splits[1],day:+splits[2]})
+  });
+  this.disabledays = this.isDisabled;
+}
+isDisabled=(date:NgbDateStruct,current: {month: number,year:number})=> {
+  return this.disabledDates.find(x=>new NgbDate(x.year,x.month,x.day).equals(date))?
+  true:false;
+}
+
 }
 
 

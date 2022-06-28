@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
     var checkLower = /[a-z]+/.test(y);
     var checkNumber = /[0-9]+/.test(y);
     let regex = /^(?=.{6,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=]).*$/.test(y)
-    if(x=='' && y != ''){this.errormsg =('Please enter username')}
+    if(x=='' && y != '' || x==null ){this.errormsg =('Please enter username')}
     else if(x.length<3){this.errormsg =('Username is invalid')}
     else if(y=='' && x !=''){this.errormsg =('Please enter password')}
     else if(y=='' && x ==''){this.errormsg =('Please enter user details')}
@@ -132,18 +132,20 @@ export class LoginComponent implements OnInit {
   forgotPass(){
     let x:any = this.username;
       if(x == ''){this.errormsg =('Please enter username')}
-      else if(x != '' && x.length<5){this.errormsg =('Username is invalid')}
+      // else if(x != '' && x.length<5){this.errormsg =('Username is invalid')}
       else{
         this.showLoader=true;
         this.authservice.forgotPassword(x).subscribe((res:any)=>{
           this.showLoader=false;          
-          if(res.Status == "Success"){this.forgotPassVisible = false;this.alertService.success("Your password reset link has been sent to your Email.")}
+          if(res.Status == "Success"){this.forgotPassVisible = false;this.alertService.success("Successful","Your password reset link has been sent to your Email.")}
           if(res.Status == "Failed"){this.errormsg = 'Username is invalid'}
         })
       }
 
     // this.alertService.warning("Something went wrong! Please try later.")
   }
+
+  link="http://smstaging.iviscloud.net:8080/auth/realms/master/login-actions/reset-credentials?client_id=security-admin-console";
 
 
 }

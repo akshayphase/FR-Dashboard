@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AlertService } from '../services/alertservice/alert-service.service';
 import { ApiService } from '../services/api.service';
 import { StorageService } from '../services/auth/storage.service';
@@ -13,6 +13,7 @@ export class SupportComponent implements OnInit {
   @ViewChild('catlabel') catlabel: ElementRef;
   @ViewChild('subcatlabel') subcatlabel: ElementRef;
   @ViewChild('statuslabel') statuslabel: ElementRef;
+  @ViewChild('sitelabel') sitelabel: ElementRef;
 
 
   parentElement:any;
@@ -39,6 +40,10 @@ export class SupportComponent implements OnInit {
     this.site = this.storageService.getEncrData('siteidfromgaurdpage');
     this.getHelpDeskRequests();
     this.gethelpDeskCategories();
+    let x = (new Date(Date.now()).getFullYear());
+    let y = (new Date(Date.now()).getMonth() + 1);
+    let z = (new Date(Date.now()).getDate());
+    this.maxDate = {year: x, month: y, day: z};
   }
 
   pagenumber=1;
@@ -70,7 +75,7 @@ export class SupportComponent implements OnInit {
   }
   pagination(){
     this.selector();
-    var requests = this.filtereddata;
+    var requests = this.filtereddata.sort((a:any, b:any) => (a.serviceId < b.serviceId ? 1 : -1));
     var x;
     var y = Number(this.pagenumber)
     x = y-=1
@@ -85,6 +90,7 @@ export class SupportComponent implements OnInit {
   subcategories:any=[];
   totalsites:any=[];
   status:any=[];
+  minstartdate:any = {year: 2014, month: 1, day: 1};
   getHelpDeskRequests(){
     this.showLoader=true;
     this.placeholder = "Loading..."
@@ -94,15 +100,29 @@ export class SupportComponent implements OnInit {
       // console.log(res)
       if(res.Status == "Success"){
         this.requests = res?.helpDeskList;
+        if(res.helpDeskList.length==0){this.placeholder = "There are no available request"}
         this.requests = (this.requests.filter(function(e:any) { return e.status !== 'Deleted' })).reverse();
         const a = res?.helpDeskList.filter(function(e:any) { return e.status !== 'Deleted' });
         // var b = a.splice(a.findIndex((e:any) => e.status === "Deleted"),1);
         this.filtereddata = a;
-        this.getfilterdata(a);  
+        this.getfilterdata(a);
         this.pagination();
-
-        if(a.length == 0){
+         if(a.length == 0){
           this.placeholder = "There are no requests for this site."
+        }else{
+          let minDate = new Date(
+            Math.min(
+              ...a.map((element:any) => {
+                return new Date(element.createdTime);
+              }),
+            ),
+          );
+          if(minDate){
+            var pipe = new DatePipe('en-us');
+            let dateparts:any = pipe.transform(new Date(minDate), 'dd/MM/yyyy')?.split("/");
+            this.minstartdate ={year: dateparts[2], month: dateparts[1], day: dateparts[0]}
+            // console.log(this.minstartdate)
+          }
         }
       }else if(res.Status == 'Failed' && res.Message == 'Invalid user details'){
         this.apiservice.refresh();
@@ -113,38 +133,38 @@ export class SupportComponent implements OnInit {
       }
     })
   }
+
   currentsubcategory:any;
   currentcategory:any;
-
-  deleteRequest(id:any){
-    this.showLoader=true;
-    this.apiservice.deleteHelpDeskRequests(id).subscribe((res:any)=>{
-      this.showLoader=false;
-      this.alertService.success(res.Message);
-      this.getHelpDeskRequests();
-    })
-  }
   getfilterdata(a:any){
+
     const cde = Array.from(a.reduce((m:any, 
       {serviceCategoryName}:{serviceCategoryName:any} ) => m.set(serviceCategoryName, (m.get(serviceCategoryName) || 0)), 
       new Map), ([serviceCategoryName]) => ({serviceCategoryName}));
       cde.forEach(el => {this.categories.push(el.serviceCategoryName)});
+      this.categories = [...new Set(this.categories)];
 
-  const efg = Array.from(a.reduce((m:any, 
+    const efg = Array.from(a.reduce((m:any, 
       {serviceSubCategoryName}:{serviceSubCategoryName:any} ) => m.set(serviceSubCategoryName, (m.get(serviceSubCategoryName) || 0)), 
       new Map), ([serviceSubCategoryName]) => ({serviceSubCategoryName}));
       efg.forEach(el1 => {this.subcategories.push(el1.serviceSubCategoryName)});
+      this.subcategories = [...new Set(this.subcategories)];
 
-  const hij = Array.from(a.reduce((m:any, 
+    const hij = Array.from(a.reduce((m:any, 
       {status}:{status:any} ) => m.set(status, (m.get(status) || 0)), 
       new Map), ([status]) => ({status}));
-      hij.forEach(el1 => {this.status.push(el1.status)});  
+      hij.forEach(el1 => {this.status.push(el1.status)}); 
+      this.status = [...new Set(this.status)];
 
     const klm = Array.from(a.reduce((m:any, 
       {accountShortName}:{accountShortName:any} ) => m.set(accountShortName, (m.get(accountShortName) || 0)), 
       new Map), ([accountShortName]) => ({accountShortName}));
-      klm.forEach(el1 => {this.totalsites.push(el1.accountShortName)}); 
+      klm.forEach(el1 => {this.totalsites.push(el1.accountShortName)});
+    this.totalsites = [...new Set(this.totalsites)];
+    this.totalsites = (this.totalsites.filter( (el:any)=> {return el != null;}))
+    
   }
+
   selectedsite:any;
   selectedCategory:any;
   selectedSubcategory:any;
@@ -152,6 +172,19 @@ export class SupportComponent implements OnInit {
   filtereddata:any=[];
   netfilter(type:any){
     var abc:any;
+    if(type=='site'){
+      this.sitelabel.nativeElement.click();
+      this.categories = [];
+      this.subcategories = [];
+      this.status=[];
+      this.selectedCategory = null;
+      this.selectedSubcategory = null;
+      abc = this.requests.filter((e:any)=> { return e.accountShortName == this.selectedsite });
+      const efg = Array.from(abc.reduce((m:any, 
+        {serviceCategoryName}:{serviceCategoryName:any} ) => m.set(serviceCategoryName, (m.get(serviceCategoryName) || 0)), 
+        new Map), ([serviceCategoryName]) => ({serviceCategoryName}));
+        efg.forEach(el1 => {this.categories.push(el1.serviceCategoryName)});
+    }
     if(type=='category'){
       this.subcategories = [];
       this.status=[];
@@ -165,8 +198,7 @@ export class SupportComponent implements OnInit {
     }
     if(type=='subcategory'){this.subcatlabel.nativeElement.click();}
     if(type=='status'){this.statuslabel.nativeElement.click();}
-    
-    console.log(this.selectedCategory, this.selectedSubcategory, this.selectedStatus);
+    // console.log(this.selectedCategory, this.selectedSubcategory, this.selectedStatus);
     // if(this.selectedCategory){
     //   this.requests = (this.requests.filter(function(e:any) { return e.status !== 'Deleted' }))
     // }
@@ -179,7 +211,6 @@ export class SupportComponent implements OnInit {
     var subcatfilter;
     var datefilter;
     var rawdata;
-    
     rawdata= (this.requests.filter(function(e:any) { return e.status !== 'Deleted' })).reverse();
     // console.log(rawdata)
     if(this.selectedsite){sitefilter = rawdata.filter((el:any) => { return el.accountShortName === this.selectedsite })  }
@@ -194,18 +225,29 @@ export class SupportComponent implements OnInit {
     if(this.startDate){
       var startDate = new Date(this.displaYstartDate);
       var endDate = new Date(this.displaYendDate);
-      endDate.setDate(endDate.getDate() + 1);
+      if(endDate.toString() == "Invalid Date"){endDate = new Date(this.displaYstartDate); endDate.setDate(endDate.getDate() + 1); }
+      else{endDate.setDate(endDate.getDate() + 1);}
       var datefilter = subcatfilter.filter((a:any)=>{
         var aDate = new Date(a.createdTime);
-        // console.log(startDate, endDate);
+        startDate; endDate; aDate;
         return aDate <= endDate && aDate >= startDate ;
       })
     }else{datefilter = subcatfilter}
     // console.log(datefilter)  
     this.filtereddata = datefilter;
-    console.log(datefilter)
+    if(this.filtereddata.length == 0){this.placeholder = "There are no requests for selected search parameters."}
+    this.pagenumber=1;
+    this.pagination();
+    this.show= !this.show;
   }
-  clearsearchfilters(){}
+  clearsearchfilters(){
+    (this.selectedsite = null,this.selectedCategory=null,this.selectedSubcategory=null,this.selectedStatus=null,this.startDate=null,this.endDate=null)
+    this.displaYstartDate=null;
+    this.displaYendDate = null;
+    this.filtereddata = (this.requests.filter(function(e:any) { return e.status !== 'Deleted' })).reverse();
+    this.pagination();
+    this.show= !this.show;
+  }
   
   filter(){
     var abc:any =[];
@@ -224,7 +266,7 @@ export class SupportComponent implements OnInit {
     var y = event.month;
     var a;
     var b;
-    console.log(select)
+    // console.log(select)
     if(x<10){a = '0' + x;} else{ a = x };
     if(y<10){b = '0' + y;} else { b = y };
     if(select == 'end'){this.endDate = a+'/'+b+'/'+ event.year; this.displaYendDate=b+'/'+a+'/'+ event.year};
@@ -240,10 +282,6 @@ export class SupportComponent implements OnInit {
   }
   openServiceHelpdesk(){
     this.faq=false;this.contactUs = false;this.support=true;this.closemodal();
-  }
-
-  submitIssue1(){
-    // console.log("issue submitted")
   }
 
   toggleAccordian(event:any, index=0) {
@@ -304,10 +342,10 @@ export class SupportComponent implements OnInit {
     let subject = "Support Request"
     this.apiservice.sendEmail(body, subject).subscribe((res:any)=>{
       this.showLoader = false;
-      this.alertService.success("Request Sent Successfully")
+      this.alertService.success("Success","Request Sent Successfully")
     },(error)=>{
       this.showLoader=false;
-      this.alertService.warning("Something went wrong. Please try again later.")
+      this.alertService.warning("Error","Something went wrong. Please try again later.")
     })
   }
 
@@ -318,7 +356,7 @@ export class SupportComponent implements OnInit {
   togglePanel(event:any) {return this.apiservice.toggle(event)  }
 
   toggletickets(event:any, index=0) {
-    console.log(event.target)
+    // console.log(event.target)
     var element = event.target;
     element.classList.add("active");
     var panel = element.nextElementSibling;
@@ -363,7 +401,8 @@ export class SupportComponent implements OnInit {
     serviceCategoryName: '',
     serviceId: '',
     serviceSubCategoryName: '',
-    status: ''
+    status: '',
+    // accountId:''
   }
 
   visible1=false
@@ -374,7 +413,9 @@ export class SupportComponent implements OnInit {
     var x = <HTMLElement>document.getElementById('editmodal')
     x.style.display = "block";
     this.requestbean = req;
-    console.log(this.requestbean)
+    // console.log(this.requestbean)
+    // console.warn(this.requestbean.PrefTimeToCall)
+    // console.warn(this.requestbean.PrefTimeToCall.replace('T', ' '))
   }
   closeEditModal(){
     var x = <HTMLElement>document.getElementById('editmodal')
@@ -384,27 +425,58 @@ export class SupportComponent implements OnInit {
     var x = <HTMLElement>document.getElementById('viewmodal')
     this.requestbean = req;
     x.style.display = "block";
-    console.log(this.requestbean)
+    // console.log(this.requestbean)
   }
   closeviewModal(){
     var x = <HTMLElement>document.getElementById('viewmodal')
     x.style.display = "none";
   }
+  addopen = false;
   openaddmodal(){
+    // this.requestbean.description = "";
+    // this.requestbean.remarks = null;
+    // this.requestbean.PrefTimeToCall = "";
+    this.addopen =true;
     var x = <HTMLElement>document.getElementById('addmodal')
     x.style.display = "block";
-    console.log(this.requestbean)
+
+    var y = <HTMLTextAreaElement>document.getElementById('textareareq');
+    var z = <HTMLTextAreaElement>document.getElementById('textareadescr');
+    y.value = z.value = ""
   }
   closeAddModal(){
+    this.addopen = false;
     var x = <HTMLElement>document.getElementById('addmodal')
     x.style.display = "none";
+  }
+
+  opendeletemodal(item:any){
+    var x = <HTMLElement>document.getElementById('deletemodal')
+    x.style.display = "block";
+    this.requestbean = item;
+    // console.log(this.requestbean)
+  }
+  closedeleteModal(){
+    var x = <HTMLElement>document.getElementById('deletemodal')
+    x.style.display = "none";
+  }
+
+  deleteRequest(item:any){
+    var id = item.serviceId;
+    this.showLoader=true;
+    this.apiservice.deleteHelpDeskRequests(id).subscribe((res:any)=>{
+      this.showLoader=false;
+      this.closedeleteModal();
+      this.alertService.success("Information",res.Message);
+      this.getHelpDeskRequests();
+    })
   }
 
 
   @ViewChild('date') date: ElementRef;
   opentimer(){
     var x = <HTMLInputElement>document.getElementById("date");
-    console.log(this.date.nativeElement)
+    // console.log(this.date.nativeElement)
     x.focus();
     x.click();
     this.date.nativeElement
@@ -437,29 +509,46 @@ export class SupportComponent implements OnInit {
       this.calldisabled = true;
     }
   }
+  prefcall(type:any){
+    if(type == 'yes'){this.calldisabled = false}
+    if(type == 'no'){this.calldisabled = true}
+  }
 
   submitedit(){
-    console.log(this.requestbean)
-    // if(!this.time){this.time = ''}
-    // else{this.time = String(this.time).replace("T", " ") + ':00'}
-    this.showLoader=true;
-    this.apiservice.updateHelpDeskRequest(this.requestbean).subscribe((res:any)=>{
-      this.showLoader=false;
-      this.closeEditModal();
-      console.log(res);
-      if(res.Status == "Success"){
-        this.alertService.success("Request updated successfully")
-      }else{
-        this.alertService.success("Failed to add request please try again later.")
+    if(this.requestbean.PrefTimeToCall !=null){
+      this.requestbean.PrefTimeToCall= (String(this.requestbean.PrefTimeToCall).replace("T"," "))
+      if(this.requestbean.PrefTimeToCall.length == 16 ){
+        this.requestbean.PrefTimeToCall = this.requestbean.PrefTimeToCall + ':00'
       }
-    })
+    }
+
+    this.showLoader=true;
+    if(this.requestbean.description !=null && this.requestbean.description != ""){
+      this.apiservice.updateHelpDeskRequest(this.requestbean).subscribe((res:any)=>{
+        this.showLoader=false;
+        this.closeEditModal();
+        if(res.Status == "Success"){
+          this.getHelpDeskRequests();
+          this.alertService.success("Success","Request updated successfully")
+        }else{
+          this.alertService.success("Failed","Failed to update request please try again later.")
+        }
+      })
+    }else{
+      this.showLoader=false;
+      this.error = true;
+    }
+
+    
   }
 
 
   catsforadd:any=[]
   currentaddcat:any=[];
   currentaddsubcat:any;
-  currentaddpriority = 'Low Priority';
+  currentaddpriority = 'Low';
+  showcategories:any;
+  showsubcats:any;
   gethelpDeskCategories(){
     this.apiservice.getHelpDeskCategories().subscribe((res:any)=>{
      if(res.Status=="Success"){
@@ -467,6 +556,9 @@ export class SupportComponent implements OnInit {
       this.catsforadd = (this.unique(a,'catName'))
       this.currentaddcat = this.catsforadd[0];
       this.currentaddsubcat = this.catsforadd[0].subCategoryList[0];
+
+      this.showcategories = this.catsforadd.filter((item:any)=> item.catName !== this.currentaddcat.catName)
+      this.showsubcats = this.currentaddcat.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentaddsubcat.serviceSubcatName)
      }else{
       this.catsforadd = []
       this.currentaddcat = [];
@@ -493,6 +585,8 @@ export class SupportComponent implements OnInit {
     this.currentaddcat = cat;
     this.visible1 = !this.visible1
     this.currentaddsubcat = this.currentaddcat.subCategoryList[0];
+    this.showcategories = this.catsforadd.filter((item:any)=> item.catName !== this.currentaddcat.catName)
+    this.showsubcats = this.currentaddcat.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentaddsubcat.serviceSubcatName)
   }
   subcatclicked(e:any, scat:any){
     var x = (e.target.parentNode.previousElementSibling);
@@ -500,6 +594,8 @@ export class SupportComponent implements OnInit {
     // this.currentpage = str;
     this.currentaddsubcat = scat;
     this.visible2 = !this.visible2
+    this.showsubcats = this.currentaddcat.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentaddsubcat.serviceSubcatName)
+
   }
   priorityclicked(e:any, priority:any){
     this.currentaddpriority = priority;
@@ -507,11 +603,21 @@ export class SupportComponent implements OnInit {
   priorityradio(){
     var x = <HTMLInputElement>document.querySelector('input[name="priority"]:checked');
     this.currentaddpriority = x.value;
+    // console.log(x.value)
   }
   addtime:any;
   adddescription:any;
   addremark:any;
+
   addreq(){
+    if(this.calldisabled == false && this.addtime == null){
+      this.alertService.success('Alert', 'Please select preferred time')
+    }else{
+      this.addreq1();
+    }
+  }
+  addreq1(){
+    this.addopen = false;
     // console.log(this.currentcategory);
     // console.log(this.currentsubcategory);
     if(this.currentaddsubcat == null){
@@ -532,22 +638,36 @@ export class SupportComponent implements OnInit {
       remarks: this.addremark
     }
     // console.log(payload)
-    this.apiservice.addHelpDeskRequest(payload).subscribe((res:any)=>{
-      console.log(res);
-      this.closeAddModal();
-      this.getHelpDeskRequests();
-      setTimeout(()=>{ this.showLoader = false; }, 1000);
-      // setTimeout(()=>{this.visibility = false;},5000);
-      this.showLoader = false;
-      if(res.Status == "Success"){
-        this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
-      }else{
-        this.alertService.success("Failed to add request please try again later.")
-      }
-    });
+    if(payload.message!=null && payload.message != ""){
+      this.apiservice.addHelpDeskRequest(payload).subscribe((res:any)=>{
+        // console.log(res);
+        this.closeAddModal();
+        this.getHelpDeskRequests();
+        setTimeout(()=>{ this.showLoader = false; }, 1000);
+        // setTimeout(()=>{this.visibility = false;},5000);
+        this.showLoader = false;
+        if(res.Status == "Success"){
+          this.alertService.success("Success","Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
+        }else{
+          this.alertService.success("Failed","Failed to add request please try again later.")
+        }
+      });
+    }else{
+      this.showLoader=false;
+      this.error = true;
+      // this.alertService.warning("Warning","Please enter the request")
+    }
   }
+  error=false;
 
-
-
+  @ViewChild ("filter") filtermodal:ElementRef;
+  @HostListener('document:mousedown', ['$event'])
+  onGlobalClick(e:any): void {
+    if(this.show){
+      if (!this.filtermodal.nativeElement.contains(e.target)) {
+        this.show=!this.show
+      }else{}
+    }
+  }
 
 }

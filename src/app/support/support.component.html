@@ -6,14 +6,15 @@
     <div class="searchbar">
       <div class="row">
         <div class="col-lg-3 col-sm-12" style="text-align:center;align-self: center;">
-          <div class="searchbox" style="opacity: 0.1; pointer-events:none"><input type="text" placeholder="Search"><img src="assets/search.svg"></div>
+          <!-- <div class="searchbox" style="opacity: 0.1; pointer-events:none">
+            <input type="text" placeholder="Search"><img src="assets/search.svg">
+          </div> -->
         </div>
         <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1">
-          <div *ngIf="support" class="title1 topTitle" style="margin:0 0 0 25px;"><span *ngIf="site">{{site.sitename}}-</span>Support
-          <!-- <div class="title1 topTitle" style="margin:0 0 0 25px;"><span *ngIf="site">{{site.sitename}}-</span>Support -->
-
-                <div class=" action-icons">  
-            <!-- <img src="assets/add.svg" height="40px" width="40px"> -->
+          <div *ngIf="support" class="title1 topTitle" style="margin:0 0 0 25px;">
+            <!-- <span *ngIf="site">{{site.sitename}}</span> -->
+            <span *ngIf="site">Support Helpdesk</span>
+            <div class=" action-icons">  
             <div>&nbsp;</div>
           </div>
             <img src="assets/ivis-sec.svg" class="qr" (click)="toQRmodal()" id="qrcode">
@@ -36,13 +37,13 @@
                      SUPPORT
                   </div> -->
         <!-- Quarters with multiple reports  -->
-        <div class="optionlabelparent" (click)="openServiceHelpdesk()">
-          <div class="optionlabel" Style="position:relative;">
+        <div class="optionlabelparent" (click)="openServiceHelpdesk()" [style.boxShadow]="support == false? '' : '0px 0px 2px 1px rgba(24,113,202,1)'">
+          <div class="optionlabel" Style="position:relative;" [style.backgroundColor]="support==false ? '#e7e7e7' : '#fff'">
             <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA">
             <div class="label"> Support Helpdesk </div>
             <div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
           </div>
-          <div class="panel" hide="!item.isActive">
+          <!-- <div class="panel" hide="!item.isActive">
             <div class="accordionElements"> <span class="dot"></span>
               <p style="margin: 0 0 0 20px">Contact 1</p>
             </div>
@@ -52,16 +53,16 @@
             <div class="accordionElements"> <span class="dot"></span>
               <p style="margin: 0 0 0 20px">Contact 3</p>
             </div>
-          </div>
+          </div> -->
         </div>
 
-        <div class="optionlabelparent" (click)="openfaq()">
-          <div class="optionlabel" Style="position:relative;">
+        <div class="optionlabelparent" (click)="openfaq()" [style.boxShadow]="faq == false? '' : '0px 0px 2px 1px rgba(24,113,202,1)'">
+          <div class="optionlabel" Style="position:relative;"  [style.backgroundColor]="faq==false ? '#e7e7e7' : '#fff'">
             <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA">
             <div class="label"> Frequently Asked Questions </div>
             <div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
           </div>
-          <div class="panel" hide="!item.isActive">
+          <!-- <div class="panel" hide="!item.isActive">
             <div class="accordionElements"> <span class="dot"></span>
               <p style="margin: 0 0 0 20px">Question 1</p>
             </div>
@@ -71,16 +72,16 @@
             <div class="accordionElements"> <span class="dot"></span>
               <p style="margin: 0 0 0 20px">Question 3</p>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- Quarters with multiple reports  -->
-        <div class="optionlabelparent" (click)="openContactUs()">
-          <div class="optionlabel" Style="position:relative;">
+        <div class="optionlabelparent" (click)="openContactUs()" [style.boxShadow]="contactUs == false? '' : '0px 0px 2px 1px rgba(24,113,202,1)'">
+          <div class="optionlabel" Style="position:relative;"  [style.backgroundColor]="contactUs==false ? '#e7e7e7' : '#fff'">
             <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA">
             <div class="label"> Contact Us </div>
             <div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
           </div>
-          <div class="panel" hide="!item.isActive">
+          <!-- <div class="panel" hide="!item.isActive">
             <div class="accordionElements"> <span class="dot"></span>
               <p style="margin: 0 0 0 20px">Contact 1</p>
             </div>
@@ -90,7 +91,7 @@
             <div class="accordionElements"> <span class="dot"></span>
               <p style="margin: 0 0 0 20px">Contact 3</p>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <br>
@@ -118,10 +119,10 @@
             <div class="panel" hide="!item.isActive"> -->
               <div class="childBox">
                 <div class="optionlabel3" Style="position:relative;" (click)="toggleAccordian1($event)">
-                  <span>Insight</span>
+                  <span>INSIGHT</span>
                   <div class="accordionArrow1"><img src="assets/forward_arrow.svg" alt="expand"></div>
                 </div>
-                <div class="panel" hide="!item.isActive">
+                <div class="panel" hide="!item.isActive" style="display: none;">
                   <div class="accordionElements1" (click)="toggleAccordian2($event)">
                     <div style="display:block">
                       <div style="display:flex; position:relative;">
@@ -134,7 +135,8 @@
                           exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
                           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
                           occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                          laborum.</span>
+                          laborum.
+                        </span>
                       </div>
                       <div style="height: 30px;">&nbsp;</div>
                       <hr #hr2 style="margin:0">
@@ -206,11 +208,12 @@
 
         <div *ngIf="support">
           <div class="title1" style="position: relative;">
-            Requests <span *ngIf="filtereddata.length > 0"> - {{filtereddata.length}}</span>
+            Requests 
+            <!-- <span *ngIf="filtereddata.length > 0"> - {{filtereddata.length}}</span> -->
             <div class="cluster">
               <div style="display: flex; margin-left: 40px" class="paginate" *ngIf="filtereddata.length > paginatesize">
                 <img src="assets/arrow.svg" style="transform: rotate(180deg);" (click)="previousPage()" alt="prev" [className]="pagenumber == 1 ? 'fade': '' ">
-                <div  class="searchbox" style=" margin: -4px 10px !important; padding: 6px !important;">     
+                <div  class="searchbox" style=" margin: -4px 10px !important; padding: 4px !important;">     
                   <select name="my-dropdown" (change)="pagination()" [(ngModel)]="pagenumber" class="dropdown">
                     <option *ngFor="let number of selectNumbers" [value]="number"  style="border: none;outline:none"><div style="padding: 15px; margin:15px; margin-right:15px">&nbsp;&nbsp;{{number + ' of ' + (selectNumbers.length)}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></option>
                   </select>  
@@ -219,8 +222,10 @@
                 <img src="assets/arrow.svg" (click)="nextPage()" alt="next" [className]="pagenumber == selectNumbers?.length ? 'fade': '' ">
               </div>
 
-              <img src="assets/filter.svg" style="padding:5px;" class="titleimages" (click)="filters()" style="margin: auto;margin-right: 25px;margin-top: -17px; margin-bottom: -17px;">
-              <img src="assets/addnewreq.svg" (click)="openaddmodal()" style="padding:5px;" class="titleimages" style="margin-right: 35px;margin-top: -17px; margin-bottom: -17px;" >
+              <img src="assets/filter.svg" *ngIf="!show && (totalsites.length>1  || categories.length >1 || subcategories.length >1 || status.length > 1)" style="padding:5px;" class="titleimages" (click)="filters()" style="margin: auto;margin-right: 25px;margin-top: -15px; margin-bottom: -15px;">
+              <img src="assets/filter_selected.svg" *ngIf="show && (totalsites.length>1  || categories.length >1 || subcategories.length >1 || status.length > 1)" style="padding:5px;" class="titleimages" (click)="filters()" style="margin: auto;margin-right: 25px;margin-top: -15px; margin-bottom: -15px;">
+              <img src="assets/addnewreq.svg" *ngIf="!addopen" (click)="openaddmodal()" style="padding:5px;" class="titleimages" style="margin-right: 35px;margin-top: -15px; margin-bottom: -15px;" >
+              <img src="assets/addnewreq_selected.svg" *ngIf="addopen" (click)="openaddmodal()" style="padding:5px;" class="titleimages" style="margin-right: 35px;margin-top: -15px; margin-bottom: -15px;" >
   
             </div>
             <img src="assets/btnvisible.svg" alt="V" class="visibilitybtn" (click)="showOptions1()">
@@ -229,28 +234,27 @@
 
 
 
-          <div *ngIf="show && (categories.length >1 || subcategories.length >1 || status.length > 1)">
+          <div *ngIf="show && (totalsites.length>1  || categories.length >1 || subcategories.length >1 || status.length > 1)" #filter>
             <div class="filtertypes" >
               <span></span>
               <span style="font-family: PS,sans-serif;text-transform: uppercase;color: #104B86;letter-spacing: 0; padding:0; padding-left: 10px;">Filter Requests :</span>
               
               
               <div class="optionlabelparent"   style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="totalsites.length>1">
-                <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)">
-                  <div class="label"> Select Site</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
+                <div class="optionlabel" Style="position:relative;background: #f8f8f8" (click)="togglePanel($event)" #sitelabel>
+                  <div class="label"> {{selectedsite ? selectedsite : 'Select Site'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
                 <div class="panel" hide="!item.isActive">
-                  <div class="accordionElements" > <span class="dot"></span><p style="margin: 0 0 0 20px">item1</p>   </div>
-                  <div class="accordionElements" > <span class="dot"></span><p style="margin: 0 0 0 20px">item1</p>   </div>
+                  <div class="accordionElements" style="padding:8px 12px 6px 0px;" *ngFor="let item of totalsites" (click)="selectedsite = item; netfilter('site')"><p style="margin: 0 0 0 20px;">{{item}}</p>   </div>
                 </div>
               </div>
     
-              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="categories.length>0">
+              <div class="optionlabelparent" style="z-index: 5; border: 1px solid #e8e6e6;" *ngIf="(totalsites.length != 0) && categories.length>0">
                 <div class="optionlabel" style="position:relative;background: #f8f8f8" (click)="togglePanel($event)"  #catlabel>
                   <div class="label">{{selectedCategory ? selectedCategory : 'Select Category'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
                 <div class="panel" hide="!item.isActive">
-                  <div class="accordionElements" *ngFor="let item of categories" (click)="selectedCategory = item; netfilter('category')"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
+                  <div class="accordionElements" style="padding:8px 12px 6px 0px;" *ngFor="let item of categories" (click)="selectedCategory = item; netfilter('category')"><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
                 </div>
               </div>
     
@@ -259,7 +263,7 @@
                   <div class="label">{{selectedSubcategory ? selectedSubcategory : 'Select Sub-Category'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
                 <div class="panel" hide="!item.isActive">
-                  <div class="accordionElements" *ngFor="let item of subcategories" (click)="selectedSubcategory = item; netfilter('subcategory')"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
+                  <div class="accordionElements" style="padding:8px 12px 6px 0px;" *ngFor="let item of subcategories" (click)="selectedSubcategory = item; netfilter('subcategory')"><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
                 </div>
               </div>
     
@@ -268,7 +272,7 @@
                   <div class="label">{{selectedStatus? selectedStatus : 'Select Status'}}</div><div class="accordionArrow"><img src="assets/forward_arrow.svg" alt="drop"></div>
                 </div>
                 <div class="panel" hide="!item.isActive" *ngFor="let item of status">
-                  <div class="accordionElements" *ngFor="let item of status" (click)="selectedStatus = item; netfilter('status')"> <span class="dot"></span><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
+                  <div class="accordionElements" style="padding:8px 12px 6px 0px;" *ngFor="let item of status" (click)="selectedStatus = item; netfilter('status')"><p style="margin: 0 0 0 20px">{{item}}</p>   </div>
                 </div>
               </div>
 
@@ -276,10 +280,10 @@
               <div class="optionlabel" Style="position:relative;background: #f8f8f8"  #statuslabel>
                 <div (click)="start.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
                   <span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;width: auto;margin: auto; margin-left: 0;">
-                      Date : {{displaYstartDate ? displaYstartDate : 'Select'}}</span><img src="assets/calender.svg" class="calendericon"><br>
+                      From Date : {{displaYstartDate ? displaYstartDate : 'Select'}}</span><img src="assets/calender.svg" class="calendericon"><br>
                 </div>
                 <form class="dateinputform" >
-                  <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'start')" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate" >
+                  <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'start')" [minDate]="minstartdate" [maxDate]="maxDate" >
                 </form>
               </div>
               </div>
@@ -288,7 +292,7 @@
                 <div class="optionlabel" Style="position:relative;background: #f8f8f8"  #statuslabel>
                   <div (click)="start1.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
                     <span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;width: auto;margin: auto; margin-left: 0;">
-                        Date : {{displaYendDate ? displaYendDate : 'Select'}}</span><img src="assets/calender.svg" class="calendericon"><br>
+                        To Date &nbsp; : {{displaYendDate ? displaYendDate : 'Select'}}</span><img src="assets/calender.svg" class="calendericon"><br>
                   </div>
                   <form class="dateinputform" >
                     <input type="text" ngbDatepicker #start1="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'end')" [minDate]="minenddate" [maxDate]="maxDate" >
@@ -324,17 +328,18 @@
 
            <div class="actions max-center">
             <div class="">
-              <button class="outline">{{item.status ? item.status : 'In Process'}}</button>
+              <button class="outline" style="cursor: default;">{{item.status ? item.status : 'In Process'}}</button>
              </div>
              <img  src="assets/view.svg" alt="edit" (click)="openviewmodal(item)">
              <img  src="assets/editicon2.svg" alt="edit" (click)="openeditmodal(item)">
-             <img src="assets/delete.svg" alt="edit" (click)="deleteRequest(item.serviceId)" >
+             <img src="assets/delete.svg" alt="edit" (click)="opendeletemodal(item)" >
            </div>
             </div>
             <div class="shadowbox">
-              <div style="padding: 0px 5px 0px 15px; font-size: 13px; color: #fff;">{{item.createdTime | date: 'dd MMM, yyyy'}}</div>
+              <div class="dateinbar">{{item.createdTime | date: 'dd MMM, yyyy'}}</div>
               <!-- <div class="timing max-center" *ngIf="item.PrefTimeToCall">Preferred Call Time : <b>02, Nov, 2022, 05:30 PM</b></div> -->
-              <div class="reqdescr"><b>Description : </b>{{item.description}}</div>
+              <!-- <div class="reqdescr wrap" style="width: 100%; text-align:left;" *ngIf="item.description"><b>Description : </b>{{item.description}}</div> -->
+              <div class="reqdescr wrap" style="width: 100%; text-align:left;" *ngIf="item.description">{{item.description}}</div>
             </div>
           </div>
         </div>
@@ -439,42 +444,69 @@
           <div class="servicestatus" style="text-align: right; margin: auto;margin-right: 0;"> {{requestbean.createdTime  | date: 'dd MMM, yyyy'}}</div>
         </div>
         <div class="servicesubtitle">{{requestbean.serviceSubCategoryName}}</div>  
-        <div class="servicesubtitle" style="color:#00A44C">{{requestbean.status}}</div>
+        <div class="servicesubtitle" [style.color]="
+        requestbean.status == 'New' ? '#00A44C':
+        requestbean.status == 'InProgress' ? '#FFA500':
+        requestbean.status == 'Closed' ? '#CC4E57':
+        requestbean.status == 'Deleted' ? '#CC4E57':
+        '#00A44C' ">{{requestbean.status}}</div>
         <div>
           <div style="display: flex;" class="radiobox" >
-            <div class="servicestatus" style="align-self: center; width:85px;">Priority  &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
-            <fieldset id="group2" class="priorityradios max-center" (select)="priorityclicked($event, 'radio')">
+            <div class="servicestatus" style="align-self: center; width:85px;">Priority  &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp; </div>
+            <fieldset id="group3" class="priorityradios max-center" (select)="priorityclicked($event, 'radio')">
               <div class="max-center radios">
-                <input type="radio" value="High Priority" name="priority" (click)="priorityradio()">
+                <input type="radio" value="High" [(ngModel)]="requestbean.priority" name="priority" (click)="priorityradio()">
                 <label>High</label>
               </div>
               <div class="max-center radios">
-                <input type="radio" value="Medium Priority" name="priority" (click)="priorityradio()">
+                <input type="radio" value="Medium" [(ngModel)]="requestbean.priority" name="priority" (click)="priorityradio()">
                 <label>Medium</label>
               </div> 
               <div class="max-center radios">
-                  <input type="radio" checked value="Low Priority" name="priority" (click)="priorityradio()">
+                  <input type="radio" checked value="Low"  [(ngModel)]="requestbean.priority" name="priority" (click)="priorityradio()">
                   <label style="margin-right: 0;">Low</label>
               </div>
           </fieldset>
           </div>
         </div>
       <div  style="display: flex;" class="radiobox">
-        <div class="servicestatus" style="width:112px;">Description :</div>
-        <textarea type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="requestbean.description" style="width: -webkit-fill-available;height: 50px;"></textarea>
+        <div class="servicestatus" style="width:112px;">Description  </div>
+        <textarea type="text" placeholder="Description*" [value]="requestbean.description" [(ngModel)]="requestbean.description" style="width: -webkit-fill-available;height: 50px;"
+        [className]="[error && (requestbean.description =='' || requestbean.description == null) ? 'errorshadow':'']"
+        ></textarea>
       </div>
       <div  style="display: flex;" class="radiobox">
-        <div class="servicestatus" style="width:112px;">Remarks   &nbsp;  &nbsp;  &nbsp;  : </div>
+        <div class="servicestatus" style="width:112px;">Remarks   &nbsp;  &nbsp;  &nbsp;    </div>
         <textarea type="text" placeholder="Remarks" [value]="requestbean.remarks" [(ngModel)]="requestbean.remarks" style="width: -webkit-fill-available;height: 50px;"></textarea>
       </div>
       <div>
-        <div class="max-center" style="font-size: 12px; text-align: left; margin-bottom: 5px; margin-left: 16px; justify-content: left;">
+        <!-- <div class="max-center" style="font-size: 12px; text-align: left; margin-bottom: 5px; margin-left: 16px; justify-content: left;">
           <input type="checkbox" id="call" #call  (click)="checkbox($event)" style="height: auto;">
-          <label for="vehicle1" style="color:#767676;">&nbsp; Preferred time to call  <span *ngIf="requestbean.PrefTimeToCall" style="color: #767676; font-size:10px;">({{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a' }})</span></label><br>
+          <label for="vehicle1" style="color:#767676;">&nbsp; Preferred time to call  
+            <span *ngIf="requestbean.PrefTimeToCall" style="color: #767676; font-size:10px;">({{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a' }})</span>
+          </label><br>
+        </div> -->
+
+        <div>
+          <div style="display: flex;" class="radiobox" >
+            <div class="servicestatus" style="align-self: center; ">Prefer to call back? </div>
+            <fieldset id="group4" class="priorityradios max-center">
+              <div class="max-center radios">
+                <input type="radio"  name="time" value="yes"  (click)="prefcall('yes')" [checked]="requestbean.PrefTimeToCall != null">
+                <label>Yes</label>
+              </div>
+              <div class="max-center radios">
+                <input type="radio" name="time" value="no" (click)="prefcall('no')" [checked]="requestbean.PrefTimeToCall == null">
+                <label>No</label>
+              </div> 
+          </fieldset>
         </div>
-        <div class="timer" style="position: relative;" *ngIf="!calldisabled">
+        </div>
+
+        <div class="timer" style="position: relative; margin-bottom: 0;" *ngIf="!calldisabled">
           <div class="setclock" (click)="opentimer()">
-              <img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time
+              <span *ngIf="!requestbean.PrefTimeToCall"><img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time</span>
+              <span *ngIf="requestbean.PrefTimeToCall">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a' }}</span>
           </div>
           <input type="datetime-local" [min]="mindate()" [(ngModel)]="requestbean.PrefTimeToCall" id="date" #date placeholder="Select Preferred Time" data-date-format="YYYY-MM-DD HH:mm:ss" [disabled]="calldisabled" style="border: none !important; margin-top: -27px;">
       </div>
@@ -500,10 +532,199 @@
           <div class="servicestatus" style="text-align: right; margin: auto;margin-right: 0;"> {{requestbean.createdTime  | date: 'dd MMM, yyyy'}}</div>
         </div>
         <div class="servicesubtitle">{{requestbean.serviceSubCategoryName}}</div>
+        <!-- <div style="display: flex;"> -->
+          <div class="servicesubtitle" [style.color]="
+          requestbean.status == 'New' ? '#00A44C':
+          requestbean.status == 'InProgress' ? '#FFA500':
+          requestbean.status == 'Closed' ? '#CC4E57':
+          requestbean.status == 'Deleted' ? '#CC4E57':
+          '#00A44C' ">{{requestbean.status}}</div>
+        <!-- </div> -->
+        <!-- <div style="display: grid; grid-template-columns: repeat(2,1fr);">
+          <div class="servicestatus">Created Date :</div>
+          <div class="servicestatus" style="text-align: right;"> {{requestbean.createdTime  | date: 'dd MMM, yyyy'}}</div>
+        </div> -->
+        <div>
+          <div style="display: flex;" class="" >
+            <div class="servicestatus" style="align-self: center; width:85px;">Priority   &nbsp;   &nbsp;   &nbsp;   &nbsp;  &nbsp;:</div>
+            <div class="servicestatus">{{requestbean.priority}}</div>
+          </div>
+        </div>
+      <!-- <input type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="requestbean.description"> -->
+      <div>
+        <div style="display: flex;" class="" >
+          <div class="servicestatus" style="align-self: flex-start; width:85px;">Description :</div>
+          <div class="servicestatus" style="width: 70%; word-wrap:break-word">{{requestbean.description ? requestbean.description : 'N/A'}}</div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex;" class="" >
+          <div class="servicestatus" style="align-self: flex-start; width:85px;">Remarks &nbsp; &nbsp;  &nbsp; : </div>
+          <div class="servicestatus" style="width: 70%; word-wrap:break-word">{{requestbean.remarks ? requestbean.remarks : 'N/A'}}</div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex;" class="" >
+          <div class="servicestatus" >Preferred time to call : </div>
+          <div class="servicestatus">
+            <span *ngIf="requestbean.PrefTimeToCall">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a'}}</span>
+            <span *ngIf="!requestbean.PrefTimeToCall">N/A</span>
+          </div>
+        </div>
+      </div>
+     <!-- <textarea type="text" placeholder="Remarks" [value]="requestbean.remarks" [(ngModel)]="requestbean.remarks" style="width: -webkit-fill-available;height: 50px;"></textarea> -->
+    </div>
+    <div class="servicestatus" >&nbsp;</div>
+      <!-- <button class="generateBtn" (click)="closeviewModal()">Close</button> -->
+      <!-- <button class="generateBtn" (click)="closeModal()">cancel</button> -->
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal max-center" id="addmodal">
+  <div class="formcont max-center">
+    <div class="modalform">
+      <div class="formtitle">Add Request
+        <img src="assets/close.svg" alt="edit" #close (click)="closeAddModal()">
+      </div>
+      <div class="" style="padding:15px 30px 0 30px;">
+
+        <div>
+          <div style="display: flex;" class="" >
+            <div class="servicestatus" style="align-self: center; width:145px;">Category&nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </div>
+            <div style="width:-webkit-fill-available;">
+              <div class="inputbox greybtn" (click)="inputclicked1($event);" style="position: relative; margin-bottom: 0; width: -webkit-fill-available;">
+                <div class="question" >{{ currentaddcat.catName }}</div>
+                <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
+              </div>
+              <div class="selectionbox" *ngIf="visible1">
+                <div class="inputbox1 greybtn" style="width: 209px !important;" (click)="issueclicked($event, item)" *ngFor="let item of showcategories">{{item.catName}}</div>
+                <!-- <div class="inputbox1 greybtn" style="width: 232px !important;">Medium Priority</div>
+                <div class="inputbox1 greybtn" style="width: 232px !important;">Low Priority</div> -->
+              </div> 
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="currentaddcat?.subCategoryList?.length>0">
+          <div style="display: flex;" class="" >
+            <div class="servicestatus" style="align-self: center; width:145px;">Sub-Category  </div>
+            <div style="width:-webkit-fill-available;">
+              <div class="inputbox greybtn" (click)="inputclicked2($event);" style="position: relative; margin-bottom: 0; width: -webkit-fill-available;">
+                <div class="question" >{{ currentaddsubcat?.serviceSubcatName }}</div>
+                <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
+              </div>
+              <div class="selectionbox" *ngIf="visible2">
+                <div class="inputbox1 greybtn" style="width: 209px !important;" (click)="subcatclicked($event, item)" *ngFor="let item of showsubcats">{{item.serviceSubcatName}}</div>
+                <!-- <div class="inputbox1 greybtn" style="width: 232px !important;">Medium Priority</div>
+                <div class="inputbox1 greybtn" style="width: 232px !important;">Low Priority</div> -->
+              </div> 
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display: flex;" class="radiobox" >
+            <div class="servicestatus" style="align-self: center; width:145px;">Priority  &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;&nbsp; </div>
+            <fieldset id="group5" class="priorityradios max-center" (select)="priorityclicked($event, 'radio')">
+              <div class="max-center radios">
+                <input type="radio" value="High" name="addpriority" (click)="priorityradio()">
+                <label>High</label>
+              </div>
+              <div class="max-center radios">
+                <input type="radio" value="Medium" name="addpriority" (click)="priorityradio()">
+                <label>Medium</label>
+              </div> 
+              <div class="max-center radios">
+                  <input type="radio" checked value="Low" name="addpriority" (click)="priorityradio()">
+                  <label >Low</label>
+              </div>
+          </fieldset>
+          </div>
+        </div>
+      <!-- <input type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="requestbean.description"> -->
+      <div  style="display: flex;" class="radiobox">
+        <!-- <div class="servicestatus" style="width:112px;">Description :</div> -->
+        <textarea type="text" placeholder="Description*" [value]="requestbean.description" [(ngModel)]="adddescription" id="textareadescr"
+        [className]="[error && (requestbean.description =='' || requestbean.description == null) ? 'errorshadow':'']" style="width: -webkit-fill-available;height: 50px;"></textarea>
+      </div>
+      <div  style="display: flex;" class="radiobox">
+        <!-- <div class="servicestatus" style="width:112px;">Remarks   &nbsp;  &nbsp;  &nbsp;  : </div> -->
+        <textarea type="text" placeholder="Remarks" [value]="addremark" [(ngModel)]="addremark" style="width: -webkit-fill-available;height: 50px;" id="textareareq"></textarea>
+      </div>
+      <div>
+        <!-- <div class="servicestatus" style="margin: 10px 0 0 22px;">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a' }}</div> -->
+        <!-- <div class="max-center" style="font-size: 12px; text-align: left; margin-bottom: 5px; margin-left: 16px; justify-content: left;"> -->
+          <!-- <input type="checkbox" id="call" #call  (click)="checkbox($event)" style="height: auto;">
+          <label for="vehicle1" style="color:#767676;">&nbsp; Preferred time to call  
+            <span *ngIf="addtime" style="color: #767676; font-size:10px;">({{addtime | date: 'dd MMM, yyyy - HH:mm a' }})</span>
+          </label><br> -->
+
+          <div>
+            <div style="display: flex;" class="radiobox" >
+              <div class="servicestatus" style="align-self: center; ">Prefer to call back? </div>
+              <fieldset id="group6" class="priorityradios max-center">
+                <div class="max-center radios">
+                  <input type="radio"  name="time1" value="yes"  (click)="prefcall('yes')">
+                  <label>Yes</label>
+                </div>
+                <div class="max-center radios">
+                  <input type="radio" name="time1" [checked]="true" value="no" (click)="prefcall('no')" >
+                  <label>No</label>
+                </div> 
+            </fieldset>
+          </div>
+          </div>
+
+
+        <!-- </div> -->
+        <div class="timer" style="position: relative; margin-bottom: 0;" *ngIf="!calldisabled">
+          <div class="setclock" (click)="opentimer()">
+              <!-- <img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time -->
+              <span *ngIf="!addtime"><img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time</span>
+              <span *ngIf="addtime">{{addtime | date: 'dd MMM, yyyy - HH:mm a' }}</span>
+          </div>
+          <input type="datetime-local" [min]="mindate()" [(ngModel)]="addtime" id="date" #date placeholder="Select Preferred Time" data-date-format="YYYY-MM-DD HH:mm:ss" [disabled]="calldisabled" style="border: none !important; margin-top: -27px;">
+      </div>
+     </div>
+    </div>
+      <button class="generateBtn" (click)="addreq()">Submit</button>
+      <!-- <button class="generateBtn" (click)="closeModal()">cancel</button> -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="modal max-center" id="deletemodal">
+  <div class="formcont max-center">
+    <div class="modalform">
+      <div class="formtitle">Delete Request - #{{requestbean.serviceId}}
+        <img src="assets/close.svg" alt="edit" #close (click)="closedeleteModal()">
+      </div>
+      <div class="" style="padding:15px 30px 0 30px;">
+        <div style="display: flex;">
+          <div class="servicetitle">{{requestbean.serviceCategoryName}}</div>
+          <div class="servicestatus" style="text-align: right; margin: auto;margin-right: 0;"> {{requestbean.createdTime  | date: 'dd MMM, yyyy'}}</div>
+        </div>
+        <div class="servicesubtitle">{{requestbean.serviceSubCategoryName}}</div>
 
         <!-- <div style="display: flex;"> -->
   
-          <div class="servicesubtitle" style="color:#00A44C">{{requestbean.status}}</div>
+          <div class="servicesubtitle" [style.color]="
+          requestbean.status == 'New' ? '#00A44C':
+          requestbean.status == 'InProgress' ? '#FFA500':
+          requestbean.status == 'Closed' ? '#CC4E57':
+          requestbean.status == 'Deleted' ? '#CC4E57':
+          '#00A44C' ">{{requestbean.status}}</div>
         <!-- </div> -->
         <!-- <div style="display: grid; grid-template-columns: repeat(2,1fr);">
           <div class="servicestatus">Created Date :</div>
@@ -540,105 +761,11 @@
       </div>
      <!-- <textarea type="text" placeholder="Remarks" [value]="requestbean.remarks" [(ngModel)]="requestbean.remarks" style="width: -webkit-fill-available;height: 50px;"></textarea> -->
     </div>
-    <div class="servicestatus" >&nbsp;</div>
-      <!-- <button class="generateBtn" (click)="closeviewModal()">Close</button> -->
-      <!-- <button class="generateBtn" (click)="closeModal()">cancel</button> -->
+    <!-- <div class="servicestatus" >&nbsp;</div> -->
+      <div class="error">Are you sure you wish to delete this record?</div>
+      <button class="generateBtn" (click)="deleteRequest(requestbean)">Confirm</button>
+      <button class="generateBtn" (click)="closedeleteModal()">Cancel</button>
+      <div class="servicestatus" style="height: 5px;">&nbsp;</div>
     </div>
   </div>
 </div>
-
-
-
-
-<div class="modal max-center" id="addmodal">
-  <div class="formcont max-center">
-    <div class="modalform">
-      <div class="formtitle">Add Request
-        <img src="assets/close.svg" alt="edit" #close (click)="closeAddModal()">
-      </div>
-      <div class="" style="padding:15px 30px 0 30px;">
-
-        <div>
-          <div style="display: flex;" class="" >
-            <div class="servicestatus" style="align-self: center; width:100px;">Service&nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
-            <div style="width:-webkit-fill-available;">
-              <div class="inputbox greybtn" (click)="inputclicked1($event);" style="position: relative; margin-bottom: 0; width: -webkit-fill-available;">
-                <div class="question" >{{ currentaddcat.catName }}</div>
-                <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
-              </div>
-              <div class="selectionbox" *ngIf="visible1">
-                <div class="inputbox1 greybtn" style="width: 232px !important;" (click)="issueclicked($event, item)" *ngFor="let item of catsforadd">{{item.catName}}</div>
-                <!-- <div class="inputbox1 greybtn" style="width: 232px !important;">Medium Priority</div>
-                <div class="inputbox1 greybtn" style="width: 232px !important;">Low Priority</div> -->
-              </div> 
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="currentaddcat?.subCategoryList?.length>0">
-          <div style="display: flex;" class="" >
-            <div class="servicestatus" style="align-self: center; width:100px;">Service&nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
-            <div style="width:-webkit-fill-available;">
-              <div class="inputbox greybtn" (click)="inputclicked2($event);" style="position: relative; margin-bottom: 0; width: -webkit-fill-available;">
-                <div class="question" >{{ currentaddsubcat?.serviceSubcatName }}</div>
-                <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
-              </div>
-              <div class="selectionbox" *ngIf="visible2">
-                <div class="inputbox1 greybtn" style="width: 232px !important;" (click)="subcatclicked($event, item)" *ngFor="let item of currentaddcat.subCategoryList">{{item.serviceSubcatName}}</div>
-                <!-- <div class="inputbox1 greybtn" style="width: 232px !important;">Medium Priority</div>
-                <div class="inputbox1 greybtn" style="width: 232px !important;">Low Priority</div> -->
-              </div> 
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div style="display: flex;" class="radiobox" >
-            <div class="servicestatus" style="align-self: center; width:85px;">Priority  &nbsp;   &nbsp;  &nbsp;  &nbsp;  &nbsp;:</div>
-            <fieldset id="group2" class="priorityradios max-center" (select)="priorityclicked($event, 'radio')">
-              <div class="max-center radios">
-                <input type="radio" value="High Priority" name="priority" (click)="priorityradio()">
-                <label>High</label>
-              </div>
-              <div class="max-center radios">
-                <input type="radio" value="Medium Priority" name="priority" (click)="priorityradio()">
-                <label>Medium</label>
-              </div> 
-              <div class="max-center radios">
-                  <input type="radio" checked value="Low Priority" name="priority" (click)="priorityradio()">
-                  <label style="margin-right: 0;">Low</label>
-              </div>
-          </fieldset>
-          </div>
-        </div>
-      <!-- <input type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="requestbean.description"> -->
-      <div  style="display: flex;" class="radiobox">
-        <div class="servicestatus" style="width:112px;">Description :</div>
-        <textarea type="text" placeholder="Description" [value]="requestbean.description" [(ngModel)]="adddescription" style="width: -webkit-fill-available;height: 50px;"></textarea>
-      </div>
-      <div  style="display: flex;" class="radiobox">
-        <div class="servicestatus" style="width:112px;">Remarks   &nbsp;  &nbsp;  &nbsp;  : </div>
-        <textarea type="text" placeholder="Remarks" [value]="addremark" [(ngModel)]="addremark" style="width: -webkit-fill-available;height: 50px;"></textarea>
-      </div>
-      <div>
-        <!-- <div class="servicestatus" style="margin: 10px 0 0 22px;">{{requestbean.PrefTimeToCall | date: 'dd MMM, yyyy - HH:mm a' }}</div> -->
-        <div class="max-center" style="font-size: 12px; text-align: left; margin-bottom: 5px; margin-left: 16px; justify-content: left;">
-          <input type="checkbox" id="call" #call  (click)="checkbox($event)" style="height: auto;">
-          <label for="vehicle1" style="color:#767676;">&nbsp; Preferred time to call  <span *ngIf="addtime" style="color: #767676; font-size:10px;">({{addtime | date: 'dd MMM, yyyy - HH:mm a' }})</span></label><br>
-        </div>
-        <div class="timer" style="position: relative;" *ngIf="!calldisabled">
-          <div class="setclock" (click)="opentimer()">
-              <img src="assets/clock.svg" alt="clock" style="height: 12px;">&nbsp;Set Date & Time
-          </div>
-          <input type="datetime-local" [min]="mindate()" [(ngModel)]="addtime" id="date" #date placeholder="Select Preferred Time" data-date-format="YYYY-MM-DD HH:mm:ss" [disabled]="calldisabled" style="border: none !important; margin-top: -27px;">
-      </div>
-     </div>
-    </div>
-      <button class="generateBtn" (click)="addreq()">Submit</button>
-      <!-- <button class="generateBtn" (click)="closeModal()">cancel</button> -->
-    </div>
-  </div>
-</div>
-
-
-

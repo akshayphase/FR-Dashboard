@@ -16,7 +16,7 @@
           </div>
 
         </div>
-        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;"><span *ngIf="reportsite">{{reportsite}}- </span>Insight
+        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;"><span *ngIf="reportsite">{{reportsite}}</span>
           <img src="assets/ivis-sec.svg" class="qr" (click)="toQRmodal()" id="qrcode">
           <div class="tooltiptext">Do you need Safety Escort?</div>
         </div></div>
@@ -48,11 +48,11 @@
                 <!-- Month -->
                 <div class="optionlabel" style="display: flex; position:relative; margin:6px 5px; padding-bottom:15px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666; border-radius:8px" >
                   <div (click)="visible=!visible" style="width: -webkit-fill-available; display:flex;    align-items: center;">
-                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: -webkit-calc(100% - (35px))">
+                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: calc(100% - (35px))">
                        {{selectedMonth ? selectedMonth : 'Select Month'}}</span><img src="assets/calender.svg" class="calendericon"><br>
                   </div>
 
-                  <div class="calender" *ngIf="visible">
+                  <div class="calender" *ngIf="visible" #month>
                     <div class="title" style="margin: 5px 0 12px; text-align: center;">
                       <i (click)="prevYear()" [className]="years[0]==2014 ? 'arrow left fade': 'arrow left'"></i>
                       <span style="font-family: PS,sans-serif; font-size:18px;color:#fff; margin:0 30%;"><a style="width: 200px;">{{years[0]}}</a></span>
@@ -70,7 +70,7 @@
                 <!-- Start Date -->
                 <div class="optionlabel" style="display: flex; position:relative; margin:6px 5px; font-size: 11.5px; padding-bottom:15px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666; border-radius:8px" >
                   <div (click)="start.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;">
-                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: -webkit-calc(100% - (35px))">
+                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: calc(100% - (35px))">
                        Start Date   {{": "+displaYstartDate}}</span><img src="assets/calender.svg" class="calendericon"><br>
                   </div>
                   <form class="dateinputform" >
@@ -80,7 +80,7 @@
                 <!-- End Date -->
                 <div class="optionlabel" style="display: flex; position:relative; margin:6px 5px; font-size: 11.5px; padding-bottom:15px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666; border-radius:8px" >
                   <div (click)="end.toggle()" style="width: -webkit-fill-available; display:flex;    align-items: center;" >
-                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: -webkit-calc(100% - (35px))">
+                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: calc(100% - (35px))">
                       End Date  &nbsp;&nbsp; {{": "+displaYendDate}}</span><img src="assets/calender.svg" class="calendericon"><br>
                  </div>
                   <form class="dateinputform" >
@@ -95,7 +95,7 @@
                 </div>
 
                 <div style="text-align:center" *ngIf="reports != null">
-                  <button class="generateBtn" style="letter-spacing:3px;">
+                  <button class="generateBtn" style="letter-spacing:3px;" (click)="downloadReport()">
                     DOWNLOAD REPORT
                   </button>
                 </div>
@@ -130,8 +130,12 @@
                             </thead>
                             <tbody *ngFor="let data of report.data">
                               <tr class="tableElements">
-                                <th scope="row"><p><img class="icon" [src]="'http://ec2-34-201-14-199.compute-1.amazonaws.com/reports/assets/img/icons/'+data.icon" onerror="this.src='assets/eye.svg';">{{data.type}}</p></th>
-                                <td *ngFor="let col of getcols(report);">{{data[col.field] ? data[col.field] : 'N/A'}}</td>
+                                <!-- <th scope="row"><p><img class="icon" height="30" width="42" [src]="'http://ec2-34-201-14-199.compute-1.amazonaws.com/reports/assets/img/icons/'+data.icon" onerror="this.src='assets/eye.svg';">{{data.type}}</p></th> -->
+                                <th scope="row"><p><span class="icon" style="display: inline-block;"><img [src]="'http://ec2-34-201-14-199.compute-1.amazonaws.com/reports/assets/img/icons/'+data.icon" onerror="this.src='assets/eye.svg';"></span>{{data.type}}</p></th>
+                                <td *ngFor="let col of getcols(report);">
+                                  <span *ngIf="data[col.field]">{{data[col.field]}}</span>
+                                  <span *ngIf="!data[col.field]" style="color: #c6c6c6; font-size:10px;">N/A</span>
+                                </td>
                               </tr>
                             </tbody>
                           </table>

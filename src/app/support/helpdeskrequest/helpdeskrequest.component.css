@@ -1,6 +1,6 @@
 .add-site {
   margin-top: 65px !important;
-  max-height: -webkit-calc(110vh - (200px));
+  max-height: calc(110vh - (200px));
   overflow-y: scroll;
 }
 
@@ -17,7 +17,7 @@
 
 .add-site {
  background: none repeat scroll 0 0 #fff;
- height: -webkit-calc(100vh - (100px));
+ height: calc(100vh - (100px));
  width: 75%;
  margin: auto;
  margin-bottom: 0;

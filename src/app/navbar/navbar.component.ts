@@ -63,7 +63,6 @@ export class NavbarComponent implements OnInit {
     this.startlistenForProfile()
   }
 
-
   getsiteservices(){
     this.apiservice.siteservices$.subscribe((res)=>{
       setTimeout(()=>{
@@ -140,24 +139,24 @@ export class NavbarComponent implements OnInit {
   errormsg:any
   forgotPass(){
     let x:any = this.username;
-      if(x == '' || x == null){this.errormsg =('Please enter username'); this.alertservice.success(this.errormsg)}
-      else if(x != '' && x.length<5){this.errormsg =('Username is invalid'); this.alertservice.success(this.errormsg)}
+      if(x == '' || x == null){this.errormsg =('Please enter username'); this.alertservice.success("Error",this.errormsg)}
+      else if(x != '' && x.length<5){this.errormsg =('Username is invalid'); this.alertservice.success("Error",this.errormsg)}
       else{
         this.showLoader=true;
         this.authservice.forgotPassword(x).subscribe((res:any)=>{
           this.showLoader=false;   
           this.newpass=false;  
           this.username = '';     
-          if(res.Status == "Success"){ this.alertservice.success("Your password reset link has been sent to your Email.")}
+          if(res.Status == "Success"){ this.alertservice.success("Success","Your password reset link has been sent to your Email.")}
           // if(res.Status == "Failed"){this.errormsg = 'Username is invalid'; this.alertservice.success(this.errormsg)}
-          if(res.Status == "Failed"){this.errormsg = res.Message; this.alertservice.success(this.errormsg)}
+          if(res.Status == "Failed"){this.errormsg = res.Message; this.alertservice.success("Failed",this.errormsg)}
         })
       }
 
     // this.alertService.warning("Something went wrong! Please try later.")
   }
   submitprofile(){
-    this.alertservice.success("Profile edit is coming soon");
+    this.alertservice.success("Information","Profile edit is coming soon");
     this.editpro =false;
   }
 

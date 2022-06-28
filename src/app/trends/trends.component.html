@@ -16,7 +16,7 @@
           </div>
 
         </div>
-        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">{{reportsite}}  - {{currentfield ? currentfield : 'Trends'}}
+        <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1"><div class="title1 topTitle" style="margin:0 0 0 25px;">{{reportsite}}<span *ngIf="currentfield">-{{currentfield ? currentfield : ''}}</span>
           <img src="assets/ivis-sec.svg" class="qr" (click)="toQRmodal()" id="qrcode">
           <div class="tooltiptext">Do you need Safety Escort?</div>
         </div></div>
@@ -47,11 +47,11 @@
                 <!-- Start Date -->
                 <div class="optionlabel" style="display: flex; position:relative; margin:6px 5px; padding-bottom:15px; font-family:TP,sans-serif;  border-bottom: 2px solid #666666; border-radius:8px" >
                   <div (click)="start.toggle()" style="width:-webkit-fill-available; display:flex;align-items: center;">
-                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: -webkit-calc(100% - (50px))">
+                    <img src="assets/eye.svg" style="width: 20px;" alt="ivisUSA"><span *ngIf="startDate != 'null'" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: calc(100% - (50px))">
                       Date : {{displayDate ? displayDate : 'Select Date'}}</span><img src="assets/calender.svg" class="calendericon"><br>
                   </div>
                   <form class="dateinputform" >
-                    <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'start')" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate" >
+                    <input type="text" ngbDatepicker #start="ngbDatepicker" class="dateinput" (dateSelect)="onDateSelect($event, 'start')" [minDate]="{year: 2014, month: 1, day: 1}" [maxDate]="maxDate" [minDate]="{year: 2014, month: 1, day: 1}" [markDisabled]="disabledays" >
                   </form>
                 </div>
                 
@@ -190,7 +190,7 @@
                   </div>
                 </div>
 
-                <div  style="margin-top: 25px;" id="graphholder" [style.opacity]="graphsdata ? 1 : 0">
+                <div  style="margin-top: 5px;" id="graphholder" [style.opacity]="graphsdata ? 1 : 0">
                   <!-- <div class="card" *ngFor="let data of graphsdata;let i=index" style="margin: 10px;">
                     <div>
                       <div id="container{{i}}"></div> 

@@ -26,24 +26,24 @@ export class AlertService {
     });
   }
 
-  success(message: string, keepAfterNavigationChange = false) {
+  success(title:string,message: string, keepAfterNavigationChange = false) {
     this.keepAfterNavigationChange = keepAfterNavigationChange;
-    this.subject.next({ type: 'success', text: message });
+    this.subject.next({ type: 'success', text: message, title:title });
   }
 
-  error(message: string, keepAfterNavigationChange = false) {
+  error(title:string,message: string, keepAfterNavigationChange = false) {
     this.keepAfterNavigationChange = keepAfterNavigationChange;
-    this.subject.next({ type: 'error', text: message });
+    this.subject.next({ type: 'error', text: message, title:title });
   }
 
-  warning(message: string, keepAfterNavigationChange = false) {
+  warning(title:string,message: string, keepAfterNavigationChange = false) {
     this.keepAfterNavigationChange = keepAfterNavigationChange;
-    this.subject.next({ type: 'warning', text: message });
+    this.subject.next({ type: 'warning', text: message, title:title });
   }
 
-  info(message: string, keepAfterNavigationChange = false) {
+  info(title:string,message: string, keepAfterNavigationChange = false) {
     this.keepAfterNavigationChange = keepAfterNavigationChange;
-    this.subject.next({ type: 'info', text: message });
+    this.subject.next({ type: 'info', text: message, title:title });
   }
 
   clearAlertMessage() {

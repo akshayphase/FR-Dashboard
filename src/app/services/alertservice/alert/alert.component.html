@@ -1,12 +1,42 @@
-<div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 
-'alert-danger': message.type === 'error', 'alert-warning': message.type === 'warning', 
-'alert-info': message.type === 'info' }"
-    >
-<div class="alertbox">
-    <div class="closebtn" (click)="closeMessage()"><span><span class="closetext">Close </span> X</span></div><br>
-    <div class="msg">{{message.text}}</div>
+<div *ngIf="message" >
 
-        <!-- <button class="button" (click)="closeMessage()"> Close</button> -->
+    <!-- <div class="alertcont">
+        <div class="alertbox">
+            <div class="closebtn" (click)="closeMessage()"><span><span class="closetext">Close </span> X</span></div><br>
+            <div class="msg">{{message.text}}</div>
         
+                
+        </div>
+    </div> -->
+
+
+
+
+<div class="modal max-center" id="warningmodal1;" style="display: block;">
+    <div class="formcont max-center" style="width: 300px;">
+      <div class="modalform">
+        <div class="formtitle" style="padding: 4px 12px;align-items: center;font-size: 14px;">
+          <span>
+            <img src="assets/warning.svg" style="width: 16px; margin-bottom:2px; padding:0;"> 
+            {{message.title}}
+          </span>
+          <img src="assets/close.svg" alt="edit" #close (click)="closealertModal()">
+        </div>
+        <div class="" style="padding:15px 30px 0 30px;">
+          <div style="display: flex;place-content: center;">
+            <!-- <div class="servicetitle" style="margin-bottom: 10px; font-family: TP,sans-serif;">{{message.text}}</div> -->
+            <div class="alertMsg" style="margin-bottom: 10px;">{{message.text}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
 </div>
-</div>
+
+<!-- <div class="modal">
+
+</div> -->

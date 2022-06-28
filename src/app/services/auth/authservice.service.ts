@@ -66,8 +66,13 @@ export class AuthService {
       calling_System_Detail: "Mobile_App"
     }
     return this.http.post(url,payload)
-
   }
+
+  // forgotpassword1(username:string){
+  //   let url = `http://usmgmt.iviscloud.net:9195/auth/admin/realms/IVISUSA/users/443a2df3-3f20-4c79-9ffc-04ec453d83fe/execute-actions-email`
+  //   BODY :
+  //   ["UPDATE_PASSWORD"]
+  // }
 
 
 }

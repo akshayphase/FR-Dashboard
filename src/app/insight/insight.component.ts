@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from '../services/alertservice/alert-service.service';
 import { ApiService } from '../services/api.service';
@@ -33,9 +33,11 @@ export class InsightComponent implements OnInit {
     private alertservice: AlertService,
     private storageService: StorageService,
     private router: Router,
+    private eRef: ElementRef
     )  { }
 
   ngOnInit(): void {
+    // this.getsitenonworkingdays();
     // for maxdate as today
     let x = (new Date(Date.now()).getFullYear());
     let y = (new Date(Date.now()).getMonth() + 1);
@@ -45,7 +47,7 @@ export class InsightComponent implements OnInit {
   }
  
   sites:any
-  reportsite="Loading...";
+  reportsite="";
   currentsite: any;
   currentsiteid: any;
   placeholderhere= "Loading...";
@@ -61,7 +63,7 @@ export class InsightComponent implements OnInit {
   getSitename(){
     this.showLoader = true;
     this.apiservice.getSites().subscribe((res:any) => { 
-      this.showLoader =false;    
+      // this.showLoader =false;    
       if(res.Status == 'Failed'){
         if(res.Message == "Data not available"){this.router.navigateByUrl('/guard')}
         else{
@@ -78,7 +80,7 @@ export class InsightComponent implements OnInit {
         sitelist = this.sites.siteList.sort(sortAlphaNum)
         this.sites.siteList = sitelist;        
         this.removeDuplicateSites();
-        this.showLoader = false;
+        // this.showLoader = false;
         /* to automatically open sites panel on page load*/
         // setTimeout(() => {this.optionlabel.nativeElement.click()}, 500);
         this.firstreport();
@@ -89,11 +91,14 @@ export class InsightComponent implements OnInit {
       }
       console.log("Something went wrong");
     })
-    this.getsitenonworkingdays();
   }
 
 
+  reportsd:any;
+  reported:any;
   getreports(x:any,y:any,z:any){
+    this.reportsd = y;
+    this.reported = z;
     this.placeholderhere= "Loading...";
     this.showLoader = true;
     this.apiservice.getBiAnalyticsReport(x,y,z).subscribe((res:any)=>{      
@@ -134,7 +139,7 @@ export class InsightComponent implements OnInit {
      (error:any)=> {
        this.showLoader = false;
        setTimeout(()=>{ this.showLoader = false; }, 1000);
-       this.alertservice.warning("Something went wrong please try after some time ")
+       this.alertservice.warning("Error","Something went wrong please try after some time ")
      });
   }
   getcols(r:any){
@@ -158,7 +163,6 @@ export class InsightComponent implements OnInit {
       this.currentsite = p.sitename;
       this.currentsiteid = p.siteid;
       // this.setweekenddisable();
-      this.getsitenonworkingdays();
       var siteid = p.siteid;
       this.startDate = this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'dd/MM/yyyy');
       this.endDate = this.startDate;
@@ -168,7 +172,30 @@ export class InsightComponent implements OnInit {
       var sd = this.months[Number(startDateParts[1])-1]+' '+startDateParts[0] +', '+ startDateParts[2]
       var ed = this.months[Number(endDateParts[1])-1]+' '+ endDateParts[0] +', '+endDateParts[2];  
       if(sd != ed){this.selectedSpan = sd +' - '+' '+ ed}else{this.selectedSpan = sd}
-      this.getreports(siteid,yesterday,yesterday);
+      // console.log(yesterday)
+      // setTimeout(() => {
+      //   if(this.lastWorkingDay ){
+      //     yesterday = this.lastWorkingDay;
+      //    this.getreports(siteid,yesterday,yesterday);
+      //   //  console.log(yesterday);
+      //   //  console.log(new Date(this.lastWorkingDay))
+      //   } else{
+        this.getsitenonworkingdays();
+
+        //  this.getreports(siteid,yesterday,yesterday);
+      //   }
+      // },2000)
+      
+      // else{
+      // this.getsitenonworkingdays();
+      // this.getreports(siteid,this.lastWorkingDay,this.lastWorkingDay);
+      //   if(!this.lastWorkingDay){
+      //     this.getreports(siteid,yesterday,yesterday);
+      //   }
+      // }
+      
+      // console.log("yesdate",yesterday)
+
       this.displaYstartDate = this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'MM/dd/yyyy');
       this.displaYendDate = this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'MM/dd/yyyy');
     }
@@ -177,27 +204,53 @@ export class InsightComponent implements OnInit {
     var p =  this.storageService.getEncrData('siteidfromgaurdpage');
     var siteid=p.siteid;
     var year = (new Date()).getFullYear();
-    var yeararr=[year, year-1, year-2, year-3, year-4]
+    var yeararr=[year-1, year-2, year-3, year-4]
     var datesarr:any=[]
-    yeararr.forEach((el:any) => {
-      this.apiservice.getNonWorkingDays(siteid,el).subscribe((res:any)=>{
-        if(res.Status=="Success"){
-          datesarr.push(res.NotWorkingDaysList);
-          this.datesarr = datesarr.flat()
-        }
-      })
-    });
-    setTimeout(() => {
-      this.dates(this.datesarr)
-    }, 2000);
+
+    this.apiservice.getNonWorkingDays(siteid, year).subscribe((res:any)=>{
+      if(res.Status=="Success"){
+        var dateParts = res.LastWorkingDay.split('-');
+        this.lastWorkingDay = dateParts[0]+'/'+dateParts[1]+'/'+dateParts[2]
+        this.selectedSpan = this.months[Number(dateParts[1])-1]+' '+dateParts[2] +', '+ dateParts[0];
+        this.startDate = this.endDate = dateParts[2]+'/'+dateParts[1]+'/'+dateParts[0];
+        this.displaYstartDate = this.pipe.transform(new Date(this.lastWorkingDay), 'MM/dd/yyyy');
+        this.displaYendDate = this.pipe.transform(new Date(this.lastWorkingDay), 'MM/dd/yyyy');
+        this.getreports(siteid,this.lastWorkingDay,this.lastWorkingDay);
+        datesarr.push(res.NotWorkingDaysList);
+        this.datesarr = datesarr.flat();
+        yeararr.forEach((el:any) => {
+          this.apiservice.getNonWorkingDays(siteid,el).subscribe((res:any)=>{
+            if(res.Status=="Success"){
+              // console.log(res)
+              datesarr.push(res.NotWorkingDaysList);
+              this.datesarr = datesarr.flat()
+            }
+          })
+        });
+
+        setTimeout(() => {
+          this.dates(this.datesarr)
+        }, 2000);
+      }else{
+        console.log("Last Working Day does not exist");
+        var yesterday =this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'yyyy/MM/dd')
+        this.getreports(siteid,yesterday,yesterday);
+        this.dates([]);
+      }
+    })
+ 
+
   }
   disabledays:any
+  lastWorkingDay:any;
+
   siteClicked(site:any){
     this.storageService.storeEncrData('siteidfromgaurdpage', site);
     this.currentsite = site.sitename;
     this.currentsiteid = site.siteid;
     this.optionlabel.nativeElement.click();
     // this.setweekenddisable();
+    this.showLoader=true;
     this.getsitenonworkingdays();
   }
   setweekenddisable(){
@@ -275,18 +328,19 @@ generateReport(){
   var endDate = new Date(+dateParts1[2], dateParts1[1] - 1, +dateParts1[0]); 
   if(this.startDate != "null" && this.endDate !="null" ){
     if(startDate > endDate){
-      this.alertservice.warning("Start Date cannot be later than End Date")
+      this.alertservice.warning("Error","Start Date cannot be later than End Date")
      }else{
       this.getAnalyticsData();
      }
    }else{
      if(this.reports == null ){
-        this.alertservice.warning("Currently, we dont have data for this table")
+        this.alertservice.warning("Information","Currently, we dont have data for this table")
      }
   }
+  
   this.closemodal();
-
 }
+
 
 // To get analytics report data to display according to date
 getAnalyticsData(){
@@ -301,11 +355,42 @@ getAnalyticsData(){
   if(sd != ed){this.selectedSpan = sd +' - '+' '+ ed}else{this.selectedSpan = sd}
   this.getreports(x,y,z);
 }
-
+downloadReport(){
+  this.showLoader = true;
+  this.apiservice.getsiteid(this.currentsiteid).subscribe((res:any)=>{
+    // console.log(res);
+    if(res){
+      console.log(res,this.reportsd.replaceAll("/", "-"), this.reported.replaceAll("/", "-"))
+      this.apiservice.downloadReport1(res,this.reportsd.replaceAll("/", "-"), this.reported.replaceAll("/", "-")).subscribe(
+        data => {
+           var file = new Blob([data], {type: 'application/pdf'});
+           var fileURL = URL.createObjectURL(file);
+          //  window.open(fileURL);
+          this.downloadFile(fileURL)
+          },(error:any)=>{
+            this.showLoader=false;
+            this.alertservice.success("Alert","Something went wrong. Please Try Again.")
+          }
+      );
+    }
+  },(error:any)=>{
+    this.showLoader=false;
+    this.alertservice.success("Alert","Something went wrong. Please Try Again.")
+  })
+}
+downloadFile(filePath:any){
+  this.showLoader=false;
+  var link=document.createElement('a');
+  link.href = filePath;
+  // link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+  // link.download =this.currentsite + '-' + this.startDate + 'to'+ this.endDate;
+  link.download =this.currentsite + ' - ' + this.selectedSpan.replace("-","to");
+  link.click();
+}
 
 // for month selection from search bar
 visible= false
-selectedSpan="Loading...";
+selectedSpan="";
 openmonths(event:any){
   this.visible = true;
   var x  = (document.getElementById("searchbox") as HTMLInputElement);
@@ -345,7 +430,8 @@ selectedmonth(i:any){
   if((this.years[0] == this.currentyear && i<=this.currentMonthIndex) || this.years[0] < this.currentyear ){
     this.monthselected =true;
     this.visible = false;
-    this.selectedMonth = this.months[i] +', '+ this.years[0];
+    this.selectedMonth = this.months[i] +' '+ this.years[0];
+    // this.selectedMonth = this.months[i] +', '+ this.years[0];
     var month = i+1;
     var year = this.years[0];
     if(this.years[0] == this.currentyear && i==this.currentMonthIndex){
@@ -393,7 +479,18 @@ closemodal(){return this.apiservice.closemodal();}
 toQRmodal(){return this.apiservice.toQR()}
 makeTitleForTable(a:any){return this.apiservice.makeTitleForTables(a)}
 
+clickoutside(){
+  console.log("outside")
 }
 
+@ViewChild ("month") monthmodal:ElementRef;
+@HostListener('document:mousedown', ['$event'])
+onGlobalClick(e:any): void {
+  if(this.visible){
+    if (!this.monthmodal.nativeElement.contains(e.target)) {
+      this.visible=!this.visible
+   }else{}
+  }
+}
 
-
+}
