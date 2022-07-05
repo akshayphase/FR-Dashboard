@@ -1,5 +1,5 @@
 <div class="chat" #chatpopup>
-    <div class="chatpopup" drag 
+    <div class="chatpopup" 
     (mousedown)="hold($event)"
     (mouseup)="leave($event)"
     id="chatpopup"
@@ -24,21 +24,21 @@
             <div style="display: block; ">
 
                 <div class="inputbox greybtn" (click)="inputclicked($event)" style="position: relative;">
-                    <div class="question">{{ currentcategory.catName }}</div>
+                    <div class="question">{{ currentcategory?.catName }}</div>
                     <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
                 </div>
                 <div class="selectionbox" *ngIf="visible" >
-                    <div class="inputbox1 greybtn" *ngFor="let item of showcategories" (click)="issueclicked($event, item);">{{item.catName}}</div>
+                    <div class="inputbox1 greybtn" *ngFor="let item of showcategories" (click)="issueclicked($event, item);">{{item?.catName}}</div>
                     <!-- <div class="inputbox1 greybtn"  (click)="issueclicked($event, {catName:'other', subCategoryList:[]})">Other</div> -->
                     <!-- <div class="inputbox1" (click)="issueclicked($event, 'Insight')">Issue with Insight</div> -->
                 </div>
 
-                <div class="inputbox greybtn" (click)="inputclicked1($event)" style="position: relative; margin-bottom: 0;" *ngIf="currentcategory.subCategoryList.length>0">
-                    <div class="question" >{{ currentsubcategory.serviceSubcatName }}</div>
+                <div class="inputbox greybtn" (click)="inputclicked1($event)" style="position: relative; margin-bottom: 0;" *ngIf="currentcategory?.subCategoryList.length>0">
+                    <div class="question" >{{ currentsubcategory?.serviceSubcatName }}</div>
                     <img src="assets/forward_arrow.svg" style="width: 15px;" class="downarrow">
                 </div>
                 <div class="selectionbox" *ngIf="visible1" style="margin-top: 11px;">
-                    <div class="inputbox1 greybtn" *ngFor="let item of showsubcats" (click)="subcatclicked($event, item)">{{item.serviceSubcatName}}</div>
+                    <div class="inputbox1 greybtn" *ngFor="let item of showsubcats" (click)="subcatclicked($event, item)">{{item?.serviceSubcatName}}</div>
                 </div> 
 
                 <span style="letter-spacing: 0; padding:0; padding-left: 10px; text-transform: none;">Priority :</span>

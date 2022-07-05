@@ -61,6 +61,8 @@ input, textarea {caret-color: #e1e1e1;}
 .page{font-family:sans-serif;}
 /*New design changes */
 @media screen and (min-width:992px){
+  .searchbox input::placeholder{font-size: 12px !important;}
+  .searchbox img{width: 10px;}
 .col-lg-3{width: 20% !important;}
 .col-lg-9{width: 79% !important;}
 .searchbox{margin: 6px 2.4% 6px 34px !important; padding: 3px !important;}
@@ -386,9 +388,6 @@ input[type="password"]{
 textarea:focus, input:focus{
   outline: none;
 }
-.searchbox img{
-  width: 10px;
-}
 
 /* Searchbar CSS ends here */
 
@@ -493,6 +492,8 @@ textarea:focus, input:focus{
   position :absolute;font-size:25px;font-weight:600;color:#fff; margin-top:15px; text-align: center;
 }
 @media screen and (max-width:992px) {
+  .searchbox input::placeholder{font-size: 16px !important;}
+  .searchbox img{width: 16px;}
   .qrtxt{font-size:20px; margin: 5px;}
 }
 /* tooltip */
@@ -760,7 +761,4 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 #date{
   width: 120px;
   margin: auto;
-}
-.searchbox input::placeholder{
-  font-size: 12px !important;
 }

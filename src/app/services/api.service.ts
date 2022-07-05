@@ -82,6 +82,7 @@ export class ApiService {
     // console.log("services: ",servicesurl1);
     this.http.get(servicesurl1).subscribe((res:any)=>{
       this.siteservices$.next(res);
+      localStorage.setItem('siteservices', JSON.stringify(res))
       if(res.Status !="Failed"){
         if(res.background != null){
           // document.body.style.backgroundImage= `linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url(${res.background})`
@@ -119,6 +120,7 @@ export class ApiService {
     body.append('description', payload.message);
     body.append('priority', payload.priority);
     body.append('preferredTimeToCall', payload.time);
+    body.append('remarks',payload.remarks);
     body.append('Attachements', '');
     body.append('accessToken', a.access_token);
     // body.forEach((value,key) => {
@@ -188,7 +190,7 @@ export class ApiService {
   }
   createuser(user:any){
     let url = "http://localhost:8080/CreateUser"
-    console.log("services: ",url,user);
+    // console.log("services: ",url,user);
 
     return this.http.post(url, user);
   }
@@ -220,27 +222,16 @@ export class ApiService {
     return this.http.get(newurl1);
   }
 
-  getBiAnalyticsReport1(siteid:any, startDate:any, endDate:any){
-    let url = 'http://smstaging.iviscloud.net:8090/bireportsApi/getReports';
-    var payload = {
-      "id":1,
-      "startdate":"2022-03-01",
-      "enddate":"2022-03-03"
-  }
-    // const api = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_user_details=IVISUSA`
-    // console.log("bireport: ",url,payload);
 
-    return this.http.post(url, payload)
-  }
   getBiTrends(type:any, date:any){
     let biTrends = this.baseurl + "biDataReport/BiData?accountId=1001&analyticTypeId=";
     let url =`${biTrends}${type}&cameraDate=${date}`
-    console.log(url);
+    // console.log(url);
     return this.http.get(url)
   }
   getBiTrends1(siteid:any, date:any, typeid:any){
-    let url1 = this.baseurl + "businessInterface/insights/analyticTrends_1_0?SiteId=1002&date=2022/03/01&calling_System_Detail=IVISUSA&analyticTypeId=8";
-    let url =  `${this.baseurl}businessInterface/insights/analyticTrends_1_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
+    let url1 =  `${this.baseurl}businessInterface/insights/analyticTrends_1_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
+    let url =  `${this.baseurl}businessInterface/insights/analyticTrends_2_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
     return this.http.get(url)
   }
   getTrendsFields(siteid:any){
@@ -254,16 +245,11 @@ export class ApiService {
     // let url = `http://localhost:8080/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
     // let url1 ="http://localhost:8080/download/getPdfReport?id=2&startdate=2022-03-01&enddate=2022-03-01";
     // return fetch(url);
-
     var x = new HttpHeaders({Accept: 'application/pdf', 'Content-Type': 'application/pdf', responseType: 'blob'});
-
     let url = `${this.baseurl}bireports/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
-   
     // let url2 = `http://smstaging.iviscloud.net:8090/bireports/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
     // let url1 = `http://localhost:8080/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
     // let url3 = `http://10.0.2.197:8080/download/getPdfReport?id=2&startdate=2022-06-07&enddate=2022-06-07`;
-    
-
     return this.http.get(url, { headers: x , responseType: 'blob' })
     // return this.http.get(url, { headers: x , responseType: 'blob' });
     // return this.http.get(url);
@@ -346,6 +332,8 @@ export class ApiService {
     const x = <any>(document.getElementById("qrcode"));
     y.innerHTML='';
     const p = (y.parentNode);
+    var services = JSON.parse(localStorage.getItem('siteservices')!);
+    console.log(services)
     if(this.siteservices$.value.Status != "Failed" && this.siteservices$.value?.Services?.safety_escort == "F"){
       y.insertAdjacentHTML("afterBegin",
       "<div class='qrtxt'>Please contact administration to subscribe the escort service</div>");
@@ -381,6 +369,7 @@ export class ApiService {
     const y = <any>(document.getElementById("modal"));
     y.style.display = "none";
   }
+  
   // add #topple to element you wish to insert in modal
   /* template to be added at bottom
   
@@ -389,9 +378,10 @@ export class ApiService {
     <div id="modalcontent"></div>
   </div>
   */
+
   makeTitleForTables(str:string){
-    var newString = str.replace(/[^A-Z0-9]+/ig, " "); // remove symbols
-    var splitStr = newString.toLowerCase().split(' '); // make first letter cap
+    var localheader = str.replace(/[^A-Z0-9]+/ig, " "); 
+    var splitStr = localheader.toLowerCase().split(' ');
     for (var i = 0; i < splitStr.length; i++) {
      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
     }
@@ -400,11 +390,9 @@ export class ApiService {
 
 
   updateprofile(){
-    let url = this.baseurl+'businessInterface/insights/getAnalyticsListforSite_1_0?';
+    let url = this.baseurl+'businessInterface/insights/';
     var payload ={
-
     }
-    
   }
 
 }

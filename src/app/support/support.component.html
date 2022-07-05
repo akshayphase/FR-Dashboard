@@ -11,9 +11,9 @@
           </div> -->
         </div>
         <div class="col-lg-9 col-sm-12" Style="border: none; align-self: center; opacity:1">
-          <div *ngIf="support" class="title1 topTitle" style="margin:0 0 0 25px;">
+          <div  class="title1 topTitle" style="margin:0 0 0 25px;">
             <!-- <span *ngIf="site">{{site.sitename}}</span> -->
-            <span *ngIf="site">Support Helpdesk</span>
+            <span *ngIf="support">Support Helpdesk</span>
             <div class=" action-icons">  
             <div>&nbsp;</div>
           </div>
@@ -323,7 +323,7 @@
               <!-- (click)="toggleAccordian1($event)" -->
               <div class="helpid">{{item.serviceId ? item.serviceId : ''}}</div>
               <span class="">
-                <span style="color: #104b86; margin:0;">{{item.accountShortName}} - </span>{{item.serviceCategoryName ? item.serviceCategoryName : ''}} - {{item.serviceSubCategoryName ? item.serviceSubCategoryName : ''}}
+                <span style="color: #104b86; margin:0;" *ngIf="item.accountShortName">{{item.accountShortName}} - </span>{{item.serviceCategoryName ? item.serviceCategoryName : ''}} - {{item.serviceSubCategoryName ? item.serviceSubCategoryName : ''}}
               </span> 
 
            <div class="actions max-center">

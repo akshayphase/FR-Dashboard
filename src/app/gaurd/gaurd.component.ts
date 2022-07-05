@@ -50,7 +50,6 @@ export class GaurdComponent implements OnInit {
           var errorpop = (el.player.error_);
            let app_vjs_player = el.target.nativeElement.parentNode.parentNode
            let snapshotimg = el.target.nativeElement.parentNode.parentNode.nextElementSibling;
-           console.log(errorpop)
            if(errorpop != null){
              app_vjs_player.style.display = "none";
              snapshotimg.style.display = "block";
@@ -60,7 +59,6 @@ export class GaurdComponent implements OnInit {
          }); 
        }, 1000);
     }, 1000);
-
     this.adjustGrid();
     this.changeDetection.detectChanges();
   }
@@ -190,40 +188,48 @@ export class GaurdComponent implements OnInit {
   currentsite:any; // to save currentsite
   getCameras(event:any, site:any, index:any){
     this.storageService.storeEncrData('siteidfromgaurdpage', site);
-    if(site.siteid != this.currentsite){ this.apiService.getServices(site.siteid); }
-      this.pagenumber = 1;
-      this.adjustGrid();
-      this.viewPanelData = site;
-      var siteid = site.siteid;
-      this.storageService.storeEncrData('siteidfromgaurdpage', site)
-      if(siteid != this.currentsite){
-        var x:any = this.storageService.getEncrData('savedcams');
-        if(x){
-          x.forEach((el:any) => {
-            if(el.siteid == site.siteid){ this.cameras = el.data, this.currentsite = el.siteid;}
-          });
-          if(event.target.nextElementSibling == null){
-            this.showcams=false 
-          }
-          else{
-            var xl = event.target.nextElementSibling.style.maxHeight
-            if(xl){this.showcams=false}else{ this.showcams=true}
-            if(this.cameras.length != 0){setTimeout(()=>{
-              if(this.cameras.length>0){this.toggleAccordian(event, index);}
-            },200)}
-          }
-          this.commoncommands();
-        }else{
-          this.cameras = null;
-          this.paginatedCameraList = null;
-          this.changeDetection.detectChanges();
-          this.loadCameraList(event, site, index);
+    if(site.siteid != this.currentsite){this.apiService.getServices(site.siteid);}
+    this.pagenumber = 1;
+    this.adjustGrid();
+    this.viewPanelData = site;
+    var siteid = site.siteid;
+    this.storageService.storeEncrData('siteidfromgaurdpage', site)
+    if(siteid != this.currentsite){
+   
+      var x:any = this.storageService.getEncrData('savedcams');
+      if(x){
+        x.forEach((el:any) => {
+          if(el.siteid == site.siteid){ this.cameras = el.data, this.currentsite = el.siteid;}
+        });
+        if(event.target.nextElementSibling == null){
+          this.showcams=false 
         }
+        else{
+          var xl = event.target.nextElementSibling.style.maxHeight
+          if(xl){this.showcams=false}else{ this.showcams=true}
+          if(this.cameras.length != 0){setTimeout(()=>{
+            if(this.cameras.length>0){this.toggleAccordian(event, index);}
+            setTimeout(() => {
+              this.optionlabel.nativeElement.click();
+            }, 200);
+          },200)}
+        }
+        this.commoncommands();
+        setTimeout(() => {
+          event.target.click();
+        }, 210);
       }else{
-        var x = event.target.nextElementSibling.style.maxHeight
-        if(x){this.showcams=false}else{ this.showcams=true}
-        if(this.cameras.length>0){this.toggleAccordian(event, index);}
-      } 
+        this.cameras = null;
+        this.paginatedCameraList = null;
+        this.changeDetection.detectChanges();
+        this.loadCameraList(event, site, index);
+      }
+      
+    }else{
+      var x = event.target.nextElementSibling.style.maxHeight
+      if(x){this.showcams=false}else{ this.showcams=true}
+      if(this.cameras.length>0){this.toggleAccordian(event, index);}
+    }
   }
   commoncommands(){
     this.showLoader = false;
@@ -341,6 +347,8 @@ export class GaurdComponent implements OnInit {
   pagination(){
     this.selector();
     var cameras = this.cameras;
+    const sortAlphaNum = (a:any, b:any) => a.cameraId.localeCompare(b.cameraId, 'en', { numeric: true })
+    cameras = cameras.sort(sortAlphaNum)
     var x;
     var y = Number(this.pagenumber)
     var gc= this.gridClicked;  

@@ -297,3 +297,18 @@ input[type="file"] {
 input::placeholder{
   text-transform: capitalize;
 }
+
+.sidenavbtn{
+  cursor: pointer;
+  background-color: #E6E8E8;
+  color: #363636;
+  padding: 4px;
+  margin-top: 8px;
+  border-radius: 17px;
+  font-size: 12px;
+    font-family: ES,sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  border: 1px solid #7c7c7c;
+}

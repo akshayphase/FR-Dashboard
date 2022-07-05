@@ -12,7 +12,7 @@
   <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/support']">Support</div></a>
   <a *ngIf="advertisements"><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
   <!-- <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/research']">Research</div></a> -->
-  <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
+  <a *ngIf="b_intelli" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
   <a *ngIf="b_intelli" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
   <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Live View</div></a>
   <a class="icon" (click)="openmenu()">
@@ -32,12 +32,15 @@
         <p style="font-size: 16px; text-transform: uppercase;text-overflow:ellipsis; overflow-wrap: anywhere;">{{data?.FirstName + ' ' + data?.LastName}}</p>
         <p style="font-size: 14px;" *ngIf="data?.contact"> {{'+91 '+ data?.contact}}</p>
         <p style="font-size: 14px;">{{data?.email ? data?.email : 'Email to be updated'}}</p>
+        <div class="sidenavbtn max-center" (click)="resetpassconfirm()">
+          <img src="assets/key.svg" alt="" style="width: 10px;margin-right:8px;">Reset Password
+        </div>
       </div>
     </div>
     <div class="menus" (click)="closemenu()">
       <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Live View</div></a>
       <a *ngIf="b_intelli" ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
-      <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
+      <a *ngIf="b_intelli" ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
       <!-- <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/research']">Research</div></a> -->
       <a *ngIf="advertisements"><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
       <a ><div class="sidenavelements" [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/support']">Support</div></a>
@@ -89,16 +92,16 @@
         <div class="button" (click)="submitprofile()" style="font-family: ES,sans-serif; letter-spacing: 2px;font-size: 12px; font-weight: 700;">SUBMIT</div>
       </div>
     </div>
-    <div class="profilebtn" (click)="newpass=!newpass">
+    <div class="profilebtn" (click)="resetpassconfirm()">
       <img src="assets/key.svg" alt="">
-      Change Password
+      Reset Password
     </div>
-    <div class="editprofile" *ngIf="newpass">
+    <div class="editprofile" style="display: none;">
       <!-- <input type="password" placeholder="Enter new password">
       <input type="password" placeholder="Enter password again">
       <div class="profilelogout" style="padding-top: 2px; padding-bottom:2px; margin-bottom: 3px;">Submit</div> -->
       <div class="form">
-        <input type="text" placeholder="Enter email or username" maxlength="25" minlength="5" style="box-shadow: none;" [(ngModel)]="username">
+        <input type="text" placeholder="Enter username" maxlength="25" minlength="5" style="box-shadow: none;" [(ngModel)]="username">
         <div class="button" (click)="forgotPass()" style="font-family: ES,sans-serif; letter-spacing: 2px;font-size: 12px; font-weight: 700;">SUBMIT</div>
       </div>
     </div>
@@ -110,7 +113,32 @@
   </div>
 
 
+  <div class="modal max-center" id="resetpassmodal" style="padding-top: 45vh;">
+    <div class="formcont max-center">
+      <div class="modalform">
+        <div class="formtitle">  <div><img src="assets/warning.svg" style="width: 16px; margin:0 15px 2px 0; padding:0;">Alert</div>
+          <img src="assets/close.svg" alt="edit" #close (click)="closeresetModal();">
+        </div>
+        
+        <div class="" style="padding:15px 30px 0 30px;">
+          <div style="display: flex;place-content: center;">
+            <!-- <div class="servicetitle" style="margin-bottom: 10px; font-family: TP,sans-serif;">{{message.text}}</div> -->
+            <div class="alertMsg" style="font-size:16px;margin-bottom: 10px; font-family: PS,sans-serif;color:#7c7c7c;">Are you sure you wish to reset your password?</div>
+          </div>
 
+          <div style="display: flex; text-align: center;">
+            <div class="button" (click)="forgotPass()" style="  font-family: ES,sans-serif; letter-spacing: 2px;font-size: 12px; font-weight: 700;margin: 1% 8% 3% 8%;border: 8px solid #104B86 !important ;">Yes</div>
+          <div class="button" (click)="closeresetModal()" style="  font-family: ES,sans-serif; letter-spacing: 2px;font-size: 12px; font-weight: 700;margin: 1% 8% 3% 8%;border: 8px solid #104B86 !important ;">No</div>
+          </div>
+
+        </div>
+
+
+    
+
+      </div>
+    </div>
+  </div>
 
 
   

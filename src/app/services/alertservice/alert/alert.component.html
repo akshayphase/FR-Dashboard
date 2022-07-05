@@ -17,7 +17,9 @@
       <div class="modalform">
         <div class="formtitle" style="padding: 4px 12px;align-items: center;font-size: 14px;">
           <span>
-            <img src="assets/warning.svg" style="width: 16px; margin-bottom:2px; padding:0;"> 
+            <img *ngIf="message.title == 'Warning' || message.title == 'Failed' || message.title == 'Error' " src="assets/warning.svg" style="width: 16px; margin: 0 3px 2px 0; padding:0;"> 
+            <img *ngIf="message.title == 'Success'" src="assets/ok.svg" style="width: 16px; margin: 0 3px 2px 0; padding:0;"> 
+            <img *ngIf="message.title == 'Information'" src="assets/info.svg" style="width: 16px; margin: 0 3px 2px 0; padding:0;"> 
             {{message.title}}
           </span>
           <img src="assets/close.svg" alt="edit" #close (click)="closealertModal()">

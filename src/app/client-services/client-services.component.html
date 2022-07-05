@@ -83,7 +83,7 @@
                        <div class="auth" *ngIf="page.pageType=='level_1'">
                         {{page.content.description}}
                        </div>
-                       <img src="assets/IVISsecurity_logo_white.png" *ngIf=" (page.pageType=='level_1' && i == 0)" class="logo">
+                       <img src="assets/logo_white.png" *ngIf=" (page.pageType=='level_1' && i == 0)" class="logo">
                        <div  *ngIf="page.pageType!='level_1'" [ngClass]="page.pageType=='level_2' ? 'level2content':'othercontent'" >
                         <div class="flexcontainer" >
                           <div class="medias" *ngIf="cont(page.content).length !=0" 

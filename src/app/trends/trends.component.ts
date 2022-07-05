@@ -90,7 +90,8 @@ getResearchData(siteid:any, date:any){
       this.showLoader=false;
     }else{
       this.showLoader=false;
-      this.placeholderhere = "Data is not available for selected date. Please choose different date.";
+      // this.placeholderhere = "Data is not available for selected date. Please choose different date.";
+      this.placeholderhere = "Please select a date to view your TRENDS"
       const y = <any>(document.getElementById("graphholder"));
       y.innerHTML = '';
       this.rsdata = null;
@@ -121,27 +122,42 @@ getBiTrends(){
   })
 }
 mychart(info:any, index:any){
-  var obj= info[Object.keys(info)[0]]
-  var arr=[]
+  var arr=[];
+  let obj = info.data;
+  for(let item in obj){
+    var i =(obj[item])
+    if(String(i.value).includes(":")){
+      i.value = i.value.replace(/[^\d.]/g, '.');
+    }
+    arr.push([i.title,Number(i.value)]);
+  }
+  var charttitle = info.type;
+  if(charttitle == 'DAY'){subtitle='Information about last seven days performance with respect to the selected date'}
+  if(charttitle == 'WEEK'){subtitle='Information about last four weeks performance with respect to the week of selected date'}
+  if(charttitle == 'MONTH'){subtitle='Information about last three months performance with respect to the month of selected date'}
+  if(charttitle == 'QUARTER'){subtitle='Information about last four quarters performance with respect to the quarter of selected date'}
+  /*
+  var obj= info[Object.keys(info)[0]];
+  console.log(obj)
   for(var item in obj){
     if(String(obj[item]).includes(":")){
       obj[item] = obj[item].replace(/[^\d.]/g, '.');
-      // console.log(obj[item])
     }
     arr.push([item,Number(obj[item])])
   }
-  var subtitle = '';
   if(Object.keys(info)[0] == 'DAY'){subtitle='Information about last seven days performance with respect to the selected date'}
   if(Object.keys(info)[0] == 'WEEK'){subtitle='Information about last four weeks performance with respect to the week of selected date'}
   if(Object.keys(info)[0] == 'MONTH'){subtitle='Information about last three months performance with respect to the month of selected date'}
   if(Object.keys(info)[0] == 'QUARTER'){subtitle='Information about last four quarters performance with respect to the quarter of selected date'}
+  */
+  var subtitle = '';
   var charttype = 'line';
   var threeD = false;
-  var title = Object.keys(info)[0];
-  var antype = Object.keys(info)[0];
+  var title = charttitle;
+  var antype = charttitle;
   var elementid = 'container'+String(index);
   var data =  
-    arr;
+    arr.reverse();
     //[ ['91 Minutes', 91],
     // ['50 Minutes', 50],
     // ['66 Minutes', 66] ];
@@ -442,7 +458,7 @@ daaata=[
 
 
 calcperc(i:any){
-  console.log(i)
+  // console.log(i)
   if(i.count.includes("/") || i.variance.includes("/")){
     // console.log((parseInt(i.count)-parseInt(i.variance)),(i.count),(i.variance))
     return Math.ceil((i.variance));

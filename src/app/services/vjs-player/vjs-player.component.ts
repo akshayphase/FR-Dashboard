@@ -52,6 +52,7 @@ export class VjsPlayerComponent implements OnInit {
         })
       });
 
+   
 
       // player.tech().Hls.xhr.beforeRequest
 

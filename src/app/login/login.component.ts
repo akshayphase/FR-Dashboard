@@ -137,7 +137,7 @@ export class LoginComponent implements OnInit {
         this.showLoader=true;
         this.authservice.forgotPassword(x).subscribe((res:any)=>{
           this.showLoader=false;          
-          if(res.Status == "Success"){this.forgotPassVisible = false;this.alertService.success("Successful","Your password reset link has been sent to your Email.")}
+          if(res.Status == "Success"){this.forgotPassVisible = false;this.alertService.success("Success","Your password reset link has been sent to your Email.")}
           if(res.Status == "Failed"){this.errormsg = 'Username is invalid'}
         })
       }

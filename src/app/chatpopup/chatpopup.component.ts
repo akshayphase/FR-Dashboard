@@ -84,17 +84,48 @@ export class ChatpopupComponent implements OnInit {
     this.apiService.getHelpDeskCategories().subscribe((res:any)=>{
      if(res.Status=="Success"){
       var a = res.CategoryList
-      this.categories = (this.unique(a,'catName'))
-      this.currentcategory = this.categories[0];
-      this.currentsubcategory = this.categories[0].subCategoryList[0];
-      this.showcategories = this.categories.filter((item:any)=> item.catName !== this.currentcategory.catName)
-      this.showsubcats = this.currentcategory.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentsubcategory.serviceSubcatName)
-     }else{
+      if(this.currentpage){
+        if(this.currentpage == "Support"){this.shifttofirst(a, "Safety Escort")}
+        else if(this.currentpage == "Insight"){this.shifttofirst(a, "Business Intelligence")}
+        else if(this.currentpage == "Gaurd"){this.shifttofirst(a, "Live View")}
+        else if(this.currentpage == "Trends"){this.shifttofirst(a, "Business Intelligence")}
+        else if(this.currentpage == "Advertisement"){this.shifttofirst(a, "Proximity Advertisements")}
+        else(this.shifttofirst(a, "Live View"))
+        this.categories = (this.unique(a,'catName'))
+        this.currentcategory = this.categories[0];
+        this.currentsubcategory = this.categories[0].subCategoryList[0];
+        this.showcategories = this.categories.filter((item:any)=> item.catName !== this.currentcategory.catName)
+        this.showsubcats = this.currentcategory.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentsubcategory.serviceSubcatName)
+      }      
+          
+      this.router.events.subscribe((event)=>{
+        if ( event instanceof RoutesRecognized ) {
+          this.currentpage = (event.state.root.firstChild?.data['routeName']);
+          if(this.currentpage == "Support"){this.shifttofirst(a, "Safety Escort")}
+          else if(this.currentpage == "Insight"){this.shifttofirst(a, "Business Intelligence")}
+          else if(this.currentpage == "Gaurd"){this.shifttofirst(a, "Live View")}
+          else if(this.currentpage == "Trends"){this.shifttofirst(a, "Business Intelligence")}
+          else if(this.currentpage == "Advertisement"){this.shifttofirst(a, "Proximity Advertisements")}
+          else(this.shifttofirst(a, "Safety Escort"))
+          this.categories = (this.unique(a,'catName'))
+          this.currentcategory = this.categories[0];
+          this.currentsubcategory = this.categories[0].subCategoryList[0];
+          this.showcategories = this.categories.filter((item:any)=> item.catName !== this.currentcategory.catName)
+          this.showsubcats = this.currentcategory.subCategoryList.filter((item:any)=> item.serviceSubcatName !== this.currentsubcategory.serviceSubcatName)
+        }
+      })
+    }else{
       this.categories = []
       this.currentcategory = [];
       this.currentsubcategory = [];
      }
     });
+  }
+
+  shifttofirst(arrayObj1:any, val:any){
+    var index = arrayObj1 .findIndex((res:any) => res.catName==val)
+    let y = arrayObj1.push(...arrayObj1 .splice(0, index));
+    return y;
   }
 
   time:any;
@@ -128,10 +159,9 @@ export class ChatpopupComponent implements OnInit {
     this.apiService.addHelpDeskRequest(payload).subscribe((res:any)=>{
       if(res.Status == "Success"){
           // console.log(res);
-      setTimeout(()=>{ this.showLoader = false; this.submitted = !this.submitted;}, 1000);
-      setTimeout(()=>{this.visibility = false;},5000);
-      // this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
-      this.showLoader = false;
+        setTimeout(()=>{this.showLoader = false; this.submitted = !this.submitted;}, 1000);
+        setTimeout(()=>{this.visibility = false;},5000);
+        // this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
       setTimeout(() => {
         if(this.currentpage == 'Support'){
           window.location.reload();
@@ -185,13 +215,13 @@ export class ChatpopupComponent implements OnInit {
   }
   apicall(subject:string){
     this.apiService.sendEmail(this.body, subject).subscribe((res:any)=>{
-      setTimeout(()=>{ this.showLoader = false; this.submitted = !this.submitted;}, 1000);
+      setTimeout(()=>{ this.showLoader = false; this.submitted = !this.submitted;}, 100);
       setTimeout(()=>{this.visibility = false;},5000)
       // this.alertService.success("Thanks for letting us know! We'll be in touch within 24 hours with asistance.")
       // console.log(res) // Status: success
     },(error)=>{
       this.showLoader=false;
-      this.alertService.success("Warning","Something went wrong. Please try again later.")
+      this.alertService.success("Error","Something went wrong. Please try again later.")
     })
   }
   toFeedback(){
@@ -304,7 +334,7 @@ export class ChatpopupComponent implements OnInit {
 
   opentimer(){
     var x = <HTMLInputElement>document.getElementById("date");
-    console.log(this.date.nativeElement)
+    // console.log(this.date.nativeElement)
     x.focus();
     x.click();
     this.date.nativeElement

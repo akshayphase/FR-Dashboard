@@ -145,7 +145,7 @@ input::placeholder{
   .col-lg-9 {border-left: none;  }
   .icon {margin: 0 5px 0 10px;}
   .generateBtn {margin: 10px 10%;  }
-  .tabletitlejustify{text-align-last: center;}
+  .tabletitlejustify{text-align-last: left;}
 }
 
 @media screen and (min-width: 991px) { 

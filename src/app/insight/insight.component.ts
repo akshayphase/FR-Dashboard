@@ -128,12 +128,12 @@ export class InsightComponent implements OnInit {
           }); 
         }    
         this.reports = res; 
-        if(this.reports == null){this.placeholderhere ="Please choose different dates to view the reports"}
+        if(this.reports == null){this.placeholderhere ="Please select a date range to view your INSIGHTS"}
       }else{
         this.reportsite = this.currentsite;
         this.showLoader =false;
         this.reports = null;
-        this.placeholderhere ="Please choose different dates to view the reports"
+        this.placeholderhere ="Please select a date range to view your INSIGHTS"
       }
     },
      (error:any)=> {
@@ -360,7 +360,7 @@ downloadReport(){
   this.apiservice.getsiteid(this.currentsiteid).subscribe((res:any)=>{
     // console.log(res);
     if(res){
-      console.log(res,this.reportsd.replaceAll("/", "-"), this.reported.replaceAll("/", "-"))
+      // console.log(res,this.reportsd.replaceAll("/", "-"), this.reported.replaceAll("/", "-"))
       this.apiservice.downloadReport1(res,this.reportsd.replaceAll("/", "-"), this.reported.replaceAll("/", "-")).subscribe(
         data => {
            var file = new Blob([data], {type: 'application/pdf'});
@@ -369,13 +369,13 @@ downloadReport(){
           this.downloadFile(fileURL)
           },(error:any)=>{
             this.showLoader=false;
-            this.alertservice.success("Alert","Something went wrong. Please Try Again.")
+            this.alertservice.success("Error","Something went wrong. Please Try Again.")
           }
       );
     }
   },(error:any)=>{
     this.showLoader=false;
-    this.alertservice.success("Alert","Something went wrong. Please Try Again.")
+    this.alertservice.success("Error","Something went wrong. Please Try Again.")
   })
 }
 downloadFile(filePath:any){

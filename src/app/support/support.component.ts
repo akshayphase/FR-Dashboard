@@ -374,7 +374,6 @@ export class SupportComponent implements OnInit {
 
   show = false;
   filters() {
-    // console.log("hello")
     this.show = !this.show;
   }
   showAddSite = false;
@@ -433,9 +432,9 @@ export class SupportComponent implements OnInit {
   }
   addopen = false;
   openaddmodal(){
-    // this.requestbean.description = "";
-    // this.requestbean.remarks = null;
-    // this.requestbean.PrefTimeToCall = "";
+    this.requestbean.description = "";
+    this.requestbean.remarks = null;
+    this.requestbean.PrefTimeToCall = "";
     this.addopen =true;
     var x = <HTMLElement>document.getElementById('addmodal')
     x.style.display = "block";
@@ -601,7 +600,7 @@ export class SupportComponent implements OnInit {
     this.currentaddpriority = priority;
   }
   priorityradio(){
-    var x = <HTMLInputElement>document.querySelector('input[name="priority"]:checked');
+    var x = <HTMLInputElement>document.querySelector('input[name="addpriority"]:checked');
     this.currentaddpriority = x.value;
     // console.log(x.value)
   }

@@ -43,10 +43,10 @@ export class NavbarComponent implements OnInit {
   }
 
   opened= true;
-  advertisements=true;
+  advertisements=false;
   liveview=true;
-  b_intelli = true;
-  alarms = true;
+  b_intelli = false;
+  alarms = false;
   showLoader=false;
   openprofile=false;
   editpro=false;
@@ -55,7 +55,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {  
     this.check();
     this.data = this.storageService.getEncrData('user');
-    
+
+    var services = JSON.parse(localStorage.getItem('siteservices')!);
+    if(services){
+      this.getsiteservices();
+    }
+
   }
   data:any;
   ngAfterViewInit(){
@@ -65,15 +70,25 @@ export class NavbarComponent implements OnInit {
 
   getsiteservices(){
     this.apiservice.siteservices$.subscribe((res)=>{
-      setTimeout(()=>{
-        if(res.Status != "Failed" && res.Services){
-          var servs = res.Services;
+      // setTimeout(()=>{
+        // if(res.Status != "Failed" && res.Services){
+        //   console.log('again', servs)
+        //   var servs = res.Services;
+        //   if(servs.LiveView == 'F'){this.liveview = false}else{this.liveview = true};
+        //   if(servs.advertising == 'F'){this.advertisements = false}else{this.advertisements = true};
+        //   if(servs.business_intelligence == 'F'){this.b_intelli = false}else{this.b_intelli = true};
+        //   if(servs.alarms == 'F'){this.alarms = false}else{this.alarms = true}
+        // }else{
+          var services = JSON.parse(localStorage.getItem('siteservices')!);
+        if(services){
+          var servs= services.Services;
           if(servs.LiveView == 'F'){this.liveview = false}else{this.liveview = true};
           if(servs.advertising == 'F'){this.advertisements = false}else{this.advertisements = true};
           if(servs.business_intelligence == 'F'){this.b_intelli = false}else{this.b_intelli = true};
           if(servs.alarms == 'F'){this.alarms = false}else{this.alarms = true}
         }
-      },200)
+        // }
+      // },200)
     
     })
   }
@@ -138,10 +153,11 @@ export class NavbarComponent implements OnInit {
   username:any;
   errormsg:any
   forgotPass(){
-    let x:any = this.username;
-      if(x == '' || x == null){this.errormsg =('Please enter username'); this.alertservice.success("Error",this.errormsg)}
-      else if(x != '' && x.length<5){this.errormsg =('Username is invalid'); this.alertservice.success("Error",this.errormsg)}
-      else{
+    this.closeresetModal();
+    let x:any = this.data.UserName;
+      // if(x == '' || x == null){this.errormsg =('Please enter username'); this.alertservice.success("Error",this.errormsg)}
+      // else if(x != '' && x!= this.data.UserName){this.errormsg =('Username is invalid'); this.alertservice.success("Error",this.errormsg)}
+      // else{
         this.showLoader=true;
         this.authservice.forgotPassword(x).subscribe((res:any)=>{
           this.showLoader=false;   
@@ -151,7 +167,7 @@ export class NavbarComponent implements OnInit {
           // if(res.Status == "Failed"){this.errormsg = 'Username is invalid'; this.alertservice.success(this.errormsg)}
           if(res.Status == "Failed"){this.errormsg = res.Message; this.alertservice.success("Failed",this.errormsg)}
         })
-      }
+      // }
 
     // this.alertService.warning("Something went wrong! Please try later.")
   }
@@ -176,6 +192,17 @@ export class NavbarComponent implements OnInit {
     this.visible1=!this.visible1
   }
   subcatclicked(t:any){
+  }
+
+  resetpassconfirm(){
+    this.closemenu();
+    this.openprofile=false;
+    var x = <HTMLElement>document.getElementById('resetpassmodal')
+    x.style.display = "block";
+  }
+  closeresetModal(){
+    var x = <HTMLElement>document.getElementById('resetpassmodal')
+    x.style.display = "none";
   }
 
 }
