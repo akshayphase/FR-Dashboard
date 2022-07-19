@@ -101,11 +101,18 @@ getResearchData(siteid:any, date:any){
 graphsdata:any;
 getBiTrends(){
   var date;
-  var yesterday =this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'yyyy/MM/dd')
-  if((this.startDate) == null){date = yesterday}else{
+  var yesterday =this.pipe.transform(new Date().setDate(new Date().getDate() - 1), 'yyyy/MM/dd');
+  if((this.startDate) == null){
+    if(this.lastWorkingDay != null){
+      date = this.lastWorkingDay; 
+    }else{
+      date = yesterday 
+    }
+  }else{
     var startDateParts:any = this.startDate.split("/");
     date =  [(startDateParts[2])]+'/'+startDateParts[1] +'/'+ startDateParts[0];
   }
+ 
   this.showLoader=true;
   this.apiservice.getBiTrends1(this.currentsiteid, date, this.currentfieldid).subscribe((res:any)=>{
     // console.log(res)
@@ -207,7 +214,7 @@ firstreport(){
     this.reportsite = this.currentsite;
     this.currentsiteid = p.siteid;
     this.showLoader=true;
-    this.getsitenonworkingdays()
+    this.getsitenonworkingdays();
     // setTimeout(() => {
     //   if(this.lastWorkingDay){
     //     // console.log(this.lastWorkingDay)

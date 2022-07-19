@@ -48,9 +48,9 @@ export class AdminpanelComponent implements OnInit {
     const isEmpty = Object.values(this.model).some((value:any) => {if (value === "") {return true;}return false;});
     // if isNull & isEmty false then only run or alert all fields required
     if(!isNull){
-      this.apiservice.createuser(this.model).subscribe((res:any)=>{
-        console.log(res);
-      })
+      // this.apiservice.createuser(this.model).subscribe((res:any)=>{
+      //   console.log(res);
+      // })
     }else{
       console.log("please enter all details")
     }

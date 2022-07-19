@@ -525,3 +525,6 @@ p.form_text1>span {
     padding: 0;
 }
 .errorshadow{  box-shadow: 0px 0px 0.5px 2px rgb(253, 107, 97,0.8);}
+textarea{
+    caret-color: #767676 !important;
+}

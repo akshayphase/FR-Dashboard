@@ -241,9 +241,11 @@ export class SupportComponent implements OnInit {
     this.show= !this.show;
   }
   clearsearchfilters(){
-    (this.selectedsite = null,this.selectedCategory=null,this.selectedSubcategory=null,this.selectedStatus=null,this.startDate=null,this.endDate=null)
-    this.displaYstartDate=null;
-    this.displaYendDate = null;
+    (this.selectedsite=undefined,this.selectedCategory=undefined,this.selectedSubcategory=undefined,this.selectedStatus=undefined,this.startDate=undefined,this.endDate=undefined);
+    // console.log((this.selectedsite,this.selectedCategory,this.selectedSubcategory,this.selectedStatus,this.startDate,this.endDate));
+
+    this.displaYstartDate=undefined;
+    this.displaYendDate = undefined;
     this.filtereddata = (this.requests.filter(function(e:any) { return e.status !== 'Deleted' })).reverse();
     this.pagination();
     this.show= !this.show;

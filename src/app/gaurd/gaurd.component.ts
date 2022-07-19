@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { StorageService } from '../services/auth/storage.service';
 
@@ -29,11 +30,11 @@ export class GaurdComponent implements OnInit {
   constructor(
     private apiService:ApiService, 
     private changeDetection: ChangeDetectorRef, 
-    private storageService:StorageService
+    private storageService:StorageService,
+    private httpClient: HttpClient
     ) { }
 
   ngOnInit(): void {
-    
     // document.body.style.backgroundImage= "linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url('../../assets/background.jpg'))";
     document.body.style.backgroundImage= "linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%), url('../../assets/background.jpg'))";
     if(this.apiService.sessionstatus() == false){
@@ -74,6 +75,7 @@ export class GaurdComponent implements OnInit {
     this.sites.siteList = names_array_new.reverse();
   }
   // for sites and data of cameras
+  firstTimeout:any;
   getSitename(){
     this.showLoader = true;
     this.apiService.getSites().subscribe((res:any) => {
@@ -83,7 +85,7 @@ export class GaurdComponent implements OnInit {
         if(res.Message == "Insufficient details"){this.apiService.onHTTPerror({status:404})}
         if(res.Message == "Invalid user details"){
           this.apiService.refresh();
-        setTimeout(()=>{
+          this.firstTimeout= setTimeout(()=>{
           this.getSitename();
         },2000) 
        }
@@ -117,7 +119,7 @@ export class GaurdComponent implements OnInit {
     this.cameras = x[0].data;
     this.apiService.getServices(this.currentsite);
     this.commoncommands();
-    setTimeout(() => {
+    this.firstTimeout = setTimeout(() => {
       this.panel.nativeElement.style.maxHeight = this.panel.nativeElement.style.scrollHeight + 'px';
       if(this.cameras.length >0){this.optionlabel.nativeElement.click();}
     }, 1500);
@@ -131,13 +133,31 @@ export class GaurdComponent implements OnInit {
       }
       if(res.Status == "Success"){
         this.currentsite = this.sites.siteList[0].siteid;
+        this.apiService.getServices(this.currentsite); //this was required once check ones to be removed
         this.cameras = res.CameraList;
+        var user = this.storageService.getEncrData("user");
+        if(this.currentsite == 1015 && user.UserName == 'sales@ivisecurity.com'){
+          // if(user.UserName == 'ivisus'){
+              this.cameras.forEach((a:any) => {
+              var i = this.cameras.indexOf(a)+1;
+              if(i<10){i="0"+i;}
+              a.snapShotUrl=`http://usmgmt.iviscloud.net:444/ivis-us-allsiteimages/tempdata/CAM${i}.png`;
+              // a.snapShotUrl=`assets/stone/CAM${i}.png`;
+              a.cameraId = "IVISUSA"
+              a.streamingUrl = "1s122";
+              a.cameraStatus= 'Connected';
+            });
+            this.cameras.splice(6,1);
+            this.cameras.splice(11,1);
+            this.cameras.splice(16,1);
+            this.cameras.splice((this.cameras.length - 1),1);
+          }
         this.commoncommands();
         this.savecams();
         this.apiService.getServices(this.currentsite);
         const sortAlphaNum = (a:any, b:any) => a.cameraId.localeCompare(b.cameraId, 'en', { numeric: true })
         this.cameras = this.cameras.sort(sortAlphaNum)
-        setTimeout(() => {
+        this.firstTimeout = setTimeout(() => {
           this.panel.nativeElement.style.maxHeight = this.panel.nativeElement.style.scrollHeight + 'px';
           if(this.cameras.length >0){this.optionlabel.nativeElement.click();}
         }, 2000);
@@ -151,23 +171,61 @@ export class GaurdComponent implements OnInit {
       }
     })
   }
-  savedcams:any[]=[]
+  savedcams:any[]=[];
+
   async savecams(){
     const a: { siteid: any; data: any; }[] = [];
    this.savedcams.push({siteid : this.currentsite,data : this.cameras});
    this.storageService.storeEncrData('savedcams', this.savedcams)
     this.sites.siteList.forEach((el:any) => {
-      if(el.siteid != this.currentsite){   
+      if(el.siteid != this.currentsite){
+
+        this.savedcams.push({siteid : el.siteid, data : []});
         this.apiService.getCameras(el.siteid).subscribe((res:any)=>{
           if(res.Status == "Success" || res.Message == "Sorry no cameras found. Try again later."){
-            if(res.Message == "Sorry no cameras found. Try again later."){this.savedcams.push({siteid : el.siteid, data : []});}
+            if(res.Message == "Sorry no cameras found. Try again later."){
+              // this.savedcams.push({siteid : el.siteid, data : []});
+              this.savedcams.forEach((item:any) => {
+                if(item.siteid == el.siteid){ item.data = []; }
+                this.storageService.storeEncrData('savedcams', this.savedcams)
+              });
+            }
             else{  
+
               const sortAlphaNum = (a:any, b:any) => a.cameraId.localeCompare(b.cameraId, 'en', { numeric: true })
               var sortedcamdata = res.CameraList.sort(sortAlphaNum)
-              var d ={siteid : el.siteid, data : sortedcamdata}
-              this.savedcams.push(d);
+              // var d ={siteid : el.siteid, data : sortedcamdata}
+              // this.savedcams.push(d);
+              this.savedcams.forEach((item:any) => {
+                if(item.siteid == el.siteid){ 
+                  item.data = sortedcamdata
+                  /* Dummy user code */
+                  var user = this.storageService.getEncrData("user");
+                  if(item.siteid == 1015 && user.UserName == 'sales@ivisecurity.com'){
+                      sortedcamdata.forEach((a:any) => {
+                        var i = sortedcamdata.indexOf(a)+1;
+                        if(i<10){i="0"+i;}
+                        a.snapShotUrl=`http://usmgmt.iviscloud.net:444/ivis-us-allsiteimages/tempdata/CAM${i}.png`;
+                        a.streamingUrl = "1s122";
+                        a.cameraId = "IVISUSA"
+                        a.cameraStatus= 'Connected';
+                        // if(sortedcamdata.indexOf(a) == 6 || sortedcamdata.indexOf(a) == 12 || sortedcamdata.indexOf(a) == 18 || sortedcamdata.indexOf(a) == 20){
+                        //   a.cameraStatus= 'disconnected';
+                        // }else{
+                        //   a.cameraStatus= 'Connected';
+                        // }
+                    });
+                    sortedcamdata.splice(6,1);
+                    sortedcamdata.splice(11,1);
+                    sortedcamdata.splice(16,1);
+                    sortedcamdata.splice((sortedcamdata.length - 1),1);
+                  }
+                  /* Dummy user code ends */
+                };
+                this.storageService.storeEncrData('savedcams', this.savedcams)
+              });
             }
-            this.storageService.storeEncrData('savedcams', this.savedcams)
+            // this.storageService.storeEncrData('savedcams', this.savedcams)
           }
           if(res.Status == "Failed"){
             if(res.Message == "Invalid accessToken"){this.apiService.refresh(); setTimeout(()=>{this.savecams()},1000)}
@@ -183,10 +241,24 @@ export class GaurdComponent implements OnInit {
       }    
     });  
   }
+  fileExists(url: string) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', url, false);
+    xhr.send();
+    if (xhr.status == 404) {
+        return false;
+    } else {
+        return true;
+    }
+  }
+  public fileExists1(url: string) {
+    return this.httpClient.get(url);
+}
   
   showcams=true;
   currentsite:any; // to save currentsite
   getCameras(event:any, site:any, index:any){
+    if(this.firstTimeout){clearTimeout(this.firstTimeout)}
     this.storageService.storeEncrData('siteidfromgaurdpage', site);
     if(site.siteid != this.currentsite){this.apiService.getServices(site.siteid);}
     this.pagenumber = 1;
@@ -195,7 +267,6 @@ export class GaurdComponent implements OnInit {
     var siteid = site.siteid;
     this.storageService.storeEncrData('siteidfromgaurdpage', site)
     if(siteid != this.currentsite){
-   
       var x:any = this.storageService.getEncrData('savedcams');
       if(x){
         x.forEach((el:any) => {
@@ -216,7 +287,9 @@ export class GaurdComponent implements OnInit {
         }
         this.commoncommands();
         setTimeout(() => {
-          event.target.click();
+          if(event.target.nextElementSibling != null){
+            event.target.click();
+          }
         }, 210);
       }else{
         this.cameras = null;
@@ -303,11 +376,13 @@ export class GaurdComponent implements OnInit {
     }else{
       a.style.paddingRight = 0+ "%";
     }
-    this.pagination();
+    // this.pagination();
   }
   cameraIdClicked(cam:any){
-    this.pagenumber = 1;
+    // this.pagenumber = 1;
     this.gridClicked = 1;
+    this.pagenumber = this.cameras.indexOf(cam)+1;
+    this.pagination();
     var x = this.gridCont.nativeElement;
     x.style.gridTemplateColumns = "repeat(1, 1fr)";
     x.style.paddingRight = 30+ "%";
@@ -345,8 +420,8 @@ export class GaurdComponent implements OnInit {
     this.selectNumbers = new Array(a).fill(0).map((x,i)=>i+1); // [1,2,3,4,...,100]
   }
   pagination(){
-    this.selector();
     var cameras = this.cameras;
+    this.selector();
     const sortAlphaNum = (a:any, b:any) => a.cameraId.localeCompare(b.cameraId, 'en', { numeric: true })
     cameras = cameras.sort(sortAlphaNum)
     var x;

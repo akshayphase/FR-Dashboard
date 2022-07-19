@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-  
+    localStorage.clear();
   }
   ngAfterViewInit(){
     if(this.apiService.sessionstatus() == false){

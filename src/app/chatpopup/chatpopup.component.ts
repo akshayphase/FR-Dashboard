@@ -66,9 +66,13 @@ export class ChatpopupComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    this.gethelpDeskCategories();
+    
     this.user = this.storageservice.getEncrData("user");
     // this.startlistenerforpopup();
+
+    if(this.user){
+      this.gethelpDeskCategories();
+    }
  
   }
 
@@ -176,7 +180,7 @@ export class ChatpopupComponent implements OnInit {
   showPopUp(){
     this.visibility = !this.visibility;
     // this.alertService.success("Testing"," Alert messages will appear here.")
-
+    this.body = '';
     this.selected = false;
     if(this.submitted = true){
       this.submitted = !this.submitted;

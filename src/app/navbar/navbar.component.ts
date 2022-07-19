@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AlertService } from '../services/alertservice/alert-service.service';
@@ -19,7 +19,6 @@ export class NavbarComponent implements OnInit {
   
   profileopened$=new BehaviorSubject<boolean>(false);
 
-
   isloggedin: any
 
   constructor(
@@ -28,7 +27,9 @@ export class NavbarComponent implements OnInit {
     private storageService:StorageService,
     private apiservice:ApiService,
     private alertservice:AlertService,
-    private renderer1: Renderer2) {
+    private renderer1: Renderer2,
+    private cd: ChangeDetectorRef
+    ) {
     }
 
   startlistenForProfile(){
@@ -55,12 +56,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {  
     this.check();
     this.data = this.storageService.getEncrData('user');
-
     var services = JSON.parse(localStorage.getItem('siteservices')!);
     if(services){
       this.getsiteservices();
     }
-
   }
   data:any;
   ngAfterViewInit(){
@@ -69,7 +68,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getsiteservices(){
-    this.apiservice.siteservices$.subscribe((res)=>{
+    this.apiservice.siteservices$.subscribe((res:any)=>{
       // setTimeout(()=>{
         // if(res.Status != "Failed" && res.Services){
         //   console.log('again', servs)
@@ -79,13 +78,21 @@ export class NavbarComponent implements OnInit {
         //   if(servs.business_intelligence == 'F'){this.b_intelli = false}else{this.b_intelli = true};
         //   if(servs.alarms == 'F'){this.alarms = false}else{this.alarms = true}
         // }else{
-          var services = JSON.parse(localStorage.getItem('siteservices')!);
+        var services = JSON.parse(localStorage.getItem('siteservices')!);
         if(services){
-          var servs= services.Services;
-          if(servs.LiveView == 'F'){this.liveview = false}else{this.liveview = true};
-          if(servs.advertising == 'F'){this.advertisements = false}else{this.advertisements = true};
-          if(servs.business_intelligence == 'F'){this.b_intelli = false}else{this.b_intelli = true};
-          if(servs.alarms == 'F'){this.alarms = false}else{this.alarms = true}
+          if(services.Status != "Failed"){
+            // console.log(services)
+            var servs= services.Services;
+            if(servs.LiveView == 'F'){this.liveview = false}else{this.liveview = true};
+            if(servs.advertising == 'F'){this.advertisements = false}else{this.advertisements = true};
+            if(servs.business_intelligence == 'F'){this.b_intelli = false}else{this.b_intelli = true};
+            if(servs.alarms == 'F'){this.alarms = false}else{this.alarms = true}
+            this.cd.detectChanges();
+          }else{
+            this.advertisements=false;
+            this.b_intelli = false;
+            this.alarms = false;
+          }
         }
         // }
       // },200)
@@ -101,7 +108,6 @@ export class NavbarComponent implements OnInit {
       // this.router.navigateByUrl('/')
     }
   }
-
   burgerIcon() {
     var x = this.topnav.nativeElement;
     if (x.className === "topnav") {
@@ -168,21 +174,18 @@ export class NavbarComponent implements OnInit {
           if(res.Status == "Failed"){this.errormsg = res.Message; this.alertservice.success("Failed",this.errormsg)}
         })
       // }
-
-    // this.alertService.warning("Something went wrong! Please try later.")
   }
   submitprofile(){
     this.alertservice.success("Information","Profile edit is coming soon");
     this.editpro =false;
   }
-
-
-
   
   visible1=false
   openModal(){
     var x = <HTMLElement>document.getElementById('editmodal1')
-    x.style.display = "block";
+    // x.style.display = "block";
+    this.alertservice.success('Edit Profile', 'Coming Soon!')
+
   }
   closeModal(){
     var x = <HTMLElement>document.getElementById('editmodal1')
@@ -205,4 +208,40 @@ export class NavbarComponent implements OnInit {
     x.style.display = "none";
   }
 
+  //users 
+  getUser(){
+    this.apiservice.getUserForProfile().subscribe((res:any)=>{
+      console.log(res)
+    })
+  }
+
+
+
+  onFileChange(event:any) {
+    const reader = new FileReader();
+
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // this.data.parentForm.patchValue({
+        //   tso: reader.result
+        // });
+        console.log(file);
+        this.pic = file;
+        // need to run CD since file load runs outside of zone
+        this.cd.markForCheck();
+      };
+    }
+    const inputElement: HTMLInputElement = document.getElementById('my-input') as HTMLInputElement
+    inputElement.files = null;
+  }
+  
+
+  pic:File;
+  upadtePic(){
+    this.apiservice.updateProfilePic(this.pic).subscribe((res:any)=>{
+      console.log(res)
+    })
+  }
 }

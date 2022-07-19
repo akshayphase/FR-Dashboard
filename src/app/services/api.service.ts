@@ -35,7 +35,6 @@ export class ApiService {
       calling_System_Detail: "portal",
     }
     // console.log("sitelist: ",this.sitelisturl,payload);
-
     return this.http.post(this.sitelisturl,payload)
   }
   getCameras(siteid: any){
@@ -73,16 +72,13 @@ export class ApiService {
       this.onHTTPerror(error);
     })
   }
-
-
-
   getServices(siteid:any){
     var Request_type = "Services";
     let servicesurl1=`${this.baseurl}businessInterface/Client/clientServices_1_0?accountId=${siteid}&Request_type=${Request_type}&calling_user_details=IVISUSA`;
     // console.log("services: ",servicesurl1);
     this.http.get(servicesurl1).subscribe((res:any)=>{
-      this.siteservices$.next(res);
       localStorage.setItem('siteservices', JSON.stringify(res))
+      this.siteservices$.next(res);
       if(res.Status !="Failed"){
         if(res.background != null){
           // document.body.style.backgroundImage= `linear-gradient(325deg, rgba(0, 7, 39, 0.9) 18%, rgba(29, 0, 0, 0.9) 66%), url(${res.background})`
@@ -93,9 +89,7 @@ export class ApiService {
         }
       }
     },(error:any)=>{console.log(error);})
-  }
-
-  
+  }  
   getHelpDeskCategories(){
     let url = `${this.baseurl}businessInterface/helpdesk/categoryList_1_0`;
     var a = this.storageService.getEncrData('user');
@@ -128,12 +122,10 @@ export class ApiService {
     // });
     return this.http.post(url, body);
   }
-
   updateHelpDeskRequest(payload:any ){
     let url = `${this.baseurl}businessInterface/helpdesk/updateServiceRequest_1_0`;
     var a = this.storageService.getEncrData('user');
     var username= a.UserName;
-
     let body = new FormData(); 
     if(payload.PrefTimeToCall != null){body.append('preferredTimeToCall', payload.PrefTimeToCall);}
     body.append('serviceName', payload.serviceCategoryName);
@@ -148,12 +140,8 @@ export class ApiService {
     body.append('remarks',payload.remarks);
     body.append('serviceId',payload.serviceId)
     body.append('siteId',payload.accountId)
-    // body.forEach((value,key) => {
-    //     console.log(key+" "+value)
-    // });
     return this.http.post(url, body);
   }
-
   getHelpDeskRequests(){
     let url = `${this.baseurl}businessInterface/helpdesk/getServiceReq_1_0`;
     var a = this.storageService.getEncrData('user');
@@ -188,14 +176,8 @@ export class ApiService {
     let servicesurl1=`${this.baseurl}businessInterface/Client/clientServices_1_0?accountId=${siteid}&Request_type=${Request_type}&calling_user_details=IVISUSA`;
     return this.http.get(servicesurl1)
   }
-  createuser(user:any){
-    let url = "http://localhost:8080/CreateUser"
-    // console.log("services: ",url,user);
-
-    return this.http.post(url, user);
-  }
-
   getBiAnalyticsReport(siteid:any, startDate:any, endDate:any){
+    // console.log("insights"+startDate, endDate)
     let biAnalyticsReport = this.baseurl+'businessInterface/insights/biAnalyticsReport_1_0?';
     const url = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_user_details=IVISUSA`;
     const newurl = `${biAnalyticsReport}SiteId=${siteid}&fromDate=${startDate}&toDate=${endDate}&calling_user_details=IVISUSA`;
@@ -214,52 +196,32 @@ export class ApiService {
     return this.http.post(url, payload)
   }
   getBiAnalyticsResearch(siteid:any, startDate:any){
-    // console.log(siteid,startDate)
+    // console.log("researchTrends"+siteid,startDate)
     let biAnalyticsReport = this.baseurl+'businessInterface/insights/getAnalyticsListforSite_1_0?';
     const newurl1 = `${biAnalyticsReport}SiteId=${siteid}&calling_System_Detail=IVISUSA&date=${startDate}%22`
     const newurl=this.baseurl+"businessInterface/insights/getAnalyticsListforSite_1_0?SiteId=1002&calling_System_Detail=IVISUSA&date=2022/03/01%22";
     // console.log("bireport: ",newurl);
     return this.http.get(newurl1);
   }
-
-
+  getBiTrends1(siteid:any, date:any, typeid:any){
+    let url1 =  `${this.baseurl}businessInterface/insights/analyticTrends_1_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
+    let url =  `${this.baseurl}businessInterface/insights/analyticTrends_2_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
+    return this.http.get(url)
+  }
   getBiTrends(type:any, date:any){
     let biTrends = this.baseurl + "biDataReport/BiData?accountId=1001&analyticTypeId=";
     let url =`${biTrends}${type}&cameraDate=${date}`
     // console.log(url);
     return this.http.get(url)
   }
-  getBiTrends1(siteid:any, date:any, typeid:any){
-    let url1 =  `${this.baseurl}businessInterface/insights/analyticTrends_1_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
-    let url =  `${this.baseurl}businessInterface/insights/analyticTrends_2_0?SiteId=${siteid}&date=${date}&calling_System_Detail=IVISUSA&analyticTypeId=${typeid}`;
-    return this.http.get(url)
-  }
-  getTrendsFields(siteid:any){
-    let url = this.baseurl +"bireports/getServices"
-  }
   getsiteid(siteid:any){
     let url = `${this.baseurl}cpus/sites/getBICustomerSiteId_1_0?accId=${siteid}`;
     return this.http.get(url)
   }
   downloadReport1(id:any, startdate:any, enddate:any){
-    // let url = `http://localhost:8080/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
-    // let url1 ="http://localhost:8080/download/getPdfReport?id=2&startdate=2022-03-01&enddate=2022-03-01";
-    // return fetch(url);
     var x = new HttpHeaders({Accept: 'application/pdf', 'Content-Type': 'application/pdf', responseType: 'blob'});
     let url = `${this.baseurl}bireports/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
-    // let url2 = `http://smstaging.iviscloud.net:8090/bireports/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
-    // let url1 = `http://localhost:8080/download/getPdfReport?id=${id}&startdate=${startdate}&enddate=${enddate}`;
-    // let url3 = `http://10.0.2.197:8080/download/getPdfReport?id=2&startdate=2022-06-07&enddate=2022-06-07`;
     return this.http.get(url, { headers: x , responseType: 'blob' })
-    // return this.http.get(url, { headers: x , responseType: 'blob' });
-    // return this.http.get(url);
-    // let url = `http://localhost:8080/download/getPdfReport`;
-    // var payload={     
-    //   id:id,
-    //   startdate:startdate,
-    //   enddate:enddate
-    // }
-    // return this.http.get(url + `?data=${encodeURIComponent(JSON.stringify(payload))}`)
   }
   sessionstatus(){
     var hours = 24; // 0.01 is 35secs
@@ -279,7 +241,6 @@ export class ApiService {
     let localurl= "http://10.0.2.191:8080/emailService";
     let url =`${this.baseurl}keycloakApp/emailService`;
     var a = this.storageService.getEncrData('user');
-    // a.email = 'phaseakshay.vjtiprod19@gmail.com';
     let payload={
       userName: a.UserName,
       accessToken: a.access_token,
@@ -289,15 +250,55 @@ export class ApiService {
       realm: a.Realm,
       calling_System_Detail: "portal",
       roles: '',
-     
     };
     return this.http.post(url,payload)
   }
+  getUserForProfile(){
+    let url = this.baseurl + 'User/getUser_1_0'
+    var a = this.storageService.getEncrData('user');
+    var payload={
+      username:a.UserName,
+      email:a.email,
+      callingUsername: a.UserName,
+      accesstoken:a.access_token,
+      callingSystemDetail:"portal"
+    }
+    return this.http.post(url,payload);
+  }
+  updateUserForProfile(payload:any){
+    let url = this.baseurl + 'User/updateUser_1_0';
+    var a = this.storageService.getEncrData('user');
+    console.log(payload)
+    // return this.http.post(url,payload);
+  }
+  updateProfilePic(image:File){
+    let url = this.baseurl + 'User/UpdateProfile_1_0';
+    var a = this.storageService.getEncrData('user');
+    var username= a.UserName;
+    let body = new FormData(); 
+    body.append('clientUsername', a.UserName);
+    body.append('accesstoken', a.access_token);
+    body.append('callingSystemDetail', 'portal');
+    body.append('image', image);
+    body.forEach((value,key) => {
+        console.log(key+" "+value)
+    });
+    return this.http.post(url, body);
+  }
+
+
+
+
+
+
+
+
+
+
 
   onHTTPerror(e:any){
     this.error$.next(e)
     this.router.navigateByUrl('/error');
-    // this.storageService.deleteStoredEncrData('user')
   }
 
 
@@ -393,6 +394,15 @@ export class ApiService {
     let url = this.baseurl+'businessInterface/insights/';
     var payload ={
     }
+  }
+
+  extractUniqueValueArray(arr:any, key:any){
+    var abc: any[] =[];
+    arr.forEach(function(el:any){
+      abc.push(el[key]);
+    });
+    var unique = abc.filter((v, i, a) => a.indexOf(v) === i);
+   return unique;
   }
 
 }

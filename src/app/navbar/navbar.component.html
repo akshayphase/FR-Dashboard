@@ -10,10 +10,10 @@
   <a  ><div (click)="openprofile=!openprofile" #profilebtn>Profile</div></a>
   <a  style="display: none;"><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/services']">Services</div></a>
   <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/support']">Support</div></a>
-  <a *ngIf="advertisements"><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
+  <a *ngIf="advertisements == true"><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/advertisement']">Advertisements</div></a>
   <!-- <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/research']">Research</div></a> -->
-  <a *ngIf="b_intelli" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
-  <a *ngIf="b_intelli" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
+  <a *ngIf="b_intelli == true" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/trends']">Trends</div></a>
+  <a *ngIf="b_intelli == true" ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/insight']">Insight</div></a>
   <a ><div [routerLinkActive]="['color']" (click)="closeMenu()" [routerLink]="['/guard']">Live View</div></a>
   <a class="icon" (click)="openmenu()">
     <img src="assets/menu.svg" style="width: 20px;" alt="Menu">
@@ -27,7 +27,9 @@
     <!-- <img src="assets/IVISsecurity_logo.png" style="height: 32px; margin:10px" alt="ivisSecurity"> -->
     <div class="profile">
       <div class="close" (click)="closemenu()"></div>
-      <img [src]="data?.image" onerror="this.src='assets/female.svg'" style="width: 70px;height:70px; border-radius:50%; padding:2px; background: #fff">
+      <div style="position: relative;">
+        <img [src]="data?.image" onerror="this.src='assets/female.svg'" style="width: 70px;height:70px; border-radius:50%; padding:2px; background: #fff">
+      </div>
       <div class="details" style="overflow:hidden;">
         <p style="font-size: 16px; text-transform: uppercase;text-overflow:ellipsis; overflow-wrap: anywhere;">{{data?.FirstName + ' ' + data?.LastName}}</p>
         <p style="font-size: 14px;" *ngIf="data?.contact"> {{'+91 '+ data?.contact}}</p>
@@ -61,14 +63,17 @@
 
 
     <div class="modalinside"  #profile>
-      <img [src]="data?.image" onerror="this.src='assets/female.svg'" style="width: 60px;height:60px; border-radius:50%; padding:2px; background: #fff">
+      <div style="position: relative;">
+        <img [src]="data?.image" onerror="this.src='assets/female.svg'" style="width: 60px;height:60px; border-radius:50%; padding:2px; background: #fff">
+        <input type="file" name="myImage" accept="image/*" id="my-input" style="position: absolute; left: 59px;width: 60px;height:60px; border-radius:50%; padding:2px;opacity: 0;" [(ngModel)]="pic" (change)="onFileChange($event)" />
+      </div>
       <p style="font-size: 12px; font-weight: 700; margin: 5px; text-transform: uppercase;text-overflow:ellipsis; overflow-wrap: anywhere;">{{data?.FirstName + ' ' + data?.LastName}}</p>
       <p class="modaldetails" *ngIf="data?.contact"><img src="assets/phone.svg" style="width: 8px;" alt="">  : {{'+91 '+ data?.contact}}</p>
       <p class="modaldetails"><img src="assets/mail.svg" style="width: 10px;" alt=""> : {{data?.email ? data?.email : 'Email to be updated'}}</p>
     </div>
 
-    <div class="profilebtn" (click)="editpro=!editpro; openprofile=!openprofile;openModal()">
-      <!-- <div class="profilebtn" (click)="editpro=!editpro" > -->
+    <div class="profilebtn" (click)="editpro=!editpro; openprofile=!openprofile;upadtePic()">
+      <!-- <div class="profilebtn" (click)="editpro=!editpro; openprofile=!openprofile;openModal()"> -->
         <img src="assets/pencil.svg" alt="">
       Edit Profile
     </div>
